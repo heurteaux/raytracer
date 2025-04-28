@@ -1,0 +1,5 @@
+- Add 'assignment.pdf' file
+- Update project name in 'CMakeLists.txt'
+- Set repository secret 'GIT_SSH_PRIVATE_KEY'
+- Set repository variable 'MIRROR_REPOSITORY' in the following format : EpitechPromo2028/B-OOP-400-MPL-4-1-arcade-colin.heurteaux
+- Fill README.md
