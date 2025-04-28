@@ -35,18 +35,10 @@ This project implements a ray tracing engine in C++ that simulates the inverse p
 - libconfig++
 - SFML 2.5.1 (optional, for display features)
 
-### Setup CMake
+### Build with Makefile
 ```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-```
-
-### Build
-```bash
-# Go inside build directory
-cd build
-
 # Standard build
-cmake --build .
+make
 
 # Clean build artifacts
 make clean
@@ -56,6 +48,20 @@ make fclean
 
 # Rebuild
 make re
+
+# Development build (no optimizations)
+make dev
+```
+
+### Alternative: Manual CMake Setup
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+# Go inside build directory
+cd build
+
+# Standard build
+cmake --build .
 ```
 
 ## Usage
