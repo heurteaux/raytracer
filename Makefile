@@ -32,6 +32,9 @@ check-tools:
 	@command -v clang++ > /dev/null || \
 	    (echo "❌ Required tool 'clang++' is not installed. Please install it and try again." \
 	    && exit 1)
+	@ldconfig -p | grep libstdc++ > /dev/null || \
+        (echo "❌ Required library 'libstdc++' is not installed. Please install it and try again." \
+        && exit 1)
 	@echo "✅ All required tools are installed."
 	@echo "====================================="
 
