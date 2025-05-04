@@ -4,6 +4,6 @@ project(RayTracer)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE SOURCES src/*.cpp)
 
 add_executable(raytracer ${SOURCES})
