@@ -3,19 +3,22 @@
 
 #include "Scene.hpp"
 #include <string>
-#include <libconfig/libconfig.h++>
+#include <memory>
+#include <libconfig.h++>
+#include "../Exception/Exception.hpp"
+#include "RayTracer.hpp"
 
 namespace RayTracer {
 
 class SceneLoader {
-public:
-    static Scene loadFromFile(const std::string &filename);
+    public:
+        static std::shared_ptr<Scene> loadFromFile(const std::string &filename);
 
-private:
-    static void parseCamera(const libconfig::Setting &cameraSetting, Scene &scene);
-    static void parsePrimitives(const libconfig::Setting &primitivesSetting, Scene &scene);
-    static void parseLights(const libconfig::Setting &lightsSetting, Scene &scene);
-};
+    private:
+        static void parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene);
+        static void parsePrimitives(const libconfig::Setting &primitivesSetting, std::shared_ptr<Scene> &scene);
+        static void parseLights(const libconfig::Setting &lightsSetting, std::shared_ptr<Scene> &scene);
+    };
 
 }
 

@@ -22,24 +22,28 @@
 #include "Primitives/Plane.hpp"
 #include "Lights/DirectionalLight.hpp"
 #include "Lights/AmbientLight.hpp"
+#include "Exception/Exception.hpp"
+#include "Core/SceneLoader.hpp"
 
+#define UNUSED __attribute__((unused))
 
-int main(int argc, __attribute__((unused)) char *argv[])
+int main(const int argc, const char *argv[])
 {
     if (argc != 2) {
         std::cerr << "USAGE: ./raytracer <SCENE_FILE>" << std::endl;
         std::cerr << "SCENE_FILE: scene configuration" << std::endl;
         return 84;
     }
-
-    const int width = 1920;
-    const int height = 1080;
+    RayTracer::std::shared_ptr<Scene> scene = RayTracer::SceneLoader::loadFromFile(argv[1]);
+    // const int width = 1920;
+    // const int height = 1080;
     
-    RayTracer::Camera camera(Math::Point3d(0, 0, 0));
     
-    RayTracer::Scene scene;
+    // RayTracer::Camera camera(Math::Point3d(0, 0, 0));
+    
+    
 
-    scene.setCamera(camera);
+    // scene.setCamera(camera);
     
     std::shared_ptr<RayTracer::IPrimitive> redSphere = std::make_shared<RayTracer::Sphere>(Math::Point3d(0, 0, -5), 1.0);
     RayTracer::Material redMaterial;
@@ -66,13 +70,12 @@ int main(int argc, __attribute__((unused)) char *argv[])
     scene.addPrimitive(blueSphere);
     scene.addPrimitive(ground);
     
-    std::shared_ptr<RayTracer::ILight> directionalLight = std::make_shared<RayTracer::DirectionalLight>(
-        Math::Vector3d(1, -1, -1), 0.8);
-    std::shared_ptr<RayTracer::ILight> ambientLight = std::make_shared<RayTracer::AmbientLight>(0.2);
+    // std::shared_ptr<RayTracer::ILight> directionalLight = std::make_shared<RayTracer::DirectionalLight>(
+    //     Math::Vector3d(1, -1, -1), 0.8);
+    // std::shared_ptr<RayTracer::ILight> ambientLight = std::make_shared<RayTracer::AmbientLight>(0.2);
     
     scene.addLight(directionalLight);
     scene.addLight(ambientLight);
 
     return scene.render("output.ppm", width, height);
-    
 }

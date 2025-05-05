@@ -27,7 +27,7 @@ namespace RayTracer
         lights.push_back(light);
     }
 
-    void Scene::setCamera(const Camera &cam)
+    void Scene::setCamera(const std::shared_ptr<Camera> &cam)
     {
         camera = cam;
     }
@@ -42,7 +42,7 @@ namespace RayTracer
         return lights;
     }
 
-    int Scene::render(const std::string &filename, int width, int height) const
+    int Scene::render(const std::string &filename) const
     {
 
         std::ofstream outFile;
@@ -53,17 +53,17 @@ namespace RayTracer
             return 84;
         }
 
-        outFile << "P3\n" << width << " " << height << "\n255\n";
+        outFile << "P3\n" << _width << " " << _height << "\n255\n";
 
-        for (int j = height - 1; j >= 0; --j)
+        for (int j = _height - 1; j >= 0; --j)
         {
             std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
-            for (int i = 0; i < width; ++i)
+            for (int i = 0; i < _width; ++i)
             {
-                double u = double(i) / (width - 1);
-                double v = double(j) / (height - 1);
+                double u = double(i) / (_width - 1);
+                double v = double(j) / (_height - 1);
 
-                RayTracer::Ray ray = camera.ray(u, v);
+                RayTracer::Ray ray = camera->ray(u, v);
 
                 RayTracer::HitRecord closestHit;
                 bool hitAnything = false;
@@ -91,22 +91,16 @@ namespace RayTracer
                             pixelColor = pixelColor + light->calculateLighting(closestHit, this->getPrimitives());
                         }
                     }
-
                     this->write_color(outFile, pixelColor);
-                }
-                else
-                {
+                } else {
                     double t = 0.5 * (ray.direction.y + 1.0);
                     Math::Color pixelColor = Math::Color(1.0, 1.0, 1.0) * (1.0 - t) + Math::Color(0.5, 0.7, 1.0) * t;
                     this->write_color(outFile, pixelColor);
                 }
             }
         }
-
         std::cerr << "\nDone.\n";
         outFile.close();
-    
         return 0;
     }
-
 }
