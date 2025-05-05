@@ -13,7 +13,7 @@ namespace RayTracer {
 
 class Scene {
     public:
-        Scene() = default;
+        Scene();
         ~Scene() = default;
         
         void addPrimitive(std::shared_ptr<IPrimitive> primitive);

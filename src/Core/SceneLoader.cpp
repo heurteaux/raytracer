@@ -30,7 +30,7 @@ namespace RayTracer {
         return scene;
     }
 
-    static void parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene)
+    void SceneLoader::parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene)
     {
         Math::Point3d position;
         Math::Vector3d direction;
@@ -59,31 +59,21 @@ namespace RayTracer {
         scene->setCamera(std::make_shared<Camera>(position));
     }
 
-    static void parsePrimitives(const libconfig::Setting &primitivesSetting, std::shared_ptr<Scene> &scene)
+    void SceneLoader::parsePrimitives(const libconfig::Setting &primitivesSetting, std::shared_ptr<Scene> &scene)
     {
         
     }
 
-    static void parseLights(const libconfig::Setting &lightsSetting, std::shared_ptr<Scene> &scene)
+    void SceneLoader::parseLights(const libconfig::Setting &lightsSetting, std::shared_ptr<Scene> &scene)
     {
         double ambient = 0.0;
         double diffuse = 0.0;
 
         lightsSetting.lookupValue("ambient", ambient);
+        scene->addLight(std::make_shared<AmbientLight>(ambient));
+
         lightsSetting.lookupValue("diffuse", diffuse);
-        scene.addLight(std::make_shared<AmbientLight>(ambient));
-        // if (lightsSetting.exists("point")) {
-        //     const libconfig::Setting &points = lightsSetting["point"];
-        //     for (int i = 0; i < points.getLength(); i++) {
-        //         const libconfig::Setting &pt = points[i];
-        //         double x = 0;
-        //         double y = 0;
-        //         double z = 0;
-        //         pt.lookupValue("x", x);
-        //         pt.lookupValue("y", y);
-        //         pt.lookupValue("z", z);
-        //     }
-        // }
+        // need to add Point
         if (lightsSetting.exists("directional")) {
             const libconfig::Setting &dirs = lightsSetting["directional"];
             for (int i = 0; i < dirs.getLength(); i++) {
@@ -94,7 +84,7 @@ namespace RayTracer {
                 dir.lookupValue("x", x);
                 dir.lookupValue("y", y);
                 dir.lookupValue("z", z);
-                scene->addLight(std::make_shared<DirectionalLight>((x, y, z), diffuse));
+                scene->addLight(std::make_shared<DirectionalLight>(Math::Vector3d(x, y, z), diffuse));
             }
         }
     }

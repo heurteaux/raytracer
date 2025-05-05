@@ -9,6 +9,11 @@
 
 namespace RayTracer
 {
+    Scene::Scene() : _width(0), _height(0)
+    {
+
+    }
+
     void Scene::write_color(std::ofstream &out, const Math::Color &color) const
     {
         int r = static_cast<int>(255.99 * std::min(1.0, color.r));

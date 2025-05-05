@@ -11,6 +11,7 @@ namespace RayTracer
     {
         public:
             DirectionalLight(const Math::Vector3d &direction, double intensity);
+            ~DirectionalLight() = default;
 
             Math::Color calculateLighting(const RayTracer::HitRecord &record, const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const override;
 
