@@ -61,13 +61,6 @@ int main(const int argc, const char *argv[])
     scene->addPrimitive(greenSphere);
     scene->addPrimitive(blueSphere);
     scene->addPrimitive(ground);
-    
-    // std::shared_ptr<RayTracer::ILight> directionalLight = std::make_shared<RayTracer::DirectionalLight>(
-    //     Math::Vector3d(1, -1, -1), 0.8);
-    // std::shared_ptr<RayTracer::ILight> ambientLight = std::make_shared<RayTracer::AmbientLight>(0.2);
-    
-    // scene->addLight(directionalLight);
-    // scene->addLight(ambientLight);
 
     return scene->render("output.ppm");
 }
