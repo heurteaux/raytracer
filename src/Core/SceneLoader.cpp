@@ -24,7 +24,7 @@ namespace RayTracer {
 
         const libconfig::Setting &root = cfg.getRoot();
         parseCamera(root["camera"], scene);
-        parsePrimitives(root["primitives"], scene);
+        // parsePrimitives(root["primitives"], scene);
         parseLights(root["lights"], scene);
 
         return scene;

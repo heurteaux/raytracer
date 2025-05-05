@@ -20,5 +20,5 @@ extern "C" {
         redMaterial.color = Math::Color(1.0, 0.2, 0.2);
         redSphere->setMaterial(redMaterial);
         return new RayTracer::Sphere(Math::Point3d(0, 0, -5), 1.0);
-    }²
+    }
 }
