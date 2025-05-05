@@ -32,7 +32,7 @@ namespace RayTracer
         lights.push_back(light);
     }
 
-    void Scene::setCamera(const std::shared_ptr<Camera> &cam)
+    void Scene::    setCamera(const std::shared_ptr<Camera> &cam)
     {
         camera = cam;
     }

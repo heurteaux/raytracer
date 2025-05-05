@@ -34,10 +34,8 @@ int main(const int argc, const char *argv[])
         std::cerr << "SCENE_FILE: scene configuration" << std::endl;
         return 84;
     }
-    std::shared_ptr<RayTracer::SceneLoader> sceneLoader;
+    std::shared_ptr<RayTracer::SceneLoader> sceneLoader = std::make_shared<RayTracer::SceneLoader>();
     std::shared_ptr<RayTracer::Scene> scene = sceneLoader->loadFromFile(argv[1]);
-    scene->setWidth(1920);
-    scene->setHeight(1080);
     
     std::shared_ptr<RayTracer::IPrimitive> redSphere = std::make_shared<RayTracer::Sphere>(Math::Point3d(0, 0, -5), 1.0);
     RayTracer::Material redMaterial;
@@ -68,8 +66,8 @@ int main(const int argc, const char *argv[])
     //     Math::Vector3d(1, -1, -1), 0.8);
     // std::shared_ptr<RayTracer::ILight> ambientLight = std::make_shared<RayTracer::AmbientLight>(0.2);
     
-    // scene.addLight(directionalLight);
-    // scene.addLight(ambientLight);
+    // scene->addLight(directionalLight);
+    // scene->addLight(ambientLight);
 
     return scene->render("output.ppm");
 }

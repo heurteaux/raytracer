@@ -32,31 +32,27 @@ namespace RayTracer {
 
     void SceneLoader::parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene)
     {
-        Math::Point3d position;
-        Math::Vector3d direction;
         int resolution[2] = {0, 0};
+        int position[3] = {0, 0, 0};
 
         // need to add resolution & field of view
 
         if (cameraSetting.exists("position")) {
             const libconfig::Setting &pos = cameraSetting["position"];
-            double x = 0;
-            double y = 0;
-            double z = 0;
-            pos.lookupValue("x", x);
-            pos.lookupValue("y", y);
-            pos.lookupValue("z", z);
-            position = Math::Point3d(x, y, z);
+            pos.lookupValue("x", position[0]);
+            pos.lookupValue("y", position[1]);
+            pos.lookupValue("z", position[2]);
         }
-
         if (cameraSetting.exists("resolution")) {
             const libconfig::Setting &pos = cameraSetting["resolution"];
-            pos.lookupValue("x", resolution[0]);
-            pos.lookupValue("y", resolution[1]);
+            pos.lookupValue("width", resolution[0]);
+            pos.lookupValue("height", resolution[1]);
         }
+        // std::cout << "Camera resolution: " << resolution[0] << "x" << resolution[1] << std::endl;
+        // std::cout << "Camera position: (" << position[0] << ", " << position[1] << ", " << position[2] << ")" << std::endl;
         scene->setWidth(resolution[0]);
         scene->setHeight(resolution[1]);
-        scene->setCamera(std::make_shared<Camera>(position));
+        scene->setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2])));
     }
 
     void SceneLoader::parsePrimitives(const libconfig::Setting &primitivesSetting, std::shared_ptr<Scene> &scene)
@@ -68,6 +64,7 @@ namespace RayTracer {
     {
         double ambient = 0.0;
         double diffuse = 0.0;
+        int direction[3] = {0, 0, 0};
 
         lightsSetting.lookupValue("ambient", ambient);
         scene->addLight(std::make_shared<AmbientLight>(ambient));
@@ -75,17 +72,12 @@ namespace RayTracer {
         lightsSetting.lookupValue("diffuse", diffuse);
         // need to add Point
         if (lightsSetting.exists("directional")) {
-            const libconfig::Setting &dirs = lightsSetting["directional"];
-            for (int i = 0; i < dirs.getLength(); i++) {
-                const libconfig::Setting &dir = dirs[i];
-                double x = 0;
-                double y = 0;
-                double z = 0;
-                dir.lookupValue("x", x);
-                dir.lookupValue("y", y);
-                dir.lookupValue("z", z);
-                scene->addLight(std::make_shared<DirectionalLight>(Math::Vector3d(x, y, z), diffuse));
-            }
+            const libconfig::Setting &dir = lightsSetting["directional"];
+            dir.lookupValue("x", direction[0]);
+            dir.lookupValue("y", direction[1]);
+            dir.lookupValue("z", direction[2]);
         }
+        // std::cout << "Directional light direction: (" << direction[0] << ", " << direction[1] << ", " << direction[2] << ")" << std::endl;
+        scene->addLight(std::make_shared<DirectionalLight>(Math::Vector3d(direction[0], direction[1], direction[2]), diffuse));
     }
 }
