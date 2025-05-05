@@ -57,57 +57,8 @@ namespace RayTracer {
 
     void SceneLoader::parsePrimitives(const libconfig::Setting &primitivesSetting, std::shared_ptr<Scene> &scene)
     {
-        std::shared_ptr<IPrimitive> primitive;
-        Material material;
-        
-        for (int i = 0; i < primitivesSetting.getLength(); i++) {
-            const libconfig::Setting &primitiveSetting = primitivesSetting[i];
-            std::string type;
-            primitiveSetting.lookupValue("type", type);
-
-            if (type == "sphere") {
-                double radius = 0.0;
-                int position[3] = {0, 0, 0};
-                primitiveSetting.lookupValue("radius", radius);
-                const libconfig::Setting &pos = primitiveSetting["position"];
-                pos.lookupValue("x", position[0]);
-                pos.lookupValue("y", position[1]);
-                pos.lookupValue("z", position[2]);
-                primitive = std::make_shared<Sphere>(Math::Point3d(position[0], position[1], position[2]), radius);
-            } else if (type == "plane") {
-                int position[3] = {0, 0, 0};
-                int normal[3] = {0, 0, 0};
-                const libconfig::Setting &pos = primitiveSetting["position"];
-                pos.lookupValue("x", position[0]);
-                pos.lookupValue("y", position[1]);
-                pos.lookupValue("z", position[2]);
-                const libconfig::Setting &norm = primitiveSetting["normal"];
-                norm.lookupValue("x", normal[0]);
-                norm.lookupValue("y", normal[1]);
-                norm.lookupValue("z", normal[2]);
-                primitive = std::make_shared<Plane>(Math::Point3d(position[0], position[1], position[2]), Math::Vector3d(normal[0], normal[1], normal[2]));
-            } else {
-                throw SceneLoaderException("Unknown primitive type: " + type);
-            }
-
-            // Parse material
-            if (primitiveSetting.exists("material")) {
-                const libconfig::Setting &matSetting = primitiveSetting["material"];
-                double ambient = 1.0;
-                double diffuse = 1.0;
-                Math::Color color;
-
-                matSetting.lookupValue("ambient", ambient);
-                matSetting.lookupValue("diffuse", diffuse);
-                matSetting.lookupValue("color", color);
-
-                material.color = color;
-                material.ambientFactor = ambient;
-                material.diffuseFactor = diffuse;
-            }
-            primitive->setMaterial(material);
-            scene->addPrimitive(primitive);
-        }
+        // std::shared_ptr<IPrimitive> primitive;
+        // Material material;
     }
 
     void SceneLoader::parseLights(const libconfig::Setting &lightsSetting, std::shared_ptr<Scene> &scene)

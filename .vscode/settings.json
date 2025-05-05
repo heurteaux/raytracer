@@ -1,9 +1,11 @@
 {
     "files.associations": {
+        "*.cfg": "properties",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
         "cctype": "cpp",
+        "charconv": "cpp",
         "clocale": "cpp",
         "cmath": "cpp",
         "compare": "cpp",
@@ -13,6 +15,7 @@
         "cstdint": "cpp",
         "cstdio": "cpp",
         "cstdlib": "cpp",
+        "ctime": "cpp",
         "cwchar": "cpp",
         "cwctype": "cpp",
         "deque": "cpp",
@@ -33,6 +36,7 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "utility": "cpp",
+        "format": "cpp",
         "fstream": "cpp",
         "initializer_list": "cpp",
         "iosfwd": "cpp",
@@ -42,16 +46,13 @@
         "new": "cpp",
         "numbers": "cpp",
         "ostream": "cpp",
+        "span": "cpp",
+        "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "charconv": "cpp",
-        "ctime": "cpp",
-        "format": "cpp",
-        "span": "cpp",
         "variant": "cpp",
-        "text_encoding": "cpp",
-        "sstream": "cpp"
+        "text_encoding": "cpp"
     }
 }
