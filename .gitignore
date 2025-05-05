@@ -4,3 +4,4 @@ cmake-build-release/
 build/
 raytracer
 *.ppm
+.vscode/
