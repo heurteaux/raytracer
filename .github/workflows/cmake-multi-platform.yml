@@ -3,9 +3,6 @@
 name: CMake on multiple platforms
 
 on:
-  push:
-    branches-ignore:
-      - 'ga-ignore-*'
   pull_request:
     branches: [ "main" ]
 
