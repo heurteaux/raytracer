@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2024
+** EPITECH PROJECT, 2025
 ** raytracer
 ** File description:
 ** DLLoader.hpp
@@ -17,7 +17,7 @@ template<typename T>
 class DLLoader
 {
     public:
-        DLLoader() : _handle(nullptr)
+        DLLoader(const std::string &path) : _handle(nullptr)
         {
             Loader(path);
         }
