@@ -26,6 +26,7 @@ namespace RayTracer {
                     continue;
                 std::shared_ptr<DLLoader<RayTracer::IPrimitive>> primitiveLoader = std::make_shared<DLLoader<RayTracer::IPrimitive>>();
                 primitiveLoader->Loader(lib);
+
                 scene->addPrimitive(primitiveLoader->getInstance());
                 saveLoader.push_back(primitiveLoader);
             }

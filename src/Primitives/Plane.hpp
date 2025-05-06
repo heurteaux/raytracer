@@ -12,12 +12,16 @@ namespace RayTracer {
         public:
             Plane() = default;
             Plane(const Math::Point3d &point, const Math::Vector3d &normal);
+            Plane(const Math::Point3d &point, const Math::Vector3d &normal, const Math::Color &color);
+            Plane(const Math::Point3d &point, const Math::Vector3d &normal, const Math::Color &color, const std::string &name);
             ~Plane() = default;
 
             bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const;
             void translate(const Math::Vector3d &offset);
             void rotate(const Math::Vector3d &angles);
             void setMaterial(const RayTracer::Material &mat);
+
+            void startPlane();
 
         private:
             Math::Point3d point;

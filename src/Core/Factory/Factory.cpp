@@ -20,6 +20,9 @@ namespace RayTracer {
         if (type == "sphere") {
             return std::make_shared<Sphere>(center, radius, color, name);
         }
+        if (type == "plane") {
+            return std::make_shared<Plane>(center, Math::Vector3d(0, 1, 0), color, name);
+        }
         return std::make_shared<Sphere>();
     }
 }
