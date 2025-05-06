@@ -20,8 +20,9 @@ class SceneLoader {
     public:
         SceneLoader() = default;
         ~SceneLoader() = default;
-        std::shared_ptr<Scene> loadFromFile(const std::string &filename);
+        void loadFromFile(const std::string &filename, std::shared_ptr<Scene> &scene);
         void instancePluginsFromDir(const std::string &directory, std::shared_ptr<RayTracer::Scene> &scene);
+        void parseTransformation(const libconfig::Setting &transSetting, std::shared_ptr<Scene> &scene);
 
     private:
         void parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene);

@@ -26,7 +26,7 @@ namespace RayTracer {
         }
     }
 
-    std::shared_ptr<Scene> SceneLoader::loadFromFile(const std::string &filename)
+   void SceneLoader::loadFromFile(const std::string &filename, std::shared_ptr<Scene> &scene)
     {
         libconfig::Config cfg;
 
@@ -37,15 +37,29 @@ namespace RayTracer {
         } catch (const libconfig::ConfigException &ex) {
             throw SceneLoaderException("Error in configuration file: " + filename);
         }
-
-        std::shared_ptr<Scene> scene = std::make_shared<Scene>();
-
         const libconfig::Setting &root = cfg.getRoot();
         parseCamera(root["camera"], scene);
         // parsePrimitives(root["primitives"], scene);
+        parseTransformation(root["Transformations"], scene);
         parseLights(root["lights"], scene);
+    }
 
-        return scene;
+    void SceneLoader::parseTransformation(const libconfig::Setting &transSetting, std::shared_ptr<Scene> &scene)
+    {
+        int position[3] = {0, 0, 0};
+        auto primitives = scene->getPrimitives();
+        const libconfig::Setting &translations = transSetting["Translation"];
+
+        for (std::size_t i = 0; i < translations.getLength(); i++) {
+            for (auto &prim : primitives) {
+                if (prim->getName() == translations[i].getName()) {
+                    translations[i].lookupValue("x", position[0]);
+                    translations[i].lookupValue("y", position[1]);
+                    translations[i].lookupValue("z", position[2]);
+                    prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+                }
+            }
+        }
     }
 
     void SceneLoader::parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene)
@@ -66,8 +80,6 @@ namespace RayTracer {
             pos.lookupValue("width", resolution[0]);
             pos.lookupValue("height", resolution[1]);
         }
-        // std::cout << "Camera resolution: " << resolution[0] << "x" << resolution[1] << std::endl;
-        // std::cout << "Camera position: (" << position[0] << ", " << position[1] << ", " << position[2] << ")" << std::endl;
         scene->setWidth(resolution[0]);
         scene->setHeight(resolution[1]);
         scene->setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2])));
@@ -96,7 +108,6 @@ namespace RayTracer {
             dir.lookupValue("y", direction[1]);
             dir.lookupValue("z", direction[2]);
         }
-        // std::cout << "Directional light direction: (" << direction[0] << ", " << direction[1] << ", " << direction[2] << ")" << std::endl;
         scene->addLight(std::make_shared<DirectionalLight>(Math::Vector3d(direction[0], direction[1], direction[2]), diffuse));
     }
 }

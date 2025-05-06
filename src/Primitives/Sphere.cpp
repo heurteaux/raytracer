@@ -1,17 +1,29 @@
+/*
+** EPITECH PROJECT, 2024
+** raytracer
+** File description:
+** Sphere.cpp
+*/
+
 #include "Sphere.hpp"
 #include "../Core/RayTracer.hpp"
 #include "../Core/HitRecord.hpp"
 #include <cmath>
 
 namespace RayTracer {
-    Sphere::Sphere(const Math::Point3d &center, double radius): center(0, 0, 0), radius(0)
+    Sphere::Sphere(const Math::Point3d &center, double radius)
+        : APrimitive(), center(0, 0, 0), radius(0)
     {
         this->center = center;
         this->radius = radius;
+        setName("sphere");
     }
 
-    Sphere::~Sphere()
+    Sphere::Sphere(const Math::Point3d &center, double radius, const std::string &name)
+    : APrimitive(name), center(0, 0, 0), radius(0)
     {
+        this->center = center;
+        this->radius = radius;
     }
 
     bool Sphere::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
@@ -41,7 +53,7 @@ namespace RayTracer {
             (record.point.y - center.y) / radius,
             (record.point.z - center.z) / radius
         );
-        record.material = material;
+        record.material = _material;
         
         return true;
     }
@@ -57,7 +69,7 @@ namespace RayTracer {
 
     void Sphere::setMaterial(const Material &material)
     {
-        this->material = material;
+        _material = material;
     }
 
     bool Sphere::hits(const Ray &ray) const

@@ -18,6 +18,7 @@ extern "C" {
         RayTracer::Material groundMaterial;
         groundMaterial.color = Math::Color(0.5, 0.5, 0.5);
         ground->setMaterial(groundMaterial);
+        ground->setName("grayGround");
         return ground;
     }
 }
