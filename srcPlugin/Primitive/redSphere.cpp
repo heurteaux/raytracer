@@ -18,7 +18,6 @@ extern "C" {
         RayTracer::Material redMaterial;
         redMaterial.color = Math::Color(1.0, 0.2, 0.2);
         redSphere->setMaterial(redMaterial);
-        redSphere->setName("redSphere");
         return redSphere;
     }
 }

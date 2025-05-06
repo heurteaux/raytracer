@@ -19,7 +19,6 @@ extern "C" {
         RayTracer::Material greenMaterial;
         greenMaterial.color = Math::Color(0.2, 1.0, 0.2);
         greenSphere->setMaterial(greenMaterial);
-        greenSphere->setName("greenSphere");
         return greenSphere;
     }
 }

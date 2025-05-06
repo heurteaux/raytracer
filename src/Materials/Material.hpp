@@ -7,9 +7,10 @@ namespace RayTracer {
 class Material {
     public:
         Material() = default;
-        Material(const Math::Color &color, double ambient = 1.0, double diffuse = 1.0)
+        Material(const Math::Color &color)
+            : color(color), ambientFactor(1.0), diffuseFactor(1.0) {}
+        Material(const Math::Color &color, const double ambient, const double diffuse)
             : color(color), ambientFactor(ambient), diffuseFactor(diffuse) {}
-        
         Math::Color color;
         double ambientFactor;
         double diffuseFactor;

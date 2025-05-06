@@ -1,0 +1,25 @@
+/*
+** EPITECH PROJECT, 2024
+** raytracer
+** File description:
+** Factory.cpp
+*/
+
+#include "Factory.hpp"
+
+namespace RayTracer {
+
+    std::shared_ptr<IPrimitive> Factory::createPrimitive(
+        const std::string &type,
+        const Math::Point3d center,
+        const Math::Color color,
+        const double radius,
+        const std::string &name
+        ) const
+    {
+        if (type == "sphere") {
+            return std::make_shared<Sphere>(center, radius, color, name);
+        }
+        return std::make_shared<Sphere>();
+    }
+}

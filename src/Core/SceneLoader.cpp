@@ -9,6 +9,12 @@
 
 namespace RayTracer {
 
+    SceneLoader::SceneLoader()
+        : _factory(std::make_shared<Factory>())
+    {
+
+    }
+
     void SceneLoader::instancePluginsFromDir(const std::string &directory, std::shared_ptr<RayTracer::Scene> &scene)
     {
         static std::vector<std::shared_ptr<DLLoader<RayTracer::IPrimitive>>> saveLoader;
@@ -39,8 +45,8 @@ namespace RayTracer {
         }
         const libconfig::Setting &root = cfg.getRoot();
         parseCamera(root["camera"], scene);
-        // parsePrimitives(root["primitives"], scene);
-        parseTransformation(root["Transformations"], scene);
+        parsePrimitives(root["primitives"], scene);
+        parseTransformation(root["transformations"], scene);
         parseLights(root["lights"], scene);
     }
 
@@ -48,7 +54,7 @@ namespace RayTracer {
     {
         int position[3] = {0, 0, 0};
         auto primitives = scene->getPrimitives();
-        const libconfig::Setting &translations = transSetting["Translation"];
+        const libconfig::Setting &translations = transSetting["translation"];
 
         for (std::size_t i = 0; i < translations.getLength(); i++) {
             for (auto &prim : primitives) {
@@ -87,8 +93,30 @@ namespace RayTracer {
 
     void SceneLoader::parsePrimitives(const libconfig::Setting &primitivesSetting, std::shared_ptr<Scene> &scene)
     {
-        // std::shared_ptr<IPrimitive> primitive;
-        // Material material;
+        Math::Point3d position(0, 0, 0);
+        Math::Color color(0, 0, 0);
+        double radius = 0.0;
+
+        for (std::size_t i = 0; i < primitivesSetting.getLength(); i++) {
+            const libconfig::Setting &primType = primitivesSetting[primitivesSetting[i].getName()];
+            std::cout << "primType: " << primType.getName() << std::endl;
+            for (std::size_t j = 0; j < primType.getLength(); j++) {
+                const libconfig::Setting &newPrim = primType[primType[j].getName()];
+                std::cout << "newPrim: " << newPrim.getName() << std::endl;
+
+                newPrim.lookupValue("radius", radius);
+
+                const libconfig::Setting &posPrim = newPrim["position"];
+                posPrim.lookupValue("x", position.x);
+                posPrim.lookupValue("y", position.y);
+                posPrim.lookupValue("z", position.z);
+                const libconfig::Setting &colorPrim = newPrim["color"];
+                colorPrim.lookupValue("r", color.r);
+                colorPrim.lookupValue("g", color.g);
+                colorPrim.lookupValue("b", color.b);
+                scene->addPrimitive(_factory->createPrimitive(primType.getName(), position, color, radius, newPrim.getName()));
+            }
+        }
     }
 
     void SceneLoader::parseLights(const libconfig::Setting &lightsSetting, std::shared_ptr<Scene> &scene)

@@ -3,7 +3,6 @@
 
 #include "Vector3d.hpp"
 
-
 namespace Math {
     class Point3d
     {

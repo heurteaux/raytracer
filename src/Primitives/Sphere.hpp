@@ -11,9 +11,10 @@ namespace RayTracer {
     class Sphere : public APrimitive
     {
         public:
-            Sphere() = default;
+            Sphere();
             Sphere(const Math::Point3d &center, double radius);
             Sphere(const Math::Point3d &center, double radius, const std::string &name);
+            Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name);
             ~Sphere() = default;
 
             bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
@@ -24,8 +25,8 @@ namespace RayTracer {
             bool hits(const Ray &ray) const;
 
         private:
-            Math::Point3d center;
-            double radius;
+            Math::Point3d _center;
+            double _radius;
     };
 }
 
