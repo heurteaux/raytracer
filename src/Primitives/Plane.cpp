@@ -2,12 +2,14 @@
 
 namespace RayTracer
 {
-    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal) : point(point), normal(normal), material()
+    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal)
+        : APrimitive(), point(point), normal(normal)
     {
         double length = normal.length();
         if (length > 0) {
             this->normal = normal / length;
         }
+        setName("plane");
     }
 
     bool Plane::hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const
@@ -28,7 +30,7 @@ namespace RayTracer
         record.t = t;
         record.point = ray.origin + ray.direction * t;
         record.normal = normal;
-        record.material = material;
+        record.material = _material;
 
         return true;
     }
@@ -38,7 +40,8 @@ namespace RayTracer
         point = point + offset;
     }
 
-    void Plane::rotate(const Math::Vector3d &angles){
+    void Plane::rotate(const Math::Vector3d &angles)
+    {
         double theta = angles.y * M_PI / 180.0; // Convert to radians
         
         double nx = normal.x * cos(theta) - normal.z * sin(theta);
@@ -53,7 +56,8 @@ namespace RayTracer
         }
     }
 
-    void Plane::setMaterial(const RayTracer::Material &mat) {
-        material = mat;
+    void Plane::setMaterial(const RayTracer::Material &mat)
+    {
+        _material = mat;
     }
 }

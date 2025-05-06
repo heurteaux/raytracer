@@ -1,25 +1,48 @@
+/*
+** EPITECH PROJECT, 2024
+** raytracer
+** File description:
+** Sphere.cpp
+*/
+
 #include "Sphere.hpp"
 #include "../Core/RayTracer.hpp"
 #include "../Core/HitRecord.hpp"
 #include <cmath>
 
 namespace RayTracer {
-    Sphere::Sphere(const Math::Point3d &center, double radius): center(0, 0, 0), radius(0)
+    Sphere::Sphere()
+        : APrimitive(), _center(0, 0, 0), _radius(0)
     {
-        this->center = center;
-        this->radius = radius;
+    }
+    Sphere::Sphere(const Math::Point3d &center, double radius)
+        : APrimitive(), _center(0, 0, 0), _radius(0)
+    {
+        _center = center;
+        _radius = radius;
+        setName("sphere");
     }
 
-    Sphere::~Sphere()
+    Sphere::Sphere(const Math::Point3d &center, double radius, const std::string &name)
+        : APrimitive(name), _center(0, 0, 0), _radius(0)
     {
+        _center = center;
+        _radius = radius;
+    }
+
+    Sphere::Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name)
+        : APrimitive(name, color), _center(0, 0, 0), _radius(0)
+    {
+        _center = center;
+        _radius = radius;
     }
 
     bool Sphere::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
     {
-        Math::Vector3d oc(ray.origin.x - center.x, ray.origin.y - center.y, ray.origin.z - center.z);
+        Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);
         double a = ray.direction.dot(ray.direction);
         double b = 2.0 * oc.dot(ray.direction);
-        double c = oc.dot(oc) - radius * radius;
+        double c = oc.dot(oc) - _radius * _radius;
         double discriminant = b * b - 4 * a * c;
 
         if (discriminant < 0)
@@ -37,18 +60,18 @@ namespace RayTracer {
         record.t = t;
         record.point = ray.origin + ray.direction * t;
         record.normal = Math::Vector3d(
-            (record.point.x - center.x) / radius,
-            (record.point.y - center.y) / radius,
-            (record.point.z - center.z) / radius
+            (record.point.x - _center.x) / _radius,
+            (record.point.y - _center.y) / _radius,
+            (record.point.z - _center.z) / _radius
         );
-        record.material = material;
+        record.material = _material;
         
         return true;
     }
 
     void Sphere::translate(const Math::Vector3d &offset)
     {
-        center = center + offset;
+        _center = _center + offset;
     }
 
     void Sphere::rotate( __attribute__((unused)) const Math::Vector3d &angles)
@@ -57,15 +80,15 @@ namespace RayTracer {
 
     void Sphere::setMaterial(const Material &material)
     {
-        this->material = material;
+        _material = material;
     }
 
     bool Sphere::hits(const Ray &ray) const
     {
-        Math::Vector3d oc(ray.origin.x - center.x, ray.origin.y - center.y, ray.origin.z - center.z);
+        Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);
         double a = ray.direction.dot(ray.direction);
         double b = 2.0 * oc.dot(ray.direction);
-        double c = oc.dot(oc) - radius * radius;
+        double c = oc.dot(oc) - _radius * _radius;
         double discriminant = b * b - 4 * a * c;
 
         if (discriminant < 0)
@@ -77,5 +100,4 @@ namespace RayTracer {
 
         return (k1 >= 0 || k2 >= 0);
     }
-
 }

@@ -39,8 +39,8 @@ int main(const int argc, const char *argv[])
         return 84;
     }
     std::shared_ptr<RayTracer::SceneLoader> sceneLoader = std::make_shared<RayTracer::SceneLoader>();
-    std::shared_ptr<RayTracer::Scene> scene = sceneLoader->loadFromFile(argv[1]);
+    std::shared_ptr<RayTracer::Scene> scene = std::make_shared<RayTracer::Scene>();
     sceneLoader->instancePluginsFromDir("plugins", scene);
-
+    sceneLoader->loadFromFile(argv[1], scene);
     return scene->render("output.ppm");
 }

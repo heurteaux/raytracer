@@ -4,6 +4,7 @@
 #include "../Math/Point3d.hpp"
 #include "../Math/Vector3d.hpp"
 #include "../Materials/Material.hpp"
+#include <string>
 
 namespace RayTracer {
 
@@ -21,6 +22,10 @@ public:
     virtual void rotate(const Math::Vector3d &angles) = 0;
 
     virtual void setMaterial(const Material &material) = 0;
+
+    virtual void setName(const std::string &name) = 0;
+
+    virtual std::string getName() const = 0; 
 };
 
 }
