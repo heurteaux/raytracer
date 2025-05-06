@@ -13,26 +13,35 @@ namespace RayTracer {
 
 class Scene {
     public:
-        Scene() = default;
+        Scene();
+        ~Scene() = default;
         
         void addPrimitive(std::shared_ptr<IPrimitive> primitive);
         
         void addLight(std::shared_ptr<ILight> light);
         
-        void setCamera(const Camera &cam);
+        void setCamera(const std::shared_ptr<Camera> &cam);
         
         const std::vector<std::shared_ptr<IPrimitive>>& getPrimitives() const;
         
         const std::vector<std::shared_ptr<ILight>>& getLights() const;
             
-        int render(const std::string &filename, int width, int height) const;
+        int render(const std::string &filename) const;
 
         void write_color(std::ofstream &out, const Math::Color &color) const;
+
+        void setWidth(int width) { _width = width; }
+        int getWidth() const { return _width; }
+
+        void setHeight(int height) { _height = height; }
+        int getHeight() const { return _height; }
         
     private:
         std::vector<std::shared_ptr<IPrimitive>> primitives;
         std::vector<std::shared_ptr<ILight>> lights;
-        Camera camera;
+        std::shared_ptr<Camera> camera;
+        int _width;
+        int _height;
 };
 
 }
