@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2024
+** EPITECH PROJECT, 2025
 ** raytracer
 ** File description:
 ** APrimitive.hpp
@@ -22,7 +22,10 @@ namespace RayTracer {
             ~APrimitive() = default;
 
             void setName(const std::string &name) { _name = name; };
+            void setMaterial(const Material &material) { _material = material; };
+
             std::string getName() const { return _name; };
+            
         protected:
             std::string _name;
             Material _material;

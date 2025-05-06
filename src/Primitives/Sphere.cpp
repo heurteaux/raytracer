@@ -1,14 +1,11 @@
 /*
-** EPITECH PROJECT, 2024
+** EPITECH PROJECT, 2025
 ** raytracer
 ** File description:
 ** Sphere.cpp
 */
 
 #include "Sphere.hpp"
-#include "../Core/RayTracer.hpp"
-#include "../Core/HitRecord.hpp"
-#include <cmath>
 
 namespace RayTracer {
     Sphere::Sphere()
@@ -78,11 +75,6 @@ namespace RayTracer {
     {
     }
 
-    void Sphere::setMaterial(const Material &material)
-    {
-        _material = material;
-    }
-
     bool Sphere::hits(const Ray &ray) const
     {
         Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);
@@ -94,7 +86,7 @@ namespace RayTracer {
         if (discriminant < 0)
             return false;
 
-        double sqrt_d = sqrt(discriminant);
+        double sqrt_d = std::sqrt(discriminant);
         double k1 = (-b - sqrt_d) / (2.0 * a);
         double k2 = (-b + sqrt_d) / (2.0 * a);
 

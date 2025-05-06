@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** Plane.hpp
+*/
+
 #ifndef PLANE_H
 #define PLANE_H
 
@@ -19,11 +26,9 @@ namespace RayTracer {
             bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const;
             void translate(const Math::Vector3d &offset);
             void rotate(const Math::Vector3d &angles);
-            void setMaterial(const RayTracer::Material &mat);
-
-            void startPlane();
 
         private:
+            void startPlane();
             Math::Point3d point;
             Math::Vector3d normal;
         };

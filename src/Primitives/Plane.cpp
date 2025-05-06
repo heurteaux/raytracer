@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2024
+** EPITECH PROJECT, 2025
 ** raytracer
 ** File description:
 ** Plane.cpp
@@ -77,10 +77,5 @@ namespace RayTracer
         if (length > 0) {
             normal = normal / length;
         }
-    }
-
-    void Plane::setMaterial(const RayTracer::Material &mat)
-    {
-        _material = mat;
     }
 }
