@@ -8,6 +8,24 @@
 #include "SceneLoader.hpp"
 
 namespace RayTracer {
+
+    void SceneLoader::instancePluginsFromDir(const std::string &directory, std::shared_ptr<RayTracer::Scene> &scene)
+    {
+        static std::vector<std::shared_ptr<DLLoader<RayTracer::IPrimitive>>> saveLoader;
+
+        if (std::filesystem::exists(directory) && std::filesystem::is_directory(directory)) {
+            for (const auto &file : std::filesystem::directory_iterator(directory)) {
+                std::string lib("./" + directory + "/" + file.path().filename().string());
+                if (lib.find(".so") == std::string::npos)
+                    continue;
+                std::shared_ptr<DLLoader<RayTracer::IPrimitive>> primitiveLoader = std::make_shared<DLLoader<RayTracer::IPrimitive>>();
+                primitiveLoader->Loader(lib);
+                scene->addPrimitive(primitiveLoader->getInstance());
+                saveLoader.push_back(primitiveLoader);
+            }
+        }
+    }
+
     std::shared_ptr<Scene> SceneLoader::loadFromFile(const std::string &filename)
     {
         libconfig::Config cfg;

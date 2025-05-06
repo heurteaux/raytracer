@@ -9,6 +9,10 @@
 #include "../Lights/AmbientLight.hpp"
 #include "../Lights/DirectionalLight.hpp"
 #include "RayTracer.hpp"
+#include <vector>
+#include <filesystem>
+#include "DLLoader.hpp"
+#include "../Primitives/IPrimitive.hpp"
 
 namespace RayTracer {
 
@@ -17,6 +21,7 @@ class SceneLoader {
         SceneLoader() = default;
         ~SceneLoader() = default;
         std::shared_ptr<Scene> loadFromFile(const std::string &filename);
+        void instancePluginsFromDir(const std::string &directory, std::shared_ptr<RayTracer::Scene> &scene);
 
     private:
         void parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene);
