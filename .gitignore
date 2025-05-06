@@ -5,3 +5,5 @@ build/
 raytracer
 *.ppm
 .vscode/
+
+*.so

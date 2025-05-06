@@ -17,9 +17,8 @@ template<typename T>
 class DLLoader
 {
     public:
-        DLLoader(const std::string &path) : _handle(nullptr)
+        DLLoader() : _handle(nullptr)
         {
-            Loader(path);
         }
 
         ~DLLoader()
@@ -37,10 +36,7 @@ class DLLoader
 
         void Loader(const std::string &path)
         {
-            if (_handle) {
-                dlclose(_handle);
-                _handle = nullptr;
-            }
+            close();
             _handle = dlopen(path.c_str(), RTLD_LAZY);
             if (!_handle) {
                 throw std::runtime_error(dlerror());
@@ -50,7 +46,7 @@ class DLLoader
         std::shared_ptr<T> getInstance()
         {
             using CreateFunc = T*();
-
+        
             if (!_handle) {
                 throw std::runtime_error("No library loaded");
             }
@@ -58,8 +54,7 @@ class DLLoader
             if (!create) {
                 throw std::runtime_error(dlerror());
             }
-            std::shared_ptr<T> instance(create());
-            return instance;
+            return std::shared_ptr<T>(create(), [](T* ptr) {});
         }
 
     private:
