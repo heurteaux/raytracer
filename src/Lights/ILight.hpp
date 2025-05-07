@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** ILight
+*/
+
 #ifndef ILIGHT_HPP_
 #define ILIGHT_HPP_
 

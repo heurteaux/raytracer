@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** AmbientLight
+*/
+
 #ifndef AMBIENTLIGHT_H
 #define AMBIENTLIGHT_H
 

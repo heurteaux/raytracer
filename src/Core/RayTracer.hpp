@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** RayTracer
+*/
+
 #ifndef RAYTRACER_H
 #define RAYTRACER_H
 

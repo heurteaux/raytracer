@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** Rectangle3D
+*/
+
 #ifndef RECTANGLE3D_H
 #define RECTANGLE3D_H
 

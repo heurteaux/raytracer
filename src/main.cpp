@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2025
-** Raytracer
+** raytracer
 ** File description:
-** Main entry point for the Raytracer program
+** main
 */
 
 #include "Core/RayTracer.hpp"

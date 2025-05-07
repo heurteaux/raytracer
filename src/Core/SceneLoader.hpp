@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** SceneLoader
+*/
+
 #ifndef SCENELOADER_HPP_
 #define SCENELOADER_HPP_
 

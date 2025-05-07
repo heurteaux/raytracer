@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** Rectangle3D
+*/
+
 #include "Rectangle3D.hpp"
 
 Math::Rectangle3D::Rectangle3D()

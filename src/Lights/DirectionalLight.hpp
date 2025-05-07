@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** DirectionalLight
+*/
+
 #ifndef DIRECTIONALLIGHT_H
 #define DIRECTIONALLIGHT_H
 
