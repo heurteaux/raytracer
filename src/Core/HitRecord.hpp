@@ -8,7 +8,8 @@
 
 namespace RayTracer {
 
-class IPrimitive;
+    class IPrimitive;
+
     struct HitRecord {
         double t;
         Math::Point3d point;
@@ -16,7 +17,6 @@ class IPrimitive;
         Material material;
         std::weak_ptr<IPrimitive> primitive;
     };
-
 }
 
 #endif // HITRECORD_HPP_
