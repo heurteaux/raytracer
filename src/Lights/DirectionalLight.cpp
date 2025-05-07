@@ -11,7 +11,7 @@ namespace RayTracer
         }
     }
 
-    Math::Color DirectionalLight::calculateLighting(const RayTracer::HitRecord &record,  __attribute__((unused)) const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const
+    Math::Color DirectionalLight::calculateLighting(const RayTracer::HitRecord &record,  UNUSED const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const
     {
         double dot = -direction.dot(record.normal);
         if (dot < 0)

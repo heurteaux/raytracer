@@ -29,9 +29,9 @@ namespace RayTracer {
             
             void setCamera(const std::shared_ptr<Camera> &cam);
             
-            const std::vector<std::shared_ptr<IPrimitive>>& getPrimitives() const;
+            const std::vector<std::shared_ptr<IPrimitive>> &getPrimitives() const;
             
-            const std::vector<std::shared_ptr<ILight>>& getLights() const;
+            const std::vector<std::shared_ptr<ILight>> &getLights() const;
                 
             int render(const std::string &filename) const;
     
@@ -44,9 +44,9 @@ namespace RayTracer {
             int getHeight() const { return _height; }
             
         private:
-            std::vector<std::shared_ptr<IPrimitive>> primitives;
-            std::vector<std::shared_ptr<ILight>> lights;
-            std::shared_ptr<Camera> camera;
+            std::vector<std::shared_ptr<IPrimitive>> _primitives;
+            std::vector<std::shared_ptr<ILight>> _lights;
+            std::shared_ptr<Camera> _camera;
             int _width;
             int _height;
     };

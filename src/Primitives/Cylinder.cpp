@@ -26,6 +26,14 @@ namespace RayTracer {
         startCylinder();
     }
 
+    void Cylinder::startCylinder()
+    {
+        double length = axis.length();
+        if (length > 0) {
+            this->axis = axis / length;
+        }
+    }
+
     bool Cylinder::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
     {
         return false;
@@ -39,13 +47,5 @@ namespace RayTracer {
     void Cylinder::rotate(const Math::Vector3d &angles)
     {
 
-    }
-
-    void Cylinder::startCylinder()
-    {
-        double length = axis.length();
-        if (length > 0) {
-            this->axis = axis / length;
-        }
     }
 }
