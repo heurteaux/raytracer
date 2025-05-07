@@ -7,25 +7,6 @@ CMAKE_DEBUG_FLAGS := -G Ninja -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
     -DCMAKE_C_FLAGS="-Wall -Wextra -Werror"
 ASCII_ART := "art.txt"
-PLUGINS_DIR	:=	plugins
-SRC_PLUGIN	:=	srcPlugin/Primitive
-SRC_PRIMITIVES	:=	src/Math/Vector3d.cpp	\
-					src/Math/Point3d.cpp	\
-					src/Materials/Color.cpp	\
-					src/Primitives/Sphere.cpp	\
-					src/Primitives/Plane.cpp	\
-
-plugins:
-	@rm -rf $(PLUGINS_DIR)
-	@mkdir -p $(PLUGINS_DIR)
-	@echo "🔨 Building plugin: redSphere.so"
-	clang++ -shared -fPIC -o $(PLUGINS_DIR)/redSphere.so $(SRC_PLUGIN)/redSphere.cpp $(SRC_PRIMITIVES) -I./src
-	@echo "🔨 Building plugin: greenSphere.so"
-	clang++ -shared -fPIC -o $(PLUGINS_DIR)/greenSphere.so $(SRC_PLUGIN)/greenSphere.cpp $(SRC_PRIMITIVES) -I./src
-	@echo "🔨 Building plugin: blueSphere.so"
-	clang++ -shared -fPIC -o $(PLUGINS_DIR)/blueSphere.so $(SRC_PLUGIN)/blueSphere.cpp $(SRC_PRIMITIVES) -I./src
-	@echo "🔨 Building plugin: blueSphere.so"
-	clang++ -shared -fPIC -o $(PLUGINS_DIR)/grayGround.so $(SRC_PLUGIN)/grayGround.cpp $(SRC_PRIMITIVES) -I./src
 
 .PHONY: all display_ascii check-tools configure_release build move clean \
     fclean re dev
@@ -95,7 +76,7 @@ fclean: clean
 	@rm -f $(EXECUTABLE)
 	@echo "✅ Full clean complete."
 
-re: fclean all
+re: fclean dev
 	@echo "🔄 Full recompilation complete."
 
 dev: display_ascii check-tools $(BUILD_DIR) configure_dev build move
