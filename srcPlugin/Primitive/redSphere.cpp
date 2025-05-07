@@ -16,7 +16,7 @@ extern "C" {
     {
         RayTracer::IPrimitive *redSphere = new RayTracer::Sphere(Math::Point3d(0, 0, -5), 1.0, "redSphere");
         RayTracer::Material redMaterial;
-        redMaterial.color = Math::Color(1.0, 0.2, 0.2);
+        redMaterial.setColor(Math::Color(1.0, 0.2, 0.2));
         redSphere->setMaterial(redMaterial);
         return redSphere;
     }

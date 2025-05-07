@@ -28,7 +28,7 @@ namespace RayTracer {
 
     bool Cylinder::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
     {
-        
+        return false;
     }
 
     void Cylinder::translate(const Math::Vector3d &offset)

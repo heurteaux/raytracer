@@ -17,7 +17,7 @@ namespace RayTracer
         if (dot < 0)
             dot = 0;
 
-        return record.material.color * dot * intensity;
+        return record.material.getColor() * dot * intensity;
     }
 
     bool DirectionalLight::isShadowed(const Math::Point3d &point, const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const

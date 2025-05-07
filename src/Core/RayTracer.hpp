@@ -7,6 +7,8 @@
 
 namespace RayTracer
 {
+    #define UNUSED __attribute__((unused))
+
     class Ray
     {
         public:

@@ -31,7 +31,6 @@ class HitRecord;
         virtual void setMaterial(const Material &material) = 0;
 
         virtual void setName(const std::string &name) = 0;
-        virtual void setMaterial(const Material &material) = 0;
 
         virtual std::string getName() const = 0;
     };
