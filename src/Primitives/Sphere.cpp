@@ -1,14 +1,11 @@
 /*
-** EPITECH PROJECT, 2024
+** EPITECH PROJECT, 2025
 ** raytracer
 ** File description:
 ** Sphere.cpp
 */
 
 #include "Sphere.hpp"
-#include "../Core/RayTracer.hpp"
-#include "../Core/HitRecord.hpp"
-#include <cmath>
 
 namespace RayTracer {
     Sphere::Sphere()
@@ -40,19 +37,19 @@ namespace RayTracer {
     bool Sphere::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
     {
         Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);
-        double a = ray.direction.dot(ray.direction);
+        double rayonEquation = ray.direction.dot(ray.direction);
         double b = 2.0 * oc.dot(ray.direction);
-        double c = oc.dot(oc) - _radius * _radius;
-        double discriminant = b * b - 4 * a * c;
+        double sphereEquation = oc.dot(oc) - _radius * _radius;
+        double discriminant = b * b - 4 * rayonEquation * sphereEquation;
 
         if (discriminant < 0)
             return false;
 
-        double sqrt_d = sqrt(discriminant);
-        double t = (-b - sqrt_d) / (2.0 * a);
+        double sqrt_d = std::sqrt(discriminant);
+        double t = (-b - sqrt_d) / (2.0 * rayonEquation);
         
         if (t < tMin || t > tMax) {
-            t = (-b + sqrt_d) / (2.0 * a);
+            t = (-b + sqrt_d) / (2.0 * rayonEquation);
             if (t < tMin || t > tMax)
                 return false;
         }
@@ -74,13 +71,8 @@ namespace RayTracer {
         _center = _center + offset;
     }
 
-    void Sphere::rotate( __attribute__((unused)) const Math::Vector3d &angles)
+    void Sphere::rotate(UNUSED const Math::Vector3d &angles)
     {
-    }
-
-    void Sphere::setMaterial(const Material &material)
-    {
-        _material = material;
     }
 
     bool Sphere::hits(const Ray &ray) const
@@ -94,7 +86,7 @@ namespace RayTracer {
         if (discriminant < 0)
             return false;
 
-        double sqrt_d = sqrt(discriminant);
+        double sqrt_d = std::sqrt(discriminant);
         double k1 = (-b - sqrt_d) / (2.0 * a);
         double k2 = (-b + sqrt_d) / (2.0 * a);
 

@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2024
+** raytracer
+** File description:
+** Point3d.hpp
+*/
+
 #ifndef POINT3D_H
 #define POINT3D_H
 
@@ -15,6 +22,7 @@ namespace Math {
             double z;
 
             Point3d operator+(const Vector3d &vector) const;
+            Point3d operator-(const Vector3d &vector) const;
         private:
 
     };

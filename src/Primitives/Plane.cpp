@@ -1,15 +1,38 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** Plane.cpp
+*/
+
 #include "Plane.hpp"
 
 namespace RayTracer
 {
     Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal)
-        : APrimitive(), point(point), normal(normal)
+        : APrimitive("plane"), point(point), normal(normal)
+    {
+        startPlane();
+    }
+
+    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal, const Math::Color &color)
+        : APrimitive("plane", color), point(point), normal(normal)
+    {
+        startPlane();
+    }
+
+    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal, const Math::Color &color, const std::string &name)
+        : APrimitive(name, color), point(point), normal(normal)
+    {
+        startPlane();
+    }
+
+    void Plane::startPlane()
     {
         double length = normal.length();
         if (length > 0) {
             this->normal = normal / length;
         }
-        setName("plane");
     }
 
     bool Plane::hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const
@@ -54,10 +77,5 @@ namespace RayTracer
         if (length > 0) {
             normal = normal / length;
         }
-    }
-
-    void Plane::setMaterial(const RayTracer::Material &mat)
-    {
-        _material = mat;
     }
 }

@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2024
+** EPITECH PROJECT, 2025
 ** raytracer
 ** File description:
 ** SceneLoader.cpp
@@ -26,6 +26,7 @@ namespace RayTracer {
                     continue;
                 std::shared_ptr<DLLoader<RayTracer::IPrimitive>> primitiveLoader = std::make_shared<DLLoader<RayTracer::IPrimitive>>();
                 primitiveLoader->Loader(lib);
+
                 scene->addPrimitive(primitiveLoader->getInstance());
                 saveLoader.push_back(primitiveLoader);
             }

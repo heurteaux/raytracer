@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2024
+** EPITECH PROJECT, 2025
 ** raytracer
 ** File description:
 ** greenSphere.cpp
@@ -17,7 +17,7 @@ extern "C" {
     {
         RayTracer::IPrimitive *greenSphere = new RayTracer::Sphere(Math::Point3d(2, 0, -7), 1.0, "greenSphere");
         RayTracer::Material greenMaterial;
-        greenMaterial.color = Math::Color(0.2, 1.0, 0.2);
+        greenMaterial.setColor( Math::Color(0.2, 1.0, 0.2));
         greenSphere->setMaterial(greenMaterial);
         return greenSphere;
     }

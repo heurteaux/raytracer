@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** RayTracer.cpp
+*/
+
 #include "RayTracer.hpp"
 #include <iostream>
 

@@ -28,8 +28,8 @@
 #include "Primitives/IPrimitive.hpp"
 
 #include <filesystem>
+#include <thread>
 
-#define UNUSED __attribute__((unused))
 
 int main(const int argc, const char *argv[])
 {

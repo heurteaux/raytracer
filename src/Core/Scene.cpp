@@ -9,7 +9,7 @@
 
 namespace RayTracer
 {
-    Scene::Scene() : _width(0), _height(0)
+    Scene::Scene() : _camera(std::make_shared<Camera>()), _width(0), _height(0)
     {
 
     }
@@ -24,32 +24,31 @@ namespace RayTracer
 
     void Scene::addPrimitive(std::shared_ptr<IPrimitive> primitive)
     {
-        primitives.push_back(primitive);
+        _primitives.push_back(primitive);
     }
 
     void Scene::addLight(std::shared_ptr<ILight> light)
     {
-        lights.push_back(light);
+        _lights.push_back(light);
     }
 
-    void Scene::    setCamera(const std::shared_ptr<Camera> &cam)
+    void Scene::setCamera(const std::shared_ptr<Camera> &cam)
     {
-        camera = cam;
+        _camera = cam;
     }
 
     const std::vector<std::shared_ptr<IPrimitive>> &Scene::getPrimitives() const
     {
-        return primitives;
+        return _primitives;
     }
 
     const std::vector<std::shared_ptr<ILight>> &Scene::getLights() const
     {
-        return lights;
+        return _lights;
     }
 
     int Scene::render(const std::string &filename) const
     {
-
         std::ofstream outFile;
         outFile.open(filename);
         if (!outFile.is_open())
@@ -68,13 +67,13 @@ namespace RayTracer
                 double u = double(i) / (_width - 1);
                 double v = double(j) / (_height - 1);
 
-                RayTracer::Ray ray = camera->ray(u, v);
+                RayTracer::Ray ray = _camera->ray(u, v);
 
                 RayTracer::HitRecord closestHit;
                 bool hitAnything = false;
                 double closestSoFar = std::numeric_limits<double>::infinity();
 
-                for (const auto &primitive : this->getPrimitives())
+                for (const auto &primitive : _primitives)
                 {
                     RayTracer::HitRecord tempRecord;
                     if (primitive->hit(ray, 0.001, closestSoFar, tempRecord))
@@ -89,18 +88,19 @@ namespace RayTracer
                 {
                     Math::Color pixelColor(0, 0, 0);
 
-                    for (const auto &light : this->getLights())
+                    for (const auto &light : _lights)
                     {
-                        if (!light->isShadowed(closestHit.point, this->getPrimitives()))
+                        if (!light->isShadowed(closestHit.point, _primitives))
                         {
-                            pixelColor = pixelColor + light->calculateLighting(closestHit, this->getPrimitives());
+                            pixelColor = pixelColor + light->calculateLighting(closestHit, _primitives);
                         }
                     }
-                    this->write_color(outFile, pixelColor);
+                    write_color(outFile, pixelColor);
                 } else {
+                    // Calcule une couleur de fond dégradée du blanc vers le bleu ciel selon la direction du rayon.
                     double t = 0.5 * (ray.direction.y + 1.0);
                     Math::Color pixelColor = Math::Color(1.0, 1.0, 1.0) * (1.0 - t) + Math::Color(0.5, 0.7, 1.0) * t;
-                    this->write_color(outFile, pixelColor);
+                    write_color(outFile, pixelColor);
                 }
             }
         }
