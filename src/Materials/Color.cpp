@@ -6,16 +6,12 @@
 */
 
 #include "Color.hpp"
+#include <cmath>
 
 namespace Math
 {
-    Color::Color() : r(0), g(0), b(0)
-    {
-    }
-
     Color::Color(double r, double g, double b) : r(r), g(g), b(b)
-    {
-    }
+    {}
 
     void Color::clamp()
     {
@@ -26,17 +22,17 @@ namespace Math
 
     int Color::getRed255() const 
     { 
-        return static_cast<int>(r * 255); 
+        return std::round(r) * 255;
     }
 
     int Color::getGreen255() const 
     { 
-        return static_cast<int>(g * 255); 
+        return std::round(g) * 255; 
     }
 
     int Color::getBlue255() const 
     { 
-        return static_cast<int>(b * 255); 
+        return std::round(b) * 255; 
     }
 
     Color Color::operator+(const Color &other) const
