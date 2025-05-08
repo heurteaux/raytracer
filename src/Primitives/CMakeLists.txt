@@ -1,0 +1,7 @@
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/plugins/)
+add_subdirectory(Shapes/Cylinder)
+add_subdirectory(Shapes/Plane)
+add_subdirectory(Shapes/Sphere)
+target_include_directories(cylinder PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(plane PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(sphere PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
