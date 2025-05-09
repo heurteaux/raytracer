@@ -122,10 +122,8 @@ namespace RayTracer {
 
         for (std::size_t i = 0; i < primitivesSetting.getLength(); i++) {
             const libconfig::Setting &primType = primitivesSetting[primitivesSetting[i].getName()];
-            std::cout << "primType: " << primType.getName() << std::endl;
             for (std::size_t j = 0; j < primType.getLength(); j++) {
                 const libconfig::Setting &newPrim = primType[primType[j].getName()];
-                std::cout << "newPrim: " << newPrim.getName() << std::endl;
 
                 const libconfig::Setting &normalPrim = newPrim["normal"];
                 normalPrim.lookupValue("x", primData.normal.x);

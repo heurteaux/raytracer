@@ -14,6 +14,7 @@ SRC_PRIMITIVES	:=	src/Math/Vector3d.cpp	\
 					src/Materials/Color.cpp	\
 					src/Primitives/Sphere.cpp	\
 					src/Primitives/Plane.cpp	\
+					src/Primitives/APrimitive.cpp
 
 plugins:
 	@rm -rf $(PLUGINS_DIR)

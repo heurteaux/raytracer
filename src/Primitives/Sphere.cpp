@@ -6,6 +6,7 @@
 */
 
 #include "Sphere.hpp"
+#include <iostream>
 
 namespace RayTracer {
     Sphere::Sphere()
@@ -64,15 +65,6 @@ namespace RayTracer {
         record.material = _material;
         
         return true;
-    }
-
-    void Sphere::translate(const Math::Vector3d &offset)
-    {
-        _center = _center + offset;
-    }
-
-    void Sphere::rotate(UNUSED const Math::Vector3d &angles)
-    {
     }
 
     bool Sphere::hits(const Ray &ray) const
