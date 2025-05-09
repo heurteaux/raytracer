@@ -11,6 +11,7 @@
 #include "../../Primitives/IPrimitive.hpp"
 #include "../../Primitives/Sphere.hpp"
 #include "../../Primitives/Plane.hpp"
+#include "../../Lights/ILight.hpp"
 #include <memory>
 
 namespace RayTracer {
@@ -21,7 +22,7 @@ namespace RayTracer {
             Factory()  = default;
             ~Factory() = default;
 
-            std::shared_ptr<IPrimitive> createPrimitive(const std::string &type, const Math::Point3d center, const Math::Color color, const double radius, const std::string &name) const;
+            std::shared_ptr<IPrimitive> createPrimitive(const primitiveData_t primData, const lightData_t &lightData) const;
             private:
     };
 }

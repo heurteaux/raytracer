@@ -9,19 +9,27 @@
 
 namespace RayTracer {
 
-    std::shared_ptr<IPrimitive> Factory::createPrimitive(
-        const std::string &type,
-        const Math::Point3d center,
-        const Math::Color color,
-        const double radius,
-        const std::string &name
-        ) const
+    std::shared_ptr<IPrimitive> Factory::createPrimitive(const primitiveData_t primData, const lightData_t &lightData) const
     {
-        if (type == "sphere") {
-            return std::make_shared<Sphere>(center, radius, color, name);
+        if (primData.type == "sphere") {
+            std::shared_ptr<Sphere> sphere = std::make_shared<Sphere>(primData.position, primData.radius, primData.color, primData.name);
+            Material material;
+            material.setColor(primData.color);
+            material.setTransparency(lightData.transparency);
+            material.setReflectivity(lightData.reflectivity);
+            material.setRefractiveIndex(lightData.refractiveIndex);
+            sphere->setMaterial(material);
+            return sphere;
         }
-        if (type == "plane") {
-            return std::make_shared<Plane>(center, Math::Vector3d(0, 1, 0), color, name);
+        if (primData.type == "plane") {
+            std::shared_ptr<Plane> plane = std::make_shared<Plane>(primData.position, primData.normal, primData.color, primData.name);
+            Material material;
+            material.setColor(primData.color);
+            material.setTransparency(lightData.transparency);
+            material.setReflectivity(lightData.reflectivity);
+            material.setRefractiveIndex(lightData.refractiveIndex);
+            plane->setMaterial(material);
+            return plane;
         }
         return std::make_shared<Sphere>();
     }

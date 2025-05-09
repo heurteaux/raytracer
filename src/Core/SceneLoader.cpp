@@ -92,11 +92,33 @@ namespace RayTracer {
         scene->setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2])));
     }
 
+    primitiveData_t initPrimData()
+    {
+        primitiveData_t primData;
+
+        primData.type = "";
+        primData.name = "";
+        primData.position = Math::Point3d(0, 0, 0);
+        primData.normal = Math::Vector3d(0, 0, 0);
+        primData.color = {0, 0, 0};
+        primData.radius = 0.0;
+        return primData;
+    }
+
+    lightData_t initLightData()
+    {
+        lightData_t lightData;
+
+        lightData.transparency = 0.0;
+        lightData.refractiveIndex = 0.0;
+        lightData.reflectivity = 0.0;
+        return lightData;
+    }
+
     void SceneLoader::parsePrimitives(const libconfig::Setting &primitivesSetting, std::shared_ptr<Scene> &scene)
     {
-        Math::Point3d position(0, 0, 0);
-        Math::Color color(0, 0, 0);
-        double radius = 0.0;
+        primitiveData_t primData = initPrimData();
+        lightData_t lightData = initLightData();
 
         for (std::size_t i = 0; i < primitivesSetting.getLength(); i++) {
             const libconfig::Setting &primType = primitivesSetting[primitivesSetting[i].getName()];
@@ -105,17 +127,29 @@ namespace RayTracer {
                 const libconfig::Setting &newPrim = primType[primType[j].getName()];
                 std::cout << "newPrim: " << newPrim.getName() << std::endl;
 
-                newPrim.lookupValue("radius", radius);
-
+                const libconfig::Setting &normalPrim = newPrim["normal"];
+                normalPrim.lookupValue("x", primData.normal.x);
+                normalPrim.lookupValue("y", primData.normal.y);
+                normalPrim.lookupValue("z", primData.normal.z);
                 const libconfig::Setting &posPrim = newPrim["position"];
-                posPrim.lookupValue("x", position.x);
-                posPrim.lookupValue("y", position.y);
-                posPrim.lookupValue("z", position.z);
+                posPrim.lookupValue("x", primData.position.x);
+                posPrim.lookupValue("y", primData.position.y);
+                posPrim.lookupValue("z", primData.position.z);
                 const libconfig::Setting &colorPrim = newPrim["color"];
-                colorPrim.lookupValue("r", color.r);
-                colorPrim.lookupValue("g", color.g);
-                colorPrim.lookupValue("b", color.b);
-                scene->addPrimitive(_factory->createPrimitive(primType.getName(), position, color, radius, newPrim.getName()));
+                colorPrim.lookupValue("r", primData.color.r);
+                colorPrim.lookupValue("g", primData.color.g);
+                colorPrim.lookupValue("b", primData.color.b);
+                std::cout << "color: " << primData.color.r << " " << primData.color.g << " " << primData.color.b << std::endl;
+
+                newPrim.lookupValue("radius", primData.radius);
+                newPrim.lookupValue("transparency", lightData.transparency);
+                newPrim.lookupValue("refraction", lightData.refractiveIndex);
+                newPrim.lookupValue("reflection", lightData.reflectivity);
+
+                primData.type = primType.getName();
+                primData.name = newPrim.getName();
+
+                scene->addPrimitive(_factory->createPrimitive(primData, lightData));
             }
         }
     }

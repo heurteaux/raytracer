@@ -9,6 +9,7 @@
 #define VECTOR_H
 
 #include <cmath>
+#include "Math.hpp"
 
 namespace Math {
     class Vector3d
@@ -37,6 +38,7 @@ namespace Math {
             Vector3d operator/=(double scalar);
 
             double dot(const Vector3d& other) const;
+            Vector3d normalized() const;
         private:
 
     };

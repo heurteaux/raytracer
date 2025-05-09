@@ -16,9 +16,26 @@ namespace RayTracer {
         public:
             Material() = default;
             Material(const Math::Color &color)
-                : _color(color), ambientFactor(1.0), diffuseFactor(1.0) {}
+                : _color(color),
+                ambientFactor(1.0),
+                diffuseFactor(1.0),
+                _reflectivity(0.0),
+                _transparency(0.0),
+                _refractiveIndex(0.0) {}
             Material(const Math::Color &color, const double ambient, const double diffuse)
-                : _color(color), ambientFactor(ambient), diffuseFactor(diffuse) {}
+                : _color(color),
+                ambientFactor(ambient),
+                diffuseFactor(diffuse),
+                _reflectivity(0.0),
+                _transparency(0.0),
+                _refractiveIndex(0.0) {}
+            Material( const Math::Color &color, const double ambient, const double diffuse, const double reflectivity, const double transparency, const double refractiveIndex)
+                : _color(color),
+                ambientFactor(ambient),
+                diffuseFactor(diffuse),
+                _reflectivity(reflectivity),
+                _transparency(transparency),
+                _refractiveIndex(refractiveIndex) {}
 
             const Math::Color &getColor() const { return _color; }
             double getAmbientFactor() const { return ambientFactor; }

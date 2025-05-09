@@ -27,6 +27,13 @@ plugins:
 	@echo "🔨 Building plugin: blueSphere.so"
 	clang++ -shared -fPIC -o $(PLUGINS_DIR)/grayGround.so $(SRC_PLUGIN)/grayGround.cpp $(SRC_PRIMITIVES) -I./src
 
+red:
+	@mkdir -p $(PLUGINS_DIR)
+	clang++ -shared -fPIC -o $(PLUGINS_DIR)/redSphere.so $(SRC_PLUGIN)/redSphere.cpp $(SRC_PRIMITIVES) -I./src
+plane:
+	@mkdir -p $(PLUGINS_DIR)
+	clang++ -shared -fPIC -o $(PLUGINS_DIR)/grayGround.so $(SRC_PLUGIN)/grayGround.cpp $(SRC_PRIMITIVES) -I./src
+
 .PHONY: all display_ascii check-tools configure_release build move clean \
     fclean re dev
 

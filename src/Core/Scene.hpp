@@ -42,6 +42,8 @@ namespace RayTracer {
     
             void setHeight(int height) { _height = height; }
             int getHeight() const { return _height; }
+
+            Math::Color traceRay(const Ray &ray, int depth) const;
             
         private:
             std::vector<std::shared_ptr<IPrimitive>> _primitives;
