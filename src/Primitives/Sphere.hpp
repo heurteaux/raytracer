@@ -16,7 +16,7 @@
 
 namespace RayTracer {
     class Ray;
-    class HitRecord;
+    struct HitRecord;
 
     class Sphere : public APrimitive
     {
@@ -28,9 +28,6 @@ namespace RayTracer {
             ~Sphere() = default;
 
             bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
-            void translate(const Math::Vector3d &offset);
-            void rotate(const Math::Vector3d &angles);
-
             bool hits(const Ray &ray) const;
 
         private:
