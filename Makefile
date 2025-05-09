@@ -4,8 +4,8 @@ CMAKE_RELEASE_FLAGS := -G Ninja -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 CMAKE_DEBUG_FLAGS := -G Ninja -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
-    -DCMAKE_CXX_FLAGS="-Wall -Wextra" \
-    -DCMAKE_C_FLAGS="-Wall -Wextra"
+    -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
+    -DCMAKE_C_FLAGS="-Wall -Wextra -Werror"
 ASCII_ART := "art.txt"
 PLUGINS_DIR	:=	plugins
 SRC_PLUGIN	:=	srcPlugin/Primitive
