@@ -66,16 +66,16 @@ namespace RayTracer
     // améliore la précision de la réflexion sur des objets très brillants
     double fresnel(const Math::Vector3d &I, const Math::Vector3d &N, double n1, double n2)
     {
-        double cosIncidence = std::fmax(-1.0, std::fmin(1.0, I.dot(N)));
+        double cosIncidence = I.dot(N);
 
         if (cosIncidence > 0.0)
             std::swap(n1, n2);
         // calcule la proportion de lumière réfléchie/réfractée.
-            double sint = n1 / n2 * std::sqrt(std::fmax(0.0f, 1.0f - cosIncidence * cosIncidence));
+        double sint = n1 / n2 * std::sqrt(1.0f - cosIncidence * cosIncidence);
         if (sint >= 1.0)
             return 1.0;
 
-        double cost = std::sqrt(std::fmax(0.0, 1.0 - sint * sint));
+        double cost = std::sqrt(1.0 - sint * sint);
         cosIncidence = std::fabs(cosIncidence);
         double Rs = ((n2 * cosIncidence) - (n1 * cost)) / ((n2 * cosIncidence) + (n1 * cost));
         double Rp = ((n1 * cosIncidence) - (n2 * cost)) / ((n1 * cosIncidence) + (n2 * cost));
@@ -158,6 +158,7 @@ namespace RayTracer
         if (hitAnything)
         {
             Math::Color pixel(0, 0, 0);
+
             for (const auto &light : _lights) {
                 if (!light->isShadowed(closestHit.point, _primitives)) {
                     pixel = pixel + light->calculateLighting(closestHit, _primitives);
