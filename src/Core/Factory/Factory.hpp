@@ -12,6 +12,7 @@
 #include "../../Primitives/Sphere.hpp"
 #include "../../Primitives/Plane.hpp"
 #include "../../Lights/ILight.hpp"
+#include "../../Primitives/Cylinder.hpp"
 #include <memory>
 
 namespace RayTracer {

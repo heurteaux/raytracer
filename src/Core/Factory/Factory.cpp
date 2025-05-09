@@ -32,6 +32,17 @@ namespace RayTracer {
             plane->setMaterial(material);
             return plane;
         }
+ 
+        if (primData.type == "cylinder") {
+            std::shared_ptr<Cylinder> cylinder = std::make_shared<Cylinder>(primData.position, primData.normal, primData.radius, primData.color, primData.name);
+            Material material;
+            material.setColor(primData.color);
+            material.setTransparency(lightData.transparency);
+            material.setReflectivity(lightData.reflectivity);
+            material.setRefractiveIndex(lightData.refractiveIndex);
+            cylinder->setMaterial(material);
+            return cylinder;
+        }
         return std::make_shared<Sphere>();
     }
 }
