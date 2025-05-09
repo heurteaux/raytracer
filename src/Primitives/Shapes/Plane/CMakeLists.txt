@@ -1,4 +1,1 @@
-add_library(plane SHARED
-    Plane.cpp
-    Plane.hpp
-    )
+add_library(plane SHARED Plane.cpp)

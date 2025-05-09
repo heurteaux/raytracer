@@ -1,5 +1,1 @@
-add_library(cylinder SHARED 
-    Cylinder.cpp
-    Cylinder.hpp
-    )
-
+add_library(cylinder SHARED Cylinder.cpp)

@@ -1,5 +1,6 @@
 EXECUTABLE := "raytracer"
 BUILD_DIR := "build"
+PLUGINS_DIR := "plugins"
 CMAKE_RELEASE_FLAGS := -G Ninja -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 CMAKE_DEBUG_FLAGS := -G Ninja -DCMAKE_BUILD_TYPE=Debug \
@@ -11,7 +12,19 @@ ASCII_ART := "art.txt"
 .PHONY: all display_ascii check-tools configure_release build move clean \
     fclean re dev
 
-all: display_ascii check-tools $(BUILD_DIR) configure_release build move
+all: display_ascii check-tools $(BUILD_DIR) check_plugins configure_release build move
+
+check_plugins:
+	@echo "🔍 Checking for plugins directory..."
+	@echo "====================================="
+	@if [ -d "$(PLUGINS_DIR)" ]; then \
+		echo "📂 Plugins directory found. Removing it..."; \
+		rm -rf $(PLUGINS_DIR); \
+		echo "✅ Plugins directory removed."; \
+	else \
+		echo "✅ Plugins directory does not exist."; \
+	fi
+	@echo "====================================="
 
 display_ascii:
 	@cat $(ASCII_ART)
@@ -65,6 +78,7 @@ build:
 
 move:
 	@mv $(BUILD_DIR)/$(EXECUTABLE) .
+	@mv $(BUILD_DIR)/$(PLUGINS_DIR) .
 
 clean:
 	@echo "🧹 Cleaning build directory..."
@@ -74,6 +88,7 @@ clean:
 fclean: clean
 	@echo "🧹 Performing full clean..."
 	@rm -f $(EXECUTABLE)
+	@rm -rf $(PLUGINS_DIR)
 	@echo "✅ Full clean complete."
 
 re: fclean dev

@@ -9,6 +9,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
+# Subdirectories
+add_subdirectory(src/Primitives)
+
 # Exec
 add_executable(raytracer ${SOURCES})
 
