@@ -23,7 +23,7 @@ namespace RayTracer {
             Plane(const Math::Point3d &point, const Math::Vector3d &normal, const Math::Color &color, const std::string &name);
             ~Plane() = default;
 
-            bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const;
+            bool hit(const Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const;
             void rotate(const Math::Vector3d &angles);
 
         private:

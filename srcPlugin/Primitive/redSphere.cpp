@@ -10,11 +10,11 @@
 #include "../../src/Materials/Material.hpp"
 #include "../../src/Materials/Color.hpp"
 #include "../../src/Primitives/IPrimitive.hpp"
-
+²
 extern "C" {
     RayTracer::IPrimitive *createPlugin()
     {
-        RayTracer::IPrimitive *redSphere = new RayTracer::Sphere(Math::Point3d(0, 0, -5), 1.0, "redSphere");
+        RayTracer::IPrimitive *redSphere = new RayTracer::Sphere(Math::Point3d(0, 0, -9), 1.0, "redSphere");
         RayTracer::Material redMaterial;
         redMaterial.setColor(Math::Color(1.0, 0.2, 0.2));
         redSphere->setMaterial(redMaterial);

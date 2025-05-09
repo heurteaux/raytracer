@@ -105,4 +105,9 @@ double Math::Vector3d::dot(const Vector3d& other) const
     return x * other.x + y * other.y + z * other.z;
 }
 
+Math::Vector3d Math::Vector3d::normalized() const
+{
+    double length = std::sqrt(x * x + y * y + z * z);
 
+    return Math::Vector3d(x / length, y / length, z / length);
+}

@@ -35,7 +35,7 @@ namespace RayTracer
         }
     }
 
-    bool Plane::hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const
+    bool Plane::hit(const Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const
     {
         double denominator = ray.direction.dot(normal);
 

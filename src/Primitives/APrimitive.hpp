@@ -12,17 +12,16 @@
 #include "../Math/Vector3d.hpp"
 #include "../Materials/Material.hpp"
 #include "IPrimitive.hpp"
+#include <iostream>
+#include <memory>
 
 namespace RayTracer {
     class APrimitive : public IPrimitive {
         public:
-            ~APrimitive() = default;
-
             APrimitive();
-
-            APrimitive(const std::string &name, const Math::Color color);
-
             APrimitive(const std::string &name);
+            APrimitive(const std::string &name, const Math::Color &color);
+            ~APrimitive() = default;
 
             APrimitive(const APrimitive &other);
             APrimitive &operator=(const APrimitive &other);

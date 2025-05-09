@@ -35,13 +35,16 @@ namespace RayTracer {
                 
             int render(const std::string &filename) const;
     
-            void write_color(std::ofstream &out, const Math::Color &color) const;
+            void writeColor(std::ofstream &out, const Math::Color &color) const;
     
             void setWidth(int width) { _width = width; }
             int getWidth() const { return _width; }
     
             void setHeight(int height) { _height = height; }
             int getHeight() const { return _height; }
+
+            Math::Color traceRay(const Ray &ray, int depth) const;
+            Math::Color lightEffects(Math::Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const;
             
         private:
             std::vector<std::shared_ptr<IPrimitive>> _primitives;
