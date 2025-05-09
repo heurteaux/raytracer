@@ -8,10 +8,10 @@
 #ifndef SPHERE_HPP_
 #define SPHERE_HPP_
 
-#include "APrimitive.hpp"
-#include "../Math/Point3d.hpp"
-#include "../Core/RayTracer.hpp"
-#include "../Core/HitRecord.hpp"
+#include "Primitives/APrimitive.hpp"
+#include "Math/Point3d.hpp"
+#include "Core/RayTracer.hpp"
+#include "Core/HitRecord.hpp"
 #include <cmath>
 
 namespace RayTracer {

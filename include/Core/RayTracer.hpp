@@ -8,9 +8,9 @@
 #ifndef RAYTRACER_H
 #define RAYTRACER_H
 
-#include "../Math/Vector3d.hpp"
-#include "../Math/Point3d.hpp"
-#include "../Math/Rectangle3D.hpp"
+#include "Math/Vector3d.hpp"
+#include "Math/Point3d.hpp"
+#include "Math/Rectangle3D.hpp"
 
 namespace RayTracer
 {

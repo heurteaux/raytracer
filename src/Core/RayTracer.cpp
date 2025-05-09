@@ -5,7 +5,7 @@
 ** RayTracer.cpp
 */
 
-#include "RayTracer.hpp"
+#include "Core/RayTracer.hpp"
 #include <iostream>
 
 RayTracer::Ray::Ray(const Math::Point3d &origin, const Math::Vector3d &direction): origin(0, 0, 0), direction(0, 0, 0)

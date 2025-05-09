@@ -5,7 +5,7 @@
 ** Cylinder.cpp
 */
 
-#include "Cylinder.hpp"
+#include "Primitives/Shapes/Cylinder.hpp"
 
 namespace RayTracer {
     Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, double radius)

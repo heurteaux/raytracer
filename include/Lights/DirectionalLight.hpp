@@ -9,8 +9,8 @@
 #define DIRECTIONALLIGHT_H
 
 #include "ILight.hpp"
-#include "../Core/RayTracer.hpp"
-#include "../Primitives/IPrimitive.hpp"
+#include "Core/RayTracer.hpp"
+#include "Primitives/IPrimitive.hpp"
 
 namespace RayTracer
 {

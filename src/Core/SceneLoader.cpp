@@ -5,7 +5,7 @@
 ** SceneLoader.cpp
 */
 
-#include "SceneLoader.hpp"
+#include "Core/SceneLoader.hpp"
 
 namespace RayTracer {
 

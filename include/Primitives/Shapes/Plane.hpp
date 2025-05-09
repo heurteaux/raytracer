@@ -8,9 +8,9 @@
 #ifndef PLANE_H
 #define PLANE_H
 
-#include "APrimitive.hpp"
-#include "../Core/RayTracer.hpp"
-#include "../Core/HitRecord.hpp"
+#include "Primitives/APrimitive.hpp"
+#include "Core/RayTracer.hpp"
+#include "Core/HitRecord.hpp"
 
 namespace RayTracer {
 

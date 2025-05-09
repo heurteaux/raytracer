@@ -5,7 +5,7 @@
 ** Rectangle3D
 */
 
-#include "Rectangle3D.hpp"
+#include "Math/Rectangle3D.hpp"
 
 Math::Rectangle3D::Rectangle3D()
     : origin(0, 0, 0), bottom_side(1, 0, 0), left_side(0, 1, 0)

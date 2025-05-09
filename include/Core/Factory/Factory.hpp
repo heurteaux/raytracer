@@ -8,9 +8,9 @@
 #ifndef FACOTRY_HPP_
 #define FACOTRY_HPP_
 
-#include "../../Primitives/IPrimitive.hpp"
-#include "../../Primitives/Sphere.hpp"
-#include "../../Primitives/Plane.hpp"
+#include "Primitives/IPrimitive.hpp"
+#include "Primitives/Shapes/Sphere.hpp"
+#include "Primitives/Shapes/Plane.hpp"
 #include <memory>
 
 namespace RayTracer {

@@ -8,10 +8,10 @@
 #ifndef ILIGHT_HPP_
 #define ILIGHT_HPP_
 
-#include "../Math/Vector3d.hpp"
+#include "Math/Vector3d.hpp"
 #include <vector>
-#include "../Materials/Color.hpp"
-#include "../Core/HitRecord.hpp"
+#include "Materials/Color.hpp"
+#include "Core/HitRecord.hpp"
 
 namespace RayTracer {
     class ILight {

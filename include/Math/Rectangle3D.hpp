@@ -8,8 +8,8 @@
 #ifndef RECTANGLE3D_H
 #define RECTANGLE3D_H
 
-#include "Point3d.hpp"
-#include "Vector3d.hpp"
+#include "Math/Point3d.hpp"
+#include "Math/Vector3d.hpp"
 
 namespace Math
 {

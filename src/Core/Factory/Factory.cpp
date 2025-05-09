@@ -5,7 +5,7 @@
 ** Factory.cpp
 */
 
-#include "Factory.hpp"
+#include "Core/Factory/Factory.hpp"
 
 namespace RayTracer {
 

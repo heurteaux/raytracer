@@ -5,7 +5,7 @@
 ** DirectionalLight
 */
 
-#include "DirectionalLight.hpp"
+#include "Lights/DirectionalLight.hpp"
 
 namespace RayTracer
 {

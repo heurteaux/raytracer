@@ -8,9 +8,9 @@
 #ifndef APRIMITIVE_HPP_
 #define APRIMITIVE_HPP_
 
-#include "../Math/Point3d.hpp"
-#include "../Math/Vector3d.hpp"
-#include "../Materials/Material.hpp"
+#include "Math/Point3d.hpp"
+#include "Math/Vector3d.hpp"
+#include "Materials/Material.hpp"
 #include "IPrimitive.hpp"
 
 namespace RayTracer {

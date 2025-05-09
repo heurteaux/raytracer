@@ -5,7 +5,7 @@
 ** Sphere.cpp
 */
 
-#include "Sphere.hpp"
+#include "Primitives/Shapes/Sphere.hpp"
 
 namespace RayTracer {
     Sphere::Sphere()

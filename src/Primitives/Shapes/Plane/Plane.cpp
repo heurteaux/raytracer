@@ -5,7 +5,7 @@
 ** Plane.cpp
 */
 
-#include "Plane.hpp"
+#include "Primitives/Shapes/Plane.hpp"
 
 namespace RayTracer
 {

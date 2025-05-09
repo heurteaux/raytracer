@@ -8,7 +8,7 @@
 #ifndef POINT3D_H
 #define POINT3D_H
 
-#include "Vector3d.hpp"
+#include "Math/Vector3d.hpp"
 
 namespace Math {
     class Point3d

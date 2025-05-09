@@ -10,7 +10,7 @@
 #include "Core/HitRecord.hpp"
 #include "Math/Point3d.hpp"
 #include "Math/Vector3d.hpp"
-#include "Primitives/Sphere.hpp"
+#include "Primitives/Shapes/Sphere.hpp"
 #include "Primitives/IPrimitive.hpp"
 #include "Materials/Material.hpp"
 #include "Lights/ILight.hpp"
@@ -19,7 +19,7 @@
 #include <memory>
 #include <string>
 #include <cmath>
-#include "Primitives/Plane.hpp"
+#include "Primitives/Shapes/Plane.hpp"
 #include "Lights/DirectionalLight.hpp"
 #include "Lights/AmbientLight.hpp"
 #include "Exception/Exception.hpp"

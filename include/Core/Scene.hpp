@@ -8,9 +8,9 @@
 #ifndef SCENE_HPP_
 #define SCENE_HPP_
 
-#include "../Primitives/IPrimitive.hpp"
-#include "../Lights/ILight.hpp"
-#include "RayTracer.hpp"
+#include "Primitives/IPrimitive.hpp"
+#include "Lights/ILight.hpp"
+#include "Core/RayTracer.hpp"
 #include <vector>
 #include <memory>
 #include <iostream>
