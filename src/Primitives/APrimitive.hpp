@@ -1,5 +1,5 @@
 /*
-** EPITECH PROJECT, 2025
+** EPITECH PROJECT, 2024
 ** raytracer
 ** File description:
 ** APrimitive.hpp
@@ -16,19 +16,30 @@
 namespace RayTracer {
     class APrimitive : public IPrimitive {
         public:
-            APrimitive() : _name(""), _material() {}
-            APrimitive(const std::string &name) : _name(name), _material() {}
-            APrimitive(const std::string &name, const Math::Color color) : _name(name), _material(color) {}
             ~APrimitive() = default;
 
-            void setName(const std::string &name) { _name = name; };
-            void setMaterial(const Material &material) { _material = material; };
+            APrimitive();
 
-            std::string getName() const { return _name; };
-            
+            APrimitive(const std::string &name, const Math::Color color);
+
+            APrimitive(const std::string &name);
+
+            APrimitive(const APrimitive &other);
+            APrimitive &operator=(const APrimitive &other);
+
+            void setName(const std::string &name);
+
+            std::string getName() const;
+
+            void translate(const Math::Vector3d &offset);
+
+            void setMaterial(const Material &material);
+
         protected:
             std::string _name;
             Material _material;
+            Math::Point3d _center;
+
     };
 }
 

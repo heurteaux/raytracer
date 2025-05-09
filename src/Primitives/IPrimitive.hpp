@@ -16,7 +16,7 @@
 namespace RayTracer {
 
 class Ray;
-class HitRecord;
+struct HitRecord;
 
     class IPrimitive {
     public:
@@ -26,7 +26,7 @@ class HitRecord;
 
         virtual void translate(const Math::Vector3d &offset) = 0;
 
-        virtual void rotate(const Math::Vector3d &angles) = 0;
+        // virtual void rotate(const Math::Vector3d &angles) = 0;
 
         virtual void setMaterial(const Material &material) = 0;
 

@@ -58,10 +58,10 @@ namespace RayTracer
         return true;
     }
 
-    void Plane::translate(const Math::Vector3d &offset)
-    {
-        point = point + offset;
-    }
+    // void Plane::translate(const Math::Vector3d &offset)
+    // {
+    //     point = point + offset;
+    // }
 
     void Plane::rotate(const Math::Vector3d &angles)
     {

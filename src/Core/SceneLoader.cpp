@@ -100,10 +100,8 @@ namespace RayTracer {
 
         for (std::size_t i = 0; i < primitivesSetting.getLength(); i++) {
             const libconfig::Setting &primType = primitivesSetting[primitivesSetting[i].getName()];
-            std::cout << "primType: " << primType.getName() << std::endl;
             for (std::size_t j = 0; j < primType.getLength(); j++) {
                 const libconfig::Setting &newPrim = primType[primType[j].getName()];
-                std::cout << "newPrim: " << newPrim.getName() << std::endl;
 
                 newPrim.lookupValue("radius", radius);
 
@@ -115,7 +113,8 @@ namespace RayTracer {
                 colorPrim.lookupValue("r", color.r);
                 colorPrim.lookupValue("g", color.g);
                 colorPrim.lookupValue("b", color.b);
-                scene->addPrimitive(_factory->createPrimitive(primType.getName(), position, color, radius, newPrim.getName()));
+                std::shared_ptr<IPrimitive> primitive = _factory->createPrimitive(primType.getName(), position, color, radius, newPrim.getName());
+                scene->addPrimitive(primitive);
             }
         }
     }
