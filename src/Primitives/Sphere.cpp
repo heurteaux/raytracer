@@ -67,15 +67,6 @@ namespace RayTracer {
         return true;
     }
 
-    // void Sphere::translate(const Math::Vector3d &offset)
-    // {
-    //     _center = _center + offset;
-    // }
-
-    // void Sphere::rotate(UNUSED const Math::Vector3d &angles)
-    // {
-    // }
-
     bool Sphere::hits(const Ray &ray) const
     {
         Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);

@@ -58,14 +58,9 @@ namespace RayTracer
         return true;
     }
 
-    // void Plane::translate(const Math::Vector3d &offset)
-    // {
-    //     point = point + offset;
-    // }
-
     void Plane::rotate(const Math::Vector3d &angles)
     {
-        double theta = angles.y * M_PI / 180.0; // Convert to radians
+        double theta = angles.y * M_PI / 180.0;
         
         double nx = normal.x * cos(theta) - normal.z * sin(theta);
         double nz = normal.x * sin(theta) + normal.z * cos(theta);

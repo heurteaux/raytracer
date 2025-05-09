@@ -26,8 +26,6 @@ struct HitRecord;
 
         virtual void translate(const Math::Vector3d &offset) = 0;
 
-        // virtual void rotate(const Math::Vector3d &angles) = 0;
-
         virtual void setMaterial(const Material &material) = 0;
 
         virtual void setName(const std::string &name) = 0;
