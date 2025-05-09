@@ -37,6 +37,7 @@ namespace RayTracer {
         Math::Point3d position;
         Math::Color color;
         Math::Vector3d normal;
+        Math::Vector3d axis;    
         double radius;
         double transparency;
         double refraction;
