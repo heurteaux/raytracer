@@ -29,6 +29,7 @@ namespace RayTracer {
 
             bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
             bool hits(const Ray &ray) const;
+            void rotate(UNUSED const Math::Vector3d &angles);
 
         private:
             Math::Point3d _center;

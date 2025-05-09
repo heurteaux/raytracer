@@ -137,7 +137,6 @@ namespace RayTracer {
                 colorPrim.lookupValue("r", primData.color.r);
                 colorPrim.lookupValue("g", primData.color.g);
                 colorPrim.lookupValue("b", primData.color.b);
-                std::cout << "color: " << primData.color.r << " " << primData.color.g << " " << primData.color.b << std::endl;
 
                 newPrim.lookupValue("radius", primData.radius);
                 newPrim.lookupValue("transparency", lightData.transparency);

@@ -35,6 +35,11 @@ namespace RayTracer {
         _radius = radius;
     }
 
+    void Sphere::rotate(UNUSED const Math::Vector3d &angles)
+    {
+
+    }
+
     bool Sphere::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
     {
         Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);

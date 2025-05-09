@@ -19,12 +19,8 @@ namespace RayTracer {
     class APrimitive : public IPrimitive {
         public:
             APrimitive();
-            APrimitive() : _name(""), _material() {}
-            APrimitive(const std::string &name) : _name(name), _material() {}
-            APrimitive(const std::string &name, const Math::Color &color) : _name(name)
-            {
-                _material.setColor(color);
-            }
+            APrimitive(const std::string &name);
+            APrimitive(const std::string &name, const Math::Color &color);
             ~APrimitive() = default;
 
             APrimitive(const APrimitive &other);

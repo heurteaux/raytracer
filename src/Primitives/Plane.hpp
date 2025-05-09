@@ -24,7 +24,6 @@ namespace RayTracer {
             ~Plane() = default;
 
             bool hit(const Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const;
-            void translate(const Math::Vector3d &offset);
             void rotate(const Math::Vector3d &angles);
 
         private:
