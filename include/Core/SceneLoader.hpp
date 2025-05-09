@@ -18,7 +18,6 @@
 #include "RayTracer.hpp"
 #include <vector>
 #include <filesystem>
-#include "DLLoader.hpp"
 #include "Primitives/IPrimitive.hpp"
 #include "Factory/Factory.hpp"
 

@@ -24,7 +24,6 @@
 #include "Lights/AmbientLight.hpp"
 #include "Exception/Exception.hpp"
 #include "Core/SceneLoader.hpp"
-#include "Core/DLLoader.hpp"
 #include "Primitives/IPrimitive.hpp"
 
 #include <filesystem>
