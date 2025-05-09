@@ -10,7 +10,7 @@
 #include "../../src/Materials/Material.hpp"
 #include "../../src/Materials/Color.hpp"
 #include "../../src/Primitives/IPrimitive.hpp"
-
+²
 extern "C" {
     RayTracer::IPrimitive *createPlugin()
     {
