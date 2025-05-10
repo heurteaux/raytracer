@@ -54,16 +54,33 @@ namespace RayTracer {
     void SceneLoader::parseTransformation(const libconfig::Setting &transSetting, std::shared_ptr<Scene> &scene)
     {
         int position[3] = {0, 0, 0};
+        int rotation[3] = {0, 0, 0};
         auto primitives = scene->getPrimitives();
-        const libconfig::Setting &translations = transSetting["translation"];
-
-        for (std::size_t i = 0; i < translations.getLength(); i++) {
-            for (auto &prim : primitives) {
-                if (prim->getName() == translations[i].getName()) {
-                    translations[i].lookupValue("x", position[0]);
-                    translations[i].lookupValue("y", position[1]);
-                    translations[i].lookupValue("z", position[2]);
-                    prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+        
+        if (transSetting.exists("translation")) {
+            const libconfig::Setting &translations = transSetting["translation"];
+            for (std::size_t i = 0; i < translations.getLength(); i++) {
+                for (auto &prim : primitives) {
+                    if (prim->getName() == translations[i].getName()) {
+                        translations[i].lookupValue("x", position[0]);
+                        translations[i].lookupValue("y", position[1]);
+                        translations[i].lookupValue("z", position[2]);
+                        prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+                    }
+                }
+            }
+        }
+        
+        if (transSetting.exists("rotation")) {
+            const libconfig::Setting &rotations = transSetting["rotation"];
+            for (std::size_t i = 0; i < rotations.getLength(); i++) {
+                for (auto &prim : primitives) {
+                    if (prim->getName() == rotations[i].getName()) {
+                        rotations[i].lookupValue("x", rotation[0]);
+                        rotations[i].lookupValue("y", rotation[1]);
+                        rotations[i].lookupValue("z", rotation[2]);
+                        prim->rotate(Math::Vector3d(rotation[0], rotation[1], rotation[2]));
+                    }
                 }
             }
         }

@@ -78,17 +78,7 @@ namespace RayTracer {
 
     void Cylinder::rotate(const Math::Vector3d &angles)
     {
-        double theta = angles.y * M_PI / 180.0;
-        
-        double nx = axis.x * cos(theta) - axis.z * sin(theta);
-        double nz = axis.x * sin(theta) + axis.z * cos(theta);
-        
-        axis.x = nx;
-        axis.z = nz;
-        
-        double length = axis.length();
-        if (length > 0) {
-            axis = axis / length;
-        }
+        rotateVector(axis, angles);
+        rotatePoint(base, _center, angles);
     }
 }

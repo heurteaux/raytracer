@@ -13,7 +13,6 @@
 #include "../../Primitives/Sphere.hpp"
 #include "../../Primitives/Plane.hpp"
 #include "../../Primitives/Cylinder.hpp"
-
 #include "../../Lights/ILight.hpp"
 #include <memory>
 
