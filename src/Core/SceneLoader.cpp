@@ -100,6 +100,7 @@ namespace RayTracer {
         primData.name = "";
         primData.position = Math::Point3d(0, 0, 0);
         primData.normal = Math::Vector3d(0, 0, 0);
+        primData.axis = Math::Vector3d(0, 0, 0);
         primData.color = {0, 0, 0};
         primData.radius = 0.0;
         return primData;
@@ -125,6 +126,10 @@ namespace RayTracer {
             for (std::size_t j = 0; j < primType.getLength(); j++) {
                 const libconfig::Setting &newPrim = primType[primType[j].getName()];
 
+                const libconfig::Setting &axisPrim = newPrim["axis"];
+                axisPrim.lookupValue("x", primData.axis.x);
+                axisPrim.lookupValue("y", primData.axis.y);
+                axisPrim.lookupValue("z", primData.axis.z);
                 const libconfig::Setting &normalPrim = newPrim["normal"];
                 normalPrim.lookupValue("x", primData.normal.x);
                 normalPrim.lookupValue("y", primData.normal.y);
