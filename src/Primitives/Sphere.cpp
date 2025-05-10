@@ -37,7 +37,6 @@ namespace RayTracer {
 
     void Sphere::rotate(UNUSED const Math::Vector3d &angles)
     {
-
     }
 
     bool Sphere::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const

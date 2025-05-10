@@ -60,17 +60,8 @@ namespace RayTracer
 
     void Plane::rotate(const Math::Vector3d &angles)
     {
-        double theta = angles.y * M_PI / 180.0;
+        rotateVector(normal, angles);
         
-        double nx = normal.x * cos(theta) - normal.z * sin(theta);
-        double nz = normal.x * sin(theta) + normal.z * cos(theta);
-        
-        normal.x = nx;
-        normal.z = nz;
-        
-        double length = normal.length();
-        if (length > 0) {
-            normal = normal / length;
-        }
+        rotatePoint(point, _center, angles);
     }
 }
