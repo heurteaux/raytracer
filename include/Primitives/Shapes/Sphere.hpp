@@ -16,7 +16,7 @@
 
 namespace RayTracer {
     class Ray;
-    class HitRecord;
+    struct HitRecord;
 
     class Sphere : public APrimitive
     {

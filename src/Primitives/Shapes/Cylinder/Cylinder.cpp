@@ -8,20 +8,20 @@
 #include "Primitives/Shapes/Cylinder.hpp"
 
 namespace RayTracer {
-    Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, double radius)
-        : APrimitive("cylinder"), base(base), axis(axis), radius(radius)
+    Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis /*,double radius*/)
+        : APrimitive("cylinder"), base(base), axis(axis)/*, radius(radius)*/
     {
         startCylinder();
     }
 
-    Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const std::string &name)
-        : APrimitive(name), base(base), axis(axis), radius(radius)
+    Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, /* double radius,*/ const std::string &name)
+        : APrimitive(name), base(base), axis(axis) /* , radius(radius)*/
     {
         startCylinder();
     }
 
-    Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name)
-        : APrimitive(name, color), base(base), axis(axis), radius(radius)
+    Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, /*double radius,*/ const Math::Color color, const std::string &name)
+        : APrimitive(name, color), base(base), axis(axis) /* , radius(radius)*/
     {
         startCylinder();
     }
@@ -34,17 +34,17 @@ namespace RayTracer {
         }
     }
 
-    bool Cylinder::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
+    bool Cylinder::hit(UNUSED const Ray &ray, UNUSED double tMin, UNUSED double tMax, UNUSED HitRecord &record) const
     {
         return false;
     }
 
-    void Cylinder::translate(const Math::Vector3d &offset)
+    void Cylinder::translate(UNUSED const Math::Vector3d &offset)
     {
 
     }
 
-    void Cylinder::rotate(const Math::Vector3d &angles)
+    void Cylinder::rotate(UNUSED const Math::Vector3d &angles)
     {
 
     }

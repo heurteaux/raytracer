@@ -39,7 +39,7 @@ namespace RayTracer {
         auto primitives = scene->getPrimitives();
         const libconfig::Setting &translations = transSetting["translation"];
 
-        for (std::size_t i = 0; i < translations.getLength(); i++) {
+        for (int i = 0; i < translations.getLength(); i++) {
             for (auto &prim : primitives) {
                 if (prim->getName() == translations[i].getName()) {
                     translations[i].lookupValue("x", position[0]);
@@ -80,10 +80,10 @@ namespace RayTracer {
         Math::Color color(0, 0, 0);
         double radius = 0.0;
 
-        for (std::size_t i = 0; i < primitivesSetting.getLength(); i++) {
+        for (int i = 0; i < primitivesSetting.getLength(); i++) {
             const libconfig::Setting &primType = primitivesSetting[primitivesSetting[i].getName()];
             std::cout << "primType: " << primType.getName() << std::endl;
-            for (std::size_t j = 0; j < primType.getLength(); j++) {
+            for (int j = 0; j < primType.getLength(); j++) {
                 const libconfig::Setting &newPrim = primType[primType[j].getName()];
                 std::cout << "newPrim: " << newPrim.getName() << std::endl;
 
