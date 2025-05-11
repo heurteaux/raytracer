@@ -12,7 +12,7 @@ ASCII_ART := "art.txt"
 .PHONY: all display_ascii check-tools configure_release build move clean \
     fclean re dev
 
-all: display_ascii check-tools $(BUILD_DIR) check_plugins configure_release build move
+all: display_ascii check-tools $(BUILD_DIR) check_plugins configure_dev build move
 
 check_plugins:
 	@echo "🔍 Checking for plugins directory..."
@@ -94,7 +94,7 @@ fclean: clean
 re: fclean dev
 	@echo "🔄 Full recompilation complete."
 
-dev: display_ascii check-tools $(BUILD_DIR) configure_dev build move
+release: display_ascii check-tools $(BUILD_DIR) check_plugins configure_release build move
 
 configure_dev:
 	@echo "⚙️ Configuring the project for development (no optimizations)..."
