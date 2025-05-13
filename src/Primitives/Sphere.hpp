@@ -10,7 +10,7 @@
 
 #include "APrimitive.hpp"
 #include "../Math/Point3d.hpp"
-#include "../Core/RayTracer.hpp"
+#include "../Core/Camera.hpp"
 #include "../Core/HitRecord.hpp"
 #include <cmath>
 

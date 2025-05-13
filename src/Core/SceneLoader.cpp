@@ -53,8 +53,8 @@ namespace RayTracer {
 
     void SceneLoader::parseTransformation(const libconfig::Setting &transSetting, std::shared_ptr<Scene> &scene)
     {
-        int position[3] = {0, 0, 0};
-        int rotation[3] = {0, 0, 0};
+        Math::Vector3d position(0, 0, 0);
+        Math::Vector3d rotation(0, 0, 0);
         auto primitives = scene->getPrimitives();
         
         if (transSetting.exists("translation")) {
@@ -62,10 +62,10 @@ namespace RayTracer {
             for (std::size_t i = 0; i < translations.getLength(); i++) {
                 for (auto &prim : primitives) {
                     if (prim->getName() == translations[i].getName()) {
-                        translations[i].lookupValue("x", position[0]);
-                        translations[i].lookupValue("y", position[1]);
-                        translations[i].lookupValue("z", position[2]);
-                        prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+                        translations[i].lookupValue("x", position.x);
+                        translations[i].lookupValue("y", position.y);
+                        translations[i].lookupValue("z", position.z);
+                        prim->translate(position);
                     }
                 }
             }
@@ -76,10 +76,10 @@ namespace RayTracer {
             for (std::size_t i = 0; i < rotations.getLength(); i++) {
                 for (auto &prim : primitives) {
                     if (prim->getName() == rotations[i].getName()) {
-                        rotations[i].lookupValue("x", rotation[0]);
-                        rotations[i].lookupValue("y", rotation[1]);
-                        rotations[i].lookupValue("z", rotation[2]);
-                        prim->rotate(Math::Vector3d(rotation[0], rotation[1], rotation[2]));
+                        rotations[i].lookupValue("x", rotation.x);
+                        rotations[i].lookupValue("y", rotation.y);
+                        rotations[i].lookupValue("z", rotation.z);
+                        prim->rotate(rotation);
                     }
                 }
             }
@@ -89,9 +89,9 @@ namespace RayTracer {
     void SceneLoader::parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene)
     {
         int resolution[2] = {0, 0};
+        Math::Vector3d rotation(0, 0, 0);
         double fov = 0.0;
         Math::Point3d position(0, 0, 0);
-        Math::Vector3d rotation(0, 0, 0);
 
 
         // need to add resolution & field of view

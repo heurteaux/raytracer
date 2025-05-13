@@ -11,6 +11,7 @@
 #include "../Primitives/IPrimitive.hpp"
 #include "../Lights/ILight.hpp"
 #include "RayTracer.hpp"
+#include "Camera.hpp"
 #include <vector>
 #include <memory>
 #include <iostream>

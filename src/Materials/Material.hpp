@@ -14,7 +14,13 @@ namespace RayTracer {
     class Material
     {
         public:
-            Material() = default;
+            Material()
+            : _color(0.0, 0.0, 0.0),
+            ambientFactor(1.0),
+            diffuseFactor(1.0),
+            _reflectivity(0.0),
+            _transparency(0.0),
+            _refractiveIndex(0.0) {}
             Material(const Math::Color &color)
                 : _color(color),
                 ambientFactor(1.0),

@@ -39,6 +39,7 @@ namespace Math {
 
             double dot(const Vector3d& other) const;
             Vector3d normalized() const;
+            Vector3d cross(const Vector3d &v) const;
         private:
 
     };

@@ -10,6 +10,7 @@
 
 #include "APrimitive.hpp"
 #include "../Core/RayTracer.hpp"
+#include "../Core/Camera.hpp"
 #include "../Core/HitRecord.hpp"
 
 namespace RayTracer {
