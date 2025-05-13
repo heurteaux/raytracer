@@ -101,4 +101,14 @@ namespace RayTracer {
             dlclose(handle);
         }
     }
+
+    std::string PluginLoader::getErrorMsg(Error err) {
+        std::map<RayTracer::PluginLoader::Error, std::string>::iterator it =
+            errorMsg.find(err);
+
+        if (it != errorMsg.end()) {
+            return errorMsg.at(err);
+        }
+        return std::string("unknown error");
+    }
 }
