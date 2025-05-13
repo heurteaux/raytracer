@@ -53,8 +53,8 @@ namespace RayTracer {
 
     void SceneLoader::parseTransformation(const libconfig::Setting &transSetting, std::shared_ptr<Scene> &scene)
     {
-        int position[3] = {0, 0, 0};
-        int rotation[3] = {0, 0, 0};
+        Math::Vector3d position(0, 0, 0);
+        Math::Vector3d rotation(0, 0, 0);
         auto primitives = scene->getPrimitives();
         
         if (transSetting.exists("translation")) {
@@ -62,10 +62,10 @@ namespace RayTracer {
             for (std::size_t i = 0; i < translations.getLength(); i++) {
                 for (auto &prim : primitives) {
                     if (prim->getName() == translations[i].getName()) {
-                        translations[i].lookupValue("x", position[0]);
-                        translations[i].lookupValue("y", position[1]);
-                        translations[i].lookupValue("z", position[2]);
-                        prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+                        translations[i].lookupValue("x", position.x);
+                        translations[i].lookupValue("y", position.y);
+                        translations[i].lookupValue("z", position.z);
+                        prim->translate(position);
                     }
                 }
             }
@@ -76,10 +76,10 @@ namespace RayTracer {
             for (std::size_t i = 0; i < rotations.getLength(); i++) {
                 for (auto &prim : primitives) {
                     if (prim->getName() == rotations[i].getName()) {
-                        rotations[i].lookupValue("x", rotation[0]);
-                        rotations[i].lookupValue("y", rotation[1]);
-                        rotations[i].lookupValue("z", rotation[2]);
-                        prim->rotate(Math::Vector3d(rotation[0], rotation[1], rotation[2]));
+                        rotations[i].lookupValue("x", rotation.x);
+                        rotations[i].lookupValue("y", rotation.y);
+                        rotations[i].lookupValue("z", rotation.z);
+                        prim->rotate(rotation);
                     }
                 }
             }
@@ -89,24 +89,36 @@ namespace RayTracer {
     void SceneLoader::parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene)
     {
         int resolution[2] = {0, 0};
-        int position[3] = {0, 0, 0};
+        Math::Vector3d rotation(0, 0, 0);
+        double fov = 0.0;
+        Math::Point3d position(0, 0, 0);
+
 
         // need to add resolution & field of view
 
         if (cameraSetting.exists("position")) {
             const libconfig::Setting &pos = cameraSetting["position"];
-            pos.lookupValue("x", position[0]);
-            pos.lookupValue("y", position[1]);
-            pos.lookupValue("z", position[2]);
+            pos.lookupValue("x", position.x);
+            pos.lookupValue("y", position.y);
+            pos.lookupValue("z", position.z);
         }
         if (cameraSetting.exists("resolution")) {
             const libconfig::Setting &pos = cameraSetting["resolution"];
-            pos.lookupValue("width", resolution[0]);
+            pos.lookupValue("width",  resolution[0]);
             pos.lookupValue("height", resolution[1]);
         }
+        if (cameraSetting.exists("rotation")) {
+            const libconfig::Setting &pos = cameraSetting["rotation"];
+            pos.lookupValue("x", rotation.x);
+            pos.lookupValue("y", rotation.y);
+            pos.lookupValue("z", rotation.z);
+        }
+
+        cameraSetting.lookupValue("fov", fov);
+
         scene->setWidth(resolution[0]);
         scene->setHeight(resolution[1]);
-        scene->setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2])));
+        scene->setCamera(std::make_shared<Camera>(position, rotation, fov));
     }
 
     primitiveData_t initPrimData()
@@ -120,6 +132,8 @@ namespace RayTracer {
         primData.axis = Math::Vector3d(0, 0, 0);
         primData.color = {0, 0, 0};
         primData.radius = 0.0;
+        primData.innerRadius = 0.0;
+        primData.outerRadius = 0.0;
         return primData;
     }
 
@@ -139,6 +153,8 @@ namespace RayTracer {
         lightData_t lightData = initLightData();
 
         for (std::size_t i = 0; i < primitivesSetting.getLength(); i++) {
+            primData = initPrimData();
+            lightData = initLightData();
             const libconfig::Setting &primType = primitivesSetting[primitivesSetting[i].getName()];
             for (std::size_t j = 0; j < primType.getLength(); j++) {
                 const libconfig::Setting &newPrim = primType[primType[j].getName()];
@@ -161,6 +177,8 @@ namespace RayTracer {
                 colorPrim.lookupValue("b", primData.color.b);
 
                 newPrim.lookupValue("radius", primData.radius);
+                newPrim.lookupValue("innerRadius", primData.innerRadius);
+                newPrim.lookupValue("outerRadius", primData.outerRadius);
                 newPrim.lookupValue("transparency", lightData.transparency);
                 newPrim.lookupValue("refraction", lightData.refractiveIndex);
                 newPrim.lookupValue("reflection", lightData.reflectivity);

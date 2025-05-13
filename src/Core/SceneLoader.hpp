@@ -9,6 +9,7 @@
 #include "../Lights/AmbientLight.hpp"
 #include "../Lights/DirectionalLight.hpp"
 #include "RayTracer.hpp"
+#include "Camera.hpp"
 #include <vector>
 #include <filesystem>
 #include "DLLoader.hpp"

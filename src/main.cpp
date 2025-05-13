@@ -6,6 +6,7 @@
 */
 
 #include "Core/RayTracer.hpp"
+#include "Core/Camera.hpp"
 #include "Core/Scene.hpp"
 #include "Core/HitRecord.hpp"
 #include "Math/Point3d.hpp"

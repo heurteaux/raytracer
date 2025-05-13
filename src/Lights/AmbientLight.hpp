@@ -3,6 +3,7 @@
 
 #include "ILight.hpp"
 #include "../Core/RayTracer.hpp"
+#include "../Core/Camera.hpp"
 #include "../Primitives/IPrimitive.hpp"
 
 namespace RayTracer
