@@ -12,7 +12,10 @@ namespace RayTracer {
 
     APrimitive::APrimitive(): _name(""), _material() {}
 
-    APrimitive::APrimitive(const std::string &name, const Math::Color &color) : _name(name), _material(color) {}
+    APrimitive::APrimitive(const std::string &name, const Math::Color &color) : _name(name), _material()
+    {
+        _material.setColor(color);
+    }
 
     APrimitive::APrimitive(const std::string &name) : _name(name), _material() {}
 

@@ -29,6 +29,12 @@ namespace RayTracer {
             cylinder->setMaterial(material);
             return cylinder;
         }
+        if (primData.type == "torus") {
+            std::shared_ptr<Torus> torus = std::make_shared<Torus>(primData.position, primData.innerRadius, primData.outerRadius, primData.color, primData.name);
+            Material material(primData.color, lightData.reflectivity, lightData.transparency, lightData.refractiveIndex);
+            torus->setMaterial(material);
+            return torus;
+        }
         return std::make_shared<Sphere>();
     }
 }
