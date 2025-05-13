@@ -20,7 +20,6 @@ static bool is_shared_library(const std::filesystem::path &path) {
     add this if support for windows is needed */
 }
 
-
 namespace RayTracer {
     PluginLoader::PluginLoader(std::string pluginDirPath)
         : _pluginDirPath(pluginDirPath)
@@ -68,16 +67,21 @@ namespace RayTracer {
         return {};
     }
 
-
     void PluginLoader::_storePlugin(std::unique_ptr<IPlugin> plugin) {
         switch (plugin->getPluginType()) {
             case IPlugin::Type::Light: {
-                std::unique_ptr<ILight> lightPlugin = std::get<std::unique_ptr<ILight>>(plugin->getPluginContainer());
+                std::unique_ptr<ILight> lightPlugin = 
+                    std::get<std::unique_ptr<ILight>>(
+                        plugin->getPluginContainer()
+                    );
                 _lights.push_back(std::move(lightPlugin));
                 break;
             }
             case IPlugin::Type::Shape: {
-                std::unique_ptr<IPrimitive> primitivePlugin = std::get<std::unique_ptr<IPrimitive>>(plugin->getPluginContainer());
+                std::unique_ptr<IPrimitive> primitivePlugin = 
+                    std::get<std::unique_ptr<IPrimitive>>(
+                        plugin->getPluginContainer()
+                    );
                 _primitives.push_back(std::move(primitivePlugin));
                 break;
             }
