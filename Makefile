@@ -89,6 +89,7 @@ fclean: clean
 	@echo "🧹 Performing full clean..."
 	@rm -f $(EXECUTABLE)
 	@rm -rf $(PLUGINS_DIR)
+	@rm -f output.ppm output.jpg
 	@echo "✅ Full clean complete."
 
 re: fclean dev
