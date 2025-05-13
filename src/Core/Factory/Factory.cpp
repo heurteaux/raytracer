@@ -29,6 +29,13 @@ namespace RayTracer {
             cylinder->setMaterial(material);
             return cylinder;
         }
+        if (primData.type == "cone") {
+            double radius = primData.radius;
+            std::shared_ptr<Cone> cone = std::make_shared<Cone>(primData.position, primData.axis, radius, primData.color, primData.name);
+            Material material(primData.color, lightData.reflectivity, lightData.transparency, lightData.refractiveIndex);
+            cone->setMaterial(material);
+            return cone;
+        }
         return std::make_shared<Sphere>();
     }
 }
