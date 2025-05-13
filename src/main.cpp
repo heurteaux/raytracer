@@ -25,7 +25,6 @@
 #include "Exception/Exception.hpp"
 #include "Core/SceneLoader.hpp"
 #include "Primitives/IPrimitive.hpp"
-
 #include <filesystem>
 #include <thread>
 
@@ -37,6 +36,8 @@ int main(const int argc, const char *argv[])
         std::cerr << "SCENE_FILE: scene configuration" << std::endl;
         return 84;
     }
+    // pluginLoader pluginLoader = pluginLoader("./plugins/");
+    // RayTracer::Scene scene = RayTracer::Scene(pluginLoaders)
     std::shared_ptr<RayTracer::SceneLoader> sceneLoader = std::make_shared<RayTracer::SceneLoader>();
     std::shared_ptr<RayTracer::Scene> scene = std::make_shared<RayTracer::Scene>();
     sceneLoader->loadFromFile(argv[1], scene);
