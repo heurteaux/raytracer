@@ -13,7 +13,9 @@
 #include "Core/RayTracer.hpp"
 #include "Core/HitRecord.hpp"
 
-namespace RayTracer
+using namespace RayTracer;
+
+namespace CylinderPlugin
 {
     class Cylinder : public APrimitive
     {
@@ -24,6 +26,7 @@ namespace RayTracer
             bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
             void translate(const Math::Vector3d &offset);
             void rotate(const Math::Vector3d &angles);
+
         private:
             void startCylinder();
             Math::Point3d base;

@@ -5,10 +5,9 @@
 ** Plane.cpp
 */
 
-#include "Primitives/Shapes/Plane.hpp"
+#include "Primitives/Shapes/Plane/Plane.hpp"
 
-namespace RayTracer
-{
+namespace PlanePlugin {
     Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal)
         : APrimitive("plane"), point(point), normal(normal)
     {

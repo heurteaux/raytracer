@@ -42,7 +42,7 @@ namespace RayTracer {
                         std::cerr << dlerror() << std::endl;
                         return std::unexpected(Error::DLL_LOAD_ERROR);
                     }
-                    dlerror(); 
+                    dlerror();
                     /* as the man says we must call 
                     dlerror here to clear any old error conditions */
                     void *funcAddr = dlsym(handle, PLUGIN_SYMBOL);
@@ -56,8 +56,7 @@ namespace RayTracer {
                     }
                     pluginExtractor func =
                         reinterpret_cast<pluginExtractor>(funcAddr);
-                    std::unique_ptr<IPlugin> plugin = func();
-                    _storePlugin(std::move(plugin));
+                    _storePlugin(std::unique_ptr<IPlugin>(func()));
                     _dlopenHandles.push_back(handle);
                 }
             }
@@ -78,8 +77,8 @@ namespace RayTracer {
                 break;
             }
             case IPlugin::Type::Shape: {
-                std::unique_ptr<IPrimitive> primitivePlugin = 
-                    std::get<std::unique_ptr<IPrimitive>>(
+                std::unique_ptr<IPrimitiveFactory> primitivePlugin = 
+                    std::get<std::unique_ptr<IPrimitiveFactory>>(
                         plugin->getPluginContainer()
                     );
                 _primitives.push_back(std::move(primitivePlugin));

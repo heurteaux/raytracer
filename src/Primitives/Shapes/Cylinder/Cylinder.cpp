@@ -5,9 +5,9 @@
 ** Cylinder.cpp
 */
 
-#include "Primitives/Shapes/Cylinder.hpp"
+#include "Primitives/Shapes/Cylinder/Cylinder.hpp"
 
-namespace RayTracer {
+namespace CylinderPlugin {
     Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis /*,double radius*/)
         : APrimitive("cylinder"), base(base), axis(axis)/*, radius(radius)*/
     {

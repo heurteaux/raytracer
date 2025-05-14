@@ -11,6 +11,7 @@
 #include <variant>
 #include "Lights/ILight.hpp"
 #include "Primitives/IPrimitive.hpp"
+#include "Primitives/IPrimitiveFactory.hpp"
 
 namespace RayTracer {
     
@@ -18,7 +19,7 @@ namespace RayTracer {
         public:
             using PluginContainer = std::variant<
                 std::unique_ptr<ILight>,
-                std::unique_ptr<IPrimitive>
+                std::unique_ptr<IPrimitiveFactory>
                 /* TODO: add remaining plugin types here */
             >;
             

@@ -12,9 +12,9 @@
 #include "Core/RayTracer.hpp"
 #include "Core/HitRecord.hpp"
 
-namespace RayTracer {
+namespace PlanePlugin {
 
-    class Plane : public APrimitive
+    class Plane : public RayTracer::APrimitive
     {
         public:
             Plane() = default;

@@ -34,16 +34,16 @@ namespace RayTracer {
                 {Error::DLL_LOAD_ERROR, "failed to load plugin"},
                 {Error::SYMBOL_NOT_FOUND, "cannot find plugin extraction symbol in dynamic library"}
             };
-            typedef std::unique_ptr<RayTracer::IPlugin> (*pluginExtractor)();
+            typedef RayTracer::IPlugin *(*pluginExtractor)();
             typedef std::vector<std::unique_ptr<ILight>> LightHandlers;
-            typedef std::vector<std::unique_ptr<IPrimitive>> ShapeHandlers;
+            typedef std::vector<std::unique_ptr<IPrimitiveFactory>> ShapeHandlers;
             
             explicit PluginLoader(std::string pluginDirPath);
             ~PluginLoader();
 
             std::expected<void, Error> load();
-            std::vector<std::unique_ptr<ILight>> &getLights();
-            std::vector<std::unique_ptr<IPrimitive>> &getShapes();
+            LightHandlers &getLights();
+            ShapeHandlers &getShapes();
             /* TODO: add remaining plugins types here */
 
             static std::string getErrorMsg(Error err);
