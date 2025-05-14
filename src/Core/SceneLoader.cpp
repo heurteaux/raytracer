@@ -84,6 +84,19 @@ namespace RayTracer {
                 }
             }
         }
+        if (transSetting.exists("scale")) {
+            const libconfig::Setting &scale = transSetting["scale"];
+            for (std::size_t i = 0; i < scale.getLength(); i++) {
+                for (auto &prim : primitives) {
+                    if (prim->getName() == scale[i].getName()) {
+                        scale[i].lookupValue("x", rotation.x);
+                        scale[i].lookupValue("y", rotation.y);
+                        scale[i].lookupValue("z", rotation.z);
+                        prim->rotate(rotation);
+                    }
+                }
+            }
+        }
     }
 
     void SceneLoader::parseCamera(const libconfig::Setting &cameraSetting, std::shared_ptr<Scene> &scene)

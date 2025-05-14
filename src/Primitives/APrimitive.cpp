@@ -10,29 +10,16 @@
 
 namespace RayTracer {
 
-    APrimitive::APrimitive(): _name(""), _material() {}
+    APrimitive::APrimitive(): _name(""), _material()
+    {}
 
     APrimitive::APrimitive(const std::string &name, const Math::Color &color) : _name(name), _material()
     {
         _material.setColor(color);
     }
 
-    APrimitive::APrimitive(const std::string &name) : _name(name), _material() {}
-
-    void APrimitive::setName(const std::string &name)
-    {
-        _name = name;
-    }
-
-    std::string APrimitive::getName() const
-    {
-        return _name;
-    }
-
-    void APrimitive::setMaterial(const Material &material)
-    {
-        _material = material;
-    }
+    APrimitive::APrimitive(const std::string &name) : _name(name), _material()
+    {}
 
     void APrimitive::translate(const Math::Vector3d &offset)
     {
@@ -51,6 +38,11 @@ namespace RayTracer {
             _center = other._center;
         }
         return *this;
+    }
+
+    void APrimitive::scale(const Math::Vector3d &factors)
+    {
+        _center = _center * factors;
     }
 
     void APrimitive::rotateVector(Math::Vector3d &vec, const Math::Vector3d &angles) const

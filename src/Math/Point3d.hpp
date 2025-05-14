@@ -23,6 +23,7 @@ namespace Math {
 
             Point3d operator+(const Vector3d &vector) const;
             Point3d operator-(const Vector3d &vector) const;
+            Point3d operator*(const Vector3d &vector) const;
         private:
 
     };
