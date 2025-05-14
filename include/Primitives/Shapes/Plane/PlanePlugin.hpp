@@ -10,12 +10,11 @@
 
 #include "Core/IPlugin.hpp"
 
-using namespace RayTracer;
-
 namespace PlanePlugin {
-    class PlanePlugin: IPlugin {
+    class PlanePlugin: public RayTracer::IPlugin {
         public:
             PlanePlugin() = default;
+            ~PlanePlugin() = default;
             PluginContainer getPluginContainer() override;
             IPlugin::Type getPluginType() override;
     };

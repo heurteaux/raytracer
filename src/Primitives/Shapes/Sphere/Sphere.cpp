@@ -7,11 +7,9 @@
 
 #include "Primitives/Shapes/Sphere/Sphere.hpp"
 
-namespace RayTracer {
-    Sphere::Sphere()
-        : APrimitive(), _center(0, 0, 0), _radius(0)
-    {
-    }
+using namespace RayTracer;
+
+namespace SpherePlugin {
     Sphere::Sphere(const Math::Point3d &center, double radius)
         : APrimitive(), _center(0, 0, 0), _radius(0)
     {

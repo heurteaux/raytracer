@@ -14,24 +14,21 @@
 #include "Core/HitRecord.hpp"
 #include <cmath>
 
-namespace RayTracer {
-    class Ray;
-    struct HitRecord;
-
-    class Sphere : public APrimitive
+namespace SpherePlugin {
+    class Sphere : public RayTracer::APrimitive
     {
         public:
-            Sphere();
+            Sphere() = default;
             Sphere(const Math::Point3d &center, double radius);
             Sphere(const Math::Point3d &center, double radius, const std::string &name);
             Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name);
             ~Sphere() = default;
 
-            bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
+            bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const;
             void translate(const Math::Vector3d &offset);
             void rotate(const Math::Vector3d &angles);
 
-            bool hits(const Ray &ray) const;
+            bool hits(const RayTracer::Ray &ray) const;
 
         private:
             Math::Point3d _center;

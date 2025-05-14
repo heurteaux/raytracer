@@ -10,10 +10,8 @@
 
 #include "Core/IPlugin.hpp"
 
-using namespace RayTracer;
-
 namespace CylinderPlugin {
-    class CylinderPlugin: IPlugin {
+    class CylinderPlugin: public RayTracer::IPlugin {
         public:
             CylinderPlugin() = default;
             ~CylinderPlugin() = default;

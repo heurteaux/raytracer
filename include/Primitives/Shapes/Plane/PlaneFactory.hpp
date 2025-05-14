@@ -15,7 +15,7 @@ namespace PlanePlugin {
     class PlaneFactory: public RayTracer::IPrimitiveFactory {
         public:
             PlaneFactory() = default;
-            virtual ~PlaneFactory() override;
+            ~PlaneFactory() override = default;
             std::unique_ptr<RayTracer::IPrimitive> getFromParsing(const libconfig::Setting &setting) const override;
     };
 }

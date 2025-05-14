@@ -11,10 +11,10 @@
 #include "Primitives/IPrimitiveFactory.hpp"
 
 
-namespace CylinderPlugin {
-    class CylinderFactory: public RayTracer::IPrimitiveFactory {
+namespace CylinderPlugin {    class CylinderFactory: public RayTracer::IPrimitiveFactory {
         public:
             CylinderFactory() = default;
+            ~CylinderFactory() override = default;
             std::unique_ptr<RayTracer::IPrimitive> getFromParsing(const libconfig::Setting &setting) const override;
     };
 }

@@ -10,14 +10,12 @@
 #include <memory>
 
 namespace PlanePlugin {
-    PlaneFactory::~PlaneFactory() = default;
-
-    IPlugin::Type PlanePlugin::getPluginType() {
-        return IPlugin::Type::Shape;
+    RayTracer::IPlugin::Type PlanePlugin::getPluginType() {
+        return RayTracer::IPlugin::Type::Shape;
     }
 
-    IPlugin::PluginContainer PlanePlugin::getPluginContainer() {
-        return IPlugin::PluginContainer(std::make_unique<PlaneFactory>());
+    RayTracer::IPlugin::PluginContainer PlanePlugin::getPluginContainer() {
+        return RayTracer::IPlugin::PluginContainer(std::make_unique<PlaneFactory>());
     }
 }
 

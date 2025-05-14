@@ -10,11 +10,11 @@
 #include <memory>
 
 namespace CylinderPlugin {
-    IPlugin::Type CylinderPlugin::getPluginType() {
-        return IPlugin::Type::Shape;
+    RayTracer::IPlugin::Type CylinderPlugin::getPluginType() {
+        return RayTracer::IPlugin::Type::Shape;
     }
-    IPlugin::PluginContainer CylinderPlugin::getPluginContainer() {
-        return IPlugin::PluginContainer(std::make_unique<CylinderFactory>());
+    RayTracer::IPlugin::PluginContainer CylinderPlugin::getPluginContainer() {
+        return RayTracer::IPlugin::PluginContainer(std::make_unique<CylinderFactory>());
     }
 }
 
