@@ -28,7 +28,6 @@ namespace RayTracer {
         _origin = origin;
         _fov = fov;
         updateScreen();
-        std::cout << "Camera rotation: " << rotation.x << " " << rotation.y << " " << rotation.z << std::endl;
         rotate(_origin, rotation);
     }
 

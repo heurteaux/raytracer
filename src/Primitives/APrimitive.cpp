@@ -37,11 +37,7 @@ namespace RayTracer {
 
     void APrimitive::translate(const Math::Vector3d &offset)
     {
-        std::cout << "Translating primitive: " << _name << std::endl;
-        std::cout << "Offset: " << offset.x << " " << offset.y << " " << offset.z << std::endl;
-        std::cout << "Old center: " << _center.x << " " << _center.y << " " << _center.z << std::endl;
         _center = _center + offset;
-        std::cout << "New center: " << _center.x << " " << _center.y << " " << _center.z << std::endl;
     }
 
     void APrimitive::scale(const Math::Vector3d &factors)
@@ -81,35 +77,31 @@ namespace RayTracer {
         }
     }
     
-    void APrimitive::rotatePoint(Math::Point3d &pt, const Math::Point3d &center, const Math::Vector3d &angles) const
+    void APrimitive::rotatePoint(const Math::Vector3d &angles)
     {
-        Math::Point3d relativePoint = Math::Point3d(pt.x - center.x, pt.y - center.y, pt.z - center.z);
-        
         if (angles.y != 0) {
             double theta = angles.y * M_PI / 180.0;
-            double nx = relativePoint.x * cos(theta) - relativePoint.z * sin(theta);
-            double nz = relativePoint.x * sin(theta) + relativePoint.z * cos(theta);
-            relativePoint.x = nx;
-            relativePoint.z = nz;
+            double nx = _center.x * cos(theta) - _center.z * sin(theta);
+            double nz = _center.x * sin(theta) + _center.z * cos(theta);
+            _center.x = nx;
+            _center.z = nz;
         }
         
         if (angles.x != 0) {
             double theta = angles.x * M_PI / 180.0;
-            double ny = relativePoint.y * cos(theta) - relativePoint.z * sin(theta);
-            double nz = relativePoint.y * sin(theta) + relativePoint.z * cos(theta);
-            relativePoint.y = ny;
-            relativePoint.z = nz;
+            double ny = _center.y * cos(theta) - _center.z * sin(theta);
+            double nz = _center.y * sin(theta) + _center.z * cos(theta);
+            _center.y = ny;
+            _center.z = nz;
         }
         
         if (angles.z != 0) {
             double theta = angles.z * M_PI / 180.0;
-            double nx = relativePoint.x * cos(theta) - relativePoint.y * sin(theta);
-            double ny = relativePoint.x * sin(theta) + relativePoint.y * cos(theta);
-            relativePoint.x = nx;
-            relativePoint.y = ny;
+            double nx = _center.x * cos(theta) - _center.y * sin(theta);
+            double ny = _center.x * sin(theta) + _center.y * cos(theta);
+            _center.x = nx;
+            _center.y = ny;
         }
-        
-        pt = Math::Point3d(center.x + relativePoint.x, center.y + relativePoint.y, center.z + relativePoint.z);
     }
     
     void APrimitive::rotate(const Math::Vector3d &angles)

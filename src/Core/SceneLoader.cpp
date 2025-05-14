@@ -64,7 +64,6 @@ namespace RayTracer {
                         translations[i].lookupValue("x", position.x);
                         translations[i].lookupValue("y", position.y);
                         translations[i].lookupValue("z", position.z);
-                        std::cout << "translation: " << position.x << " " << position.y << " " << position.z << std::endl;
                         prim->translate(position);
                     }
                 }

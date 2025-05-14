@@ -42,7 +42,7 @@ namespace RayTracer {
             Math::Point3d _center;
 
             void rotateVector(Math::Vector3d &vec, const Math::Vector3d &angles) const;
-            void rotatePoint(Math::Point3d &pt, const Math::Point3d &center, const Math::Vector3d &angles) const;
+            void rotatePoint(const Math::Vector3d &angles);
 
     };
 }

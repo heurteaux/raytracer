@@ -9,27 +9,29 @@
 
 namespace RayTracer
 {
-    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal)
-        : APrimitive("plane"), point(point), normal(normal)
+    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal)
+        : APrimitive("plane"), normal(normal)
     {
-        startPlane();
+        startPlane(center);
     }
 
-    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal, const Math::Color &color)
-        : APrimitive("plane", color), point(point), normal(normal)
+    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal, const Math::Color &color)
+        : APrimitive("plane", color), normal(normal)
     {
-        startPlane();
+        startPlane(center);
     }
 
-    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal, const Math::Color &color, const std::string &name)
-        : APrimitive(name, color), point(point), normal(normal)
+    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal, const Math::Color &color, const std::string &name)
+        : APrimitive(name, color), normal(normal)
     {
-        startPlane();
+        startPlane(center);
     }
 
-    void Plane::startPlane()
+    void Plane::startPlane(const Math::Point3d &center)
     {
         double length = normal.length();
+
+        _center = center;
         if (length > 0) {
             this->normal = normal / length;
         }
@@ -43,7 +45,7 @@ namespace RayTracer
             return false;
         }
 
-        Math::Vector3d p0_l0(point.x - ray.origin.x, point.y - ray.origin.y, point.z - ray.origin.z);
+        Math::Vector3d p0_l0(_center.x - ray.origin.x, _center.y - ray.origin.y, _center.z - ray.origin.z);
         double t = p0_l0.dot(normal) / denominator;
 
         if (t < tMin || t > tMax) {
@@ -62,6 +64,6 @@ namespace RayTracer
     {
         rotateVector(normal, angles);
         
-        rotatePoint(point, _center, angles);
+        rotatePoint(angles);
     }
 }
