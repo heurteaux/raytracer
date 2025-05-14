@@ -31,27 +31,32 @@ namespace RayTracer {
         if (!std::filesystem::exists(_pluginDirPath) ||
             !std::filesystem::is_directory(_pluginDirPath))
             return std::unexpected(Error::INVALID_PLUGINS_DIR);
-        
+                _lights.clear();
+        _primitives.clear();
+        for (void *handle: _dlopenHandles) {
+            ::dlclose(handle);
+        }
+
         try {
             for (const std::filesystem::directory_entry &entry : 
                 std::filesystem::directory_iterator(_pluginDirPath)) {
                 if (entry.is_regular_file() &&
                     is_shared_library(entry.path())) {
-                    void *handle = dlopen(entry.path().c_str(), RTLD_LAZY);
+                    void *handle = ::dlopen(entry.path().c_str(), RTLD_LAZY);
                     if (!handle) {
-                        std::cerr << dlerror() << std::endl;
+                        std::cerr << ::dlerror() << std::endl;
                         return std::unexpected(Error::DLL_LOAD_ERROR);
                     }
-                    dlerror();
+                    ::dlerror();
                     /* as the man says we must call 
                     dlerror here to clear any old error conditions */
-                    void *funcAddr = dlsym(handle, PLUGIN_SYMBOL);
-                    char *errorState = dlerror(); 
+                    void *funcAddr = ::dlsym(handle, PLUGIN_SYMBOL);
+                    char *errorState = ::dlerror(); 
                     /* afterwards, if the errorState isn't null,
                     it means there is an error */
                     if (errorState) {
                         std::cerr << errorState << std::endl;
-                        dlclose(handle);
+                        ::dlclose(handle);
                         return std::unexpected(Error::SYMBOL_NOT_FOUND);
                     }
                     pluginExtractor func =
@@ -96,8 +101,10 @@ namespace RayTracer {
     }
 
     PluginLoader::~PluginLoader() {
+        _lights.clear();
+        _primitives.clear();
         for (void *handle: _dlopenHandles) {
-            dlclose(handle);
+            ::dlclose(handle);
         }
     }
 
