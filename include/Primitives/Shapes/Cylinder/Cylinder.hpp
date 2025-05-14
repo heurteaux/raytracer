@@ -20,6 +20,7 @@ namespace CylinderPlugin
     class Cylinder : public APrimitive
     {
         public:
+            Cylinder() = default;
             Cylinder(const Math::Point3d &base, const Math::Vector3d &axis/*, double radius*/);
             Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, /*double radius,*/ const std::string &name);
             Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, /*double radius,*/ const Math::Color color, const std::string &name);

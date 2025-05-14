@@ -17,9 +17,7 @@ namespace PlanePlugin {
     }
 
     IPlugin::PluginContainer PlanePlugin::getPluginContainer() {
-        std::unique_ptr<RayTracer::IPrimitiveFactory> factory =
-            std::make_unique<PlaneFactory>();
-        return IPlugin::PluginContainer(std::move(factory));
+        return IPlugin::PluginContainer(std::make_unique<PlaneFactory>());
     }
 }
 

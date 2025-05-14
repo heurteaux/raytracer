@@ -7,6 +7,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Source files
 file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
+
+# /!\ TODO: REMOVE THIS, IT IS TEMPORARY /!\
+file(GLOB_RECURSE EXCLUDED_SOURCES ${CMAKE_SOURCE_DIR}/src/Primitives/*.cpp)
+list(REMOVE_ITEM SOURCES ${EXCLUDED_SOURCES})
+# ---------------------------------------------
+
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Subdirectories
