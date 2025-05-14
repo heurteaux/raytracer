@@ -10,8 +10,8 @@
 
 #include "Primitives/IPrimitiveFactory.hpp"
 
-
-namespace CylinderPlugin {    class CylinderFactory: public RayTracer::IPrimitiveFactory {
+namespace CylinderPlugin {
+    class CylinderFactory: public RayTracer::IPrimitiveFactory {
         public:
             CylinderFactory() = default;
             ~CylinderFactory() override = default;
