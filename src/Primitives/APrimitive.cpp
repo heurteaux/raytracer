@@ -21,11 +21,6 @@ namespace RayTracer {
     APrimitive::APrimitive(const std::string &name) : _name(name), _material()
     {}
 
-    void APrimitive::translate(const Math::Vector3d &offset)
-    {
-        _center = _center + offset;
-    }
-
     APrimitive::APrimitive(const APrimitive &other)
         : _name(other._name), _material(other._material), _center(other._center)
     {}
@@ -38,6 +33,15 @@ namespace RayTracer {
             _center = other._center;
         }
         return *this;
+    }
+
+    void APrimitive::translate(const Math::Vector3d &offset)
+    {
+        std::cout << "Translating primitive: " << _name << std::endl;
+        std::cout << "Offset: " << offset.x << " " << offset.y << " " << offset.z << std::endl;
+        std::cout << "Old center: " << _center.x << " " << _center.y << " " << _center.z << std::endl;
+        _center = _center + offset;
+        std::cout << "New center: " << _center.x << " " << _center.y << " " << _center.z << std::endl;
     }
 
     void APrimitive::scale(const Math::Vector3d &factors)

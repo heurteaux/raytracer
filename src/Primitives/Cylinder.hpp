@@ -22,9 +22,9 @@ namespace RayTracer
             Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, double radius);
             Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const std::string &name);
             Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name);        
-            bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
+            bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const override;
+            void rotate(const Math::Vector3d &angles) override;
 
-            void rotate(const Math::Vector3d &angles);
         private:
             void startCylinder();
             Math::Point3d base;

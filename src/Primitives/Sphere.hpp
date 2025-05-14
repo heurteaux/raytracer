@@ -27,11 +27,10 @@ namespace RayTracer {
             Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name);
             ~Sphere() = default;
 
-            bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
-            void rotate(UNUSED const Math::Vector3d &angles);
+            bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const override;
+            void scale(const Math::Vector3d &factors) override;
 
         private:
-            Math::Point3d _center;
             double _radius;
     };
 }

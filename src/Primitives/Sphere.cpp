@@ -10,33 +10,35 @@
 
 namespace RayTracer {
     Sphere::Sphere()
-        : APrimitive(), _center(0, 0, 0), _radius(0)
+        : APrimitive("sphere")
     {
+        _center = Math::Point3d(0, 0, 0);
+        _radius = 0.0;
     }
     Sphere::Sphere(const Math::Point3d &center, double radius)
-        : APrimitive(), _center(0, 0, 0), _radius(0)
+        : APrimitive("sphere")
     {
         _center = center;
         _radius = radius;
-        setName("sphere");
     }
 
     Sphere::Sphere(const Math::Point3d &center, double radius, const std::string &name)
-        : APrimitive(name), _center(0, 0, 0), _radius(0)
+        : APrimitive(name)
     {
         _center = center;
         _radius = radius;
     }
 
     Sphere::Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name)
-        : APrimitive(name, color), _center(0, 0, 0), _radius(0)
+        : APrimitive(name, color)
     {
         _center = center;
         _radius = radius;
     }
 
-    void Sphere::rotate(UNUSED const Math::Vector3d &angles)
+    void Sphere::scale(const Math::Vector3d &factors)
     {
+        _radius *= factors.x;
     }
 
     bool Sphere::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const

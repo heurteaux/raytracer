@@ -21,9 +21,11 @@ namespace RayTracer
             Cone(const Math::Point3d &base, const Math::Vector3d &axis, double radius);
             Cone(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const std::string &name);
             Cone(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name);        
-            bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
+            ~Cone() = default;
 
-            void rotate(const Math::Vector3d &angles);
+            bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const override;
+            void rotate(const Math::Vector3d &angles) override;
+            
         private:
             void startCone();
             Math::Point3d base;
