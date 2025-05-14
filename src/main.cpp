@@ -19,7 +19,7 @@ int main(const int argc, UNUSED const char *argv[])
         return 84;
     }
     RayTracer::PluginLoader pluginLoader("./plugins/");
-    auto loadRes = pluginLoader.load();
+    std::expected<void, RayTracer::PluginLoader::Error> loadRes = pluginLoader.load();
     if (!loadRes.has_value()) {
         std::string msg = 
             RayTracer::PluginLoader::getErrorMsg(loadRes.error());

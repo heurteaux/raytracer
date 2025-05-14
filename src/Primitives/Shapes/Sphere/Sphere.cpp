@@ -7,8 +7,6 @@
 
 #include "Primitives/Shapes/Sphere/Sphere.hpp"
 
-using namespace RayTracer;
-
 namespace SpherePlugin {
     Sphere::Sphere(const Math::Point3d &center, double radius)
         : APrimitive(), _center(0, 0, 0), _radius(0)
@@ -32,7 +30,7 @@ namespace SpherePlugin {
         _radius = radius;
     }
 
-    bool Sphere::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
+    bool Sphere::hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const
     {
         Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);
         double rayonEquation = ray.direction.dot(ray.direction);
@@ -73,7 +71,7 @@ namespace SpherePlugin {
     {
     }
 
-    bool Sphere::hits(const Ray &ray) const
+    bool Sphere::hits(const RayTracer::Ray &ray) const
     {
         Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);
         double a = ray.direction.dot(ray.direction);

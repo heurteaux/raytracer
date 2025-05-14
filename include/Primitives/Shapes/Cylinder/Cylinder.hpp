@@ -13,18 +13,16 @@
 #include "Core/RayTracer.hpp"
 #include "Core/HitRecord.hpp"
 
-using namespace RayTracer;
-
 namespace CylinderPlugin
 {
-    class Cylinder : public APrimitive
+    class Cylinder : public RayTracer::APrimitive
     {
         public:
             Cylinder() = default;
             Cylinder(const Math::Point3d &base, const Math::Vector3d &axis/*, double radius*/);
             Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, /*double radius,*/ const std::string &name);
             Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, /*double radius,*/ const Math::Color color, const std::string &name);
-            bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
+            bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const;
             void translate(const Math::Vector3d &offset);
             void rotate(const Math::Vector3d &angles);
 
