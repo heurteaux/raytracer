@@ -32,6 +32,10 @@ namespace Math {
 
     Point3d Point3d::operator*(const Vector3d &vector) const
     {
-        return Point3d(x * vector.x, y * vector.y, z * vector.z);
+        return Point3d(
+            x * vector.x,
+            y * vector.y,
+            z * vector.z
+        );
     }
 }
