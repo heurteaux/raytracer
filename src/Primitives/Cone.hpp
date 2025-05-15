@@ -25,11 +25,12 @@ namespace RayTracer
 
             bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const override;
             void rotate(const Math::Vector3d &angles) override;
+            void scale(const double factors) override;
             
         private:
             void startCone(const Math::Point3d &center);
-            Math::Vector3d axis;
-            double radius;
+            Math::Vector3d _axis;
+            double _radius;
     };
 }
 

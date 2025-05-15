@@ -34,7 +34,7 @@ namespace RayTracer {
             void translate(const Math::Vector3d &offset);
             void setMaterial(const Material &material) { _material = material; }
             void rotate(const Math::Vector3d &angles);
-            void scale(const Math::Vector3d &factors);
+            void scale(const double factors);
 
         protected:
             std::string _name;

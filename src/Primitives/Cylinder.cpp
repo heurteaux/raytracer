@@ -83,4 +83,9 @@ namespace RayTracer {
         rotateVector(axis, angles);
         rotatePoint(angles);
     }
+
+    void Cylinder::scale(const double factors)
+    {
+        _radius *= factors;
+    }
 }
