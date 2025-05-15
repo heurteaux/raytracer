@@ -40,7 +40,7 @@ namespace RayTracer {
         _center = _center + offset;
     }
 
-    void APrimitive::scale(const Math::Vector3d &factors)
+    void APrimitive::scale(const double factors)
     {
         _center = _center * factors;
     }

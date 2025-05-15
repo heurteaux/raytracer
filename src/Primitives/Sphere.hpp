@@ -28,7 +28,7 @@ namespace RayTracer {
             ~Sphere() = default;
 
             bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const override;
-            void scale(const Math::Vector3d &factors) override;
+            void scale(const double factors) override;
 
         private:
             double _radius;

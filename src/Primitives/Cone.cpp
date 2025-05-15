@@ -9,40 +9,40 @@
 
 namespace RayTracer {
     Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius)
-        : APrimitive("Cone"), axis(axis), radius(radius)
+        : APrimitive("Cone"), _axis(axis), _radius(radius)
     {
         startCone(center);
     }
 
     Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const std::string &name)
-        : APrimitive(name), axis(axis), radius(radius)
+        : APrimitive(name), _axis(axis), _radius(radius)
     {
         startCone(center);
     }
 
     Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name)
-        : APrimitive(name, color), axis(axis), radius(radius)
+        : APrimitive(name, color), _axis(axis), _radius(radius)
     {
         startCone(center);
     }
 
     void Cone::startCone(const Math::Point3d &center)
     {
-        double length = axis.length();
+        double length = _axis.length();
 
         _center = center;
         if (length > 0) {
-            this->axis = axis / length;
+            _axis = _axis / length;
         }
     }
 
     bool Cone::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
     {
         Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);
-        double cosTheta = radius / axis.length();
+        double cosTheta = _radius / _axis.length();
         double cosTheta2 = cosTheta * cosTheta;
         
-        Math::Vector3d v = axis.normalized();
+        Math::Vector3d v = _axis.normalized();
         double rdotv = ray.direction.dot(v);
         double ocdotv = oc.dot(v);
         
@@ -117,7 +117,12 @@ namespace RayTracer {
 
     void Cone::rotate(const Math::Vector3d &angles)
     {
-        rotateVector(axis, angles);
+        rotateVector(_axis, angles);
         rotatePoint(angles);
+    }
+
+    void Cone::scale(const double factors)
+    {
+        _radius *= factors;
     }
 }

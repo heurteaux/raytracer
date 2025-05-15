@@ -24,6 +24,16 @@ namespace Math {
             Point3d operator+(const Vector3d &vector) const;
             Point3d operator-(const Vector3d &vector) const;
             Point3d operator*(const Vector3d &vector) const;
+
+            template <typename T>
+            Point3d operator*(const T factor)
+            {
+                return Point3d(
+                    x * factor,
+                    y * factor,
+                    z * factor
+                );
+            }
         private:
 
     };
