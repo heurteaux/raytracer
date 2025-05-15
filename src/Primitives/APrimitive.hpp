@@ -10,7 +10,7 @@
 
 #include "../Math/Point3d.hpp"
 #include "../Math/Vector3d.hpp"
-#include "../Materials/Material.hpp"
+#include "../Materials/AMaterial.hpp"
 #include "IPrimitive.hpp"
 #include <iostream>
 #include <memory>
@@ -22,7 +22,7 @@ namespace RayTracer {
             APrimitive();
             APrimitive(const APrimitive &other);
             APrimitive(const std::string &name);
-            APrimitive(const std::string &name, const Math::Color &color);
+            APrimitive(const std::string &name, const Color &color);
             ~APrimitive() = default;
 
             APrimitive &operator=(const APrimitive &other);
@@ -32,13 +32,13 @@ namespace RayTracer {
             std::string getName() const { return _name; }
 
             void translate(const Math::Vector3d &offset);
-            void setMaterial(const Material &material) { _material = material; }
+            void setMaterial(const std::shared_ptr<IMaterial> &material) { _material = material; }
             void rotate(const Math::Vector3d &angles);
             void scale(const double factors);
 
         protected:
             std::string _name;
-            Material _material;
+            std::shared_ptr<IMaterial> _material;
             Math::Point3d _center;
 
             void rotateVector(Math::Vector3d &vec, const Math::Vector3d &angles) const;

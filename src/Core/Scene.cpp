@@ -14,7 +14,7 @@ namespace RayTracer
 
     }
 
-    void Scene::writeColor(std::ofstream &out, const Math::Color &color) const
+    void Scene::writeColor(std::ofstream &out, const Color &color) const
     {
         int r = static_cast<int>(255.99 * std::min(1.0, color.r));
         int g = static_cast<int>(255.99 * std::min(1.0, color.g));
@@ -82,12 +82,12 @@ namespace RayTracer
         return (Rs * Rs + Rp * Rp) / 2.0;
     }
 
-    Math::Color Scene::lightEffects(Math::Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const
+    Color Scene::lightEffects(Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const
     {
-        Math::Color reflectedColor(0, 0, 0);
-        Math::Color refractedColor(0, 0, 0);
-        double reflectivity = closestHit.material.getReflectivity();
-        double transparency = closestHit.material.getTransparency();
+        Color reflectedColor(0, 0, 0);
+        Color refractedColor(0, 0, 0);
+        double reflectivity = closestHit.material->getReflectivity();
+        double transparency = closestHit.material->getTransparency();
         double sum = reflectivity + transparency;
 
         if (sum > 1.0) {
@@ -98,7 +98,7 @@ namespace RayTracer
         if (transparency > 0.0 || reflectivity > 0.0) {
             Math::Vector3d normal = closestHit.normal.normalized();
             double n1 = 1.0;
-            double n2 = closestHit.material.getRefractiveIndex();
+            double n2 = closestHit.material->getRefractiveIndex();
         
             if (incident.dot(normal) > 0.0) {
                 std::swap(n1, n2);
@@ -123,8 +123,8 @@ namespace RayTracer
             }
 
             if (transparency > 0.0) {
-                Math::Color objectColor = closestHit.material.getColor();
-                refractedColor = Math::Color(
+                Color objectColor = closestHit.material->getColor();
+                refractedColor = Color(
                     refractedColor.r * (0.5 + 0.3 * objectColor.r),
                     refractedColor.g * (0.5 + 0.3 * objectColor.g),
                     refractedColor.b * (0.5 + 0.3 * objectColor.b)
@@ -137,10 +137,10 @@ namespace RayTracer
         return pixel;
     }
 
-    Math::Color Scene::traceRay(const Ray &ray, int depth) const
+    Color Scene::traceRay(const Ray &ray, int depth) const
     {
         if (depth <= 0)
-            return Math::Color(0, 0, 0);
+            return Color(0, 0, 0);
 
         HitRecord closestHit;
         bool hitAnything = false;
@@ -157,7 +157,7 @@ namespace RayTracer
 
         if (hitAnything)
         {
-            Math::Color pixel(0, 0, 0);
+            Color pixel(0, 0, 0);
 
             for (const auto &light : _lights) {
                 if (!light->isShadowed(closestHit.point, _primitives)) {
@@ -168,7 +168,7 @@ namespace RayTracer
         } else {
             // back ground
             double t = 0.5 * (ray.direction.y + 1.0);
-            Math::Color pixel = Math::Color(1.0, 1.0, 1.0) * (1.0 - t) + Math::Color(0.5, 0.7, 1.0) * t;
+            Color pixel = Color(1.0, 1.0, 1.0) * (1.0 - t) + Color(0.5, 0.7, 1.0) * t;
             return pixel;
         }
     }

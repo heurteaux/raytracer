@@ -1,7 +1,14 @@
+/*
+** EPITECH PROJECT, 2024
+** raytracer
+** File description:
+** Color.hpp
+*/
+
 #ifndef COLOR_HPP_
 #define COLOR_HPP_
 
-namespace Math {
+namespace RayTracer {
     class Color {
         public:
             Color();
@@ -14,9 +21,7 @@ namespace Math {
             int getBlue255() const;
             
             Color operator+(const Color &other) const;
-            
             Color operator*(double scalar) const;
-            
             Color operator*(const Color &other) const;
             
             double r;

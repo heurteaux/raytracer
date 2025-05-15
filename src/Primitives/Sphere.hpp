@@ -24,7 +24,7 @@ namespace RayTracer {
             Sphere();
             Sphere(const Math::Point3d &center, double radius);
             Sphere(const Math::Point3d &center, double radius, const std::string &name);
-            Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name);
+            Sphere(const Math::Point3d &center, double radius, const Color color, const std::string &name);
             ~Sphere() = default;
 
             bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const override;

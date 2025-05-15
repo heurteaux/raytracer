@@ -14,6 +14,7 @@
 #include "../../Primitives/Plane.hpp"
 #include "../../Primitives/Cylinder.hpp"
 #include "../../Primitives/Cone.hpp"
+#include "../../Materials/AMaterial.hpp"
 #include "../../Lights/ILight.hpp"
 #include <memory>
 

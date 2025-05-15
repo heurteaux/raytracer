@@ -16,7 +16,7 @@ extern "C" {
     RayTracer::IPrimitive *createPlugin()
     {
         RayTracer::IPrimitive *greenSphere = new RayTracer::Sphere(Math::Point3d(2, 0, -7), 1.0, "greenSphere");
-        RayTracer::Material greenMaterial(Math::Color(0.2, 1.0, 0.2));
+        RayTracer::Material greenMaterial(Color(0.2, 1.0, 0.2));
         greenSphere->setMaterial(greenMaterial);
         return greenSphere;
     }

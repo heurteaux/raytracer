@@ -15,7 +15,7 @@ extern "C" {
     RayTracer::IPrimitive *createPlugin()
     {
         RayTracer::IPrimitive *ground = new RayTracer::Plane(Math::Point3d(0, -1, 0), Math::Vector3d(0, 1, 0));
-        RayTracer::Material groundMaterial(Math::Color(0.5, 0.5, 0.5));
+        RayTracer::Material groundMaterial(Color(0.5, 0.5, 0.5));
         ground->setMaterial(groundMaterial);
         ground->setName("grayGround");
         return ground;

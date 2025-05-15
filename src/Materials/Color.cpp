@@ -7,7 +7,7 @@
 
 #include "Color.hpp"
 
-namespace Math
+namespace RayTracer
 {
     Color::Color() : r(0), g(0), b(0)
     {

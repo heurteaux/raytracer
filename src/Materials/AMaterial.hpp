@@ -1,0 +1,77 @@
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** Material.hpp
+*/
+
+#ifndef MATERIAL_HPP_
+#define MATERIAL_HPP_
+
+#include "IMaterial.hpp"
+
+namespace RayTracer {
+    class AMaterial : public IMaterial
+    {
+        public:
+            AMaterial()
+                : _color(0.0, 0.0, 0.0),
+                _ambientFactor(1.0),
+                _diffuseFactor(1.0),
+                _reflectivity(0.0),
+                _transparency(0.0),
+                _refractiveIndex(0.0) {}
+            AMaterial(const Color &color)
+                : _color(color),
+                _ambientFactor(1.0),
+                _diffuseFactor(1.0),
+                _reflectivity(0.0),
+                _transparency(0.0),
+                _refractiveIndex(0.0) {}
+            AMaterial(const Color &color, const double ambient, const double diffuse)
+                : _color(color),
+                _ambientFactor(ambient),
+                _diffuseFactor(diffuse),
+                _reflectivity(0.0),
+                _transparency(0.0),
+                _refractiveIndex(0.0) {}
+            AMaterial(const Color &color, const double ambient, const double diffuse, const double reflectivity, const double transparency, const double refractiveIndex)
+                : _color(color),
+                _ambientFactor(ambient),
+                _diffuseFactor(diffuse),
+                _reflectivity(reflectivity),
+                _transparency(transparency),
+                _refractiveIndex(refractiveIndex) {}
+            AMaterial(const Color &color, const double reflectivity, const double transparency, const double refractiveIndex)
+                : _color(color),
+                _reflectivity(reflectivity),
+                _transparency(transparency),
+                _refractiveIndex(refractiveIndex) {}
+
+            const Color &getColor() const { return _color; }
+            double getAmbientFactor() const { return _ambientFactor; }
+            double getDiffuseFactor() const { return _diffuseFactor; }
+            double getReflectivity() const { return _reflectivity; }
+            double getTransparency() const { return _transparency; }
+            double getRefractiveIndex() const { return _refractiveIndex; }
+
+            void setColor(const Color &c) { _color = c; }
+            void setAmbientFactor(double a) { _ambientFactor = a; }
+            void setDiffuseFactor(double d) { _diffuseFactor = d; }
+            void setReflectivity(double r) { _reflectivity = r; }
+            void setTransparency(double t) { _transparency = t; }
+            void setRefractiveIndex(double ri) { _refractiveIndex = ri; }
+
+        private:
+            Color _color;
+
+            double _ambientFactor;
+            double _diffuseFactor;
+
+            double _reflectivity;
+            double _transparency;
+            double _refractiveIndex;
+        };
+}
+
+#endif // MATERIAL_HPP_

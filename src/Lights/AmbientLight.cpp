@@ -8,9 +8,9 @@
 #include "AmbientLight.hpp"
 
 namespace RayTracer {
-    Math::Color AmbientLight::calculateLighting(const HitRecord &record,  UNUSED const std::vector<std::shared_ptr<IPrimitive>> &primitives) const
+    Color AmbientLight::calculateLighting(const HitRecord &record,  UNUSED const std::vector<std::shared_ptr<IPrimitive>> &primitives) const
     {
-        return record.material.getColor() *intensity;
+        return record.material->getColor() *intensity;
     }
 
     bool AmbientLight::isShadowed( UNUSED const Math::Point3d &point,  UNUSED const std::vector<std::shared_ptr<IPrimitive>> &primitives) const
