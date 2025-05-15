@@ -5,7 +5,7 @@
 ** Color
 */
 
-#include "Materials/Color.hpp"
+#include "Math/Color.hpp"
 #include <cmath>
 
 namespace Math

@@ -4,6 +4,7 @@ add_library(
     ../Math/Point3d.cpp
     ../Math/Rectangle3D.cpp
     ../Math/Vector3d.cpp
+    ../Math/Color.cpp
 )
 add_subdirectory(Shapes/Cylinder)
 add_subdirectory(Shapes/Plane)

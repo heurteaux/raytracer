@@ -228,7 +228,11 @@ namespace RayTracer
                 for (int j = 0; j < primitiveType.getLength(); j++) {
                     const libconfig::Setting &newPrim = primitiveType[primitiveType[j].getName()];
                     const std::shared_ptr<IPrimitiveFactory> factory = getPrimitiveFactory(primitiveType.getName());
-                    _primitives.push_back(factory->getFromParsing(newPrim));
+                    std::expected<std::unique_ptr<RayTracer::IPrimitive>, std::string>
+                        newPrimitive = factory->getFromParsing(newPrim);
+                    if (newPrimitive.has_value()) {
+                        _primitives.push_back(std::move(newPrimitive.value()));
+                    }
                 }
             }
         } catch (std::exception &e) {

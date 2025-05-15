@@ -10,7 +10,7 @@
 
 #include "Math/Vector3d.hpp"
 #include <vector>
-#include "Materials/Color.hpp"
+#include "Math/Color.hpp"
 #include "Core/HitRecord.hpp"
 
 namespace RayTracer {

@@ -9,6 +9,7 @@
 #define SPHEREFACTORY_HPP_
 
 #include "Primitives/IPrimitiveFactory.hpp"
+#include <expected>
 
 #define PRIMITIVE_NAME "sphere"
 
@@ -17,7 +18,7 @@ namespace SpherePlugin {
         public:
             SphereFactory() = default;
             ~SphereFactory() override = default;
-            std::unique_ptr<RayTracer::IPrimitive> getFromParsing(const libconfig::Setting &setting) const override;
+            std::expected<std::unique_ptr<RayTracer::IPrimitive>, std::string> getFromParsing(const libconfig::Setting &setting) const override;
             std::string getPrimitiveName() const override;
     };
 }

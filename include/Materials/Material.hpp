@@ -8,7 +8,7 @@
 #ifndef MATERIAL_HPP_
 #define MATERIAL_HPP_
 
-#include "Materials/Color.hpp"
+#include "Math/Color.hpp"
 
 namespace RayTracer {
     class Material
