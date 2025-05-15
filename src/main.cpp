@@ -27,6 +27,12 @@ int main(const int argc, UNUSED const char *argv[])
         return 84;
     }
     RayTracer::Scene scene(std::move(pluginLoader));
-    scene.loadConfig(argv[1]);
+    std::expected<void, RayTracer::Scene::Error> sceneLoadRes = scene.loadConfig(argv[1]);
+    if (!sceneLoadRes.has_value()) {
+        std::string msg = 
+            RayTracer::Scene::getErrorMsg(sceneLoadRes.error());
+        std::cerr << "ConfigFileError: " << msg << std::endl;
+        return 84;
+    }
     return scene.render("output.ppm");
 }

@@ -14,16 +14,15 @@
 #include <memory>
 
 namespace RayTracer {
-
-    class IPrimitive;
     /* forward declaration needed to avoid circular dependency */
+    class IPrimitive;
 
     struct HitRecord {
         double t;
         Math::Point3d point;
         Math::Vector3d normal;
         Material material;
-        std::shared_ptr<IPrimitive> primitive;
+        std::weak_ptr<IPrimitive> primitive;
     };
 }
 

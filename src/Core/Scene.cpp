@@ -123,7 +123,7 @@ namespace RayTracer
         /* 
          *  the scheme bellow is shitty and ugly, we must replace it
          *  with monadic operations like `.and_then()`
-         *  TODO: review or make it cleaner
+         *  TODO: make it cleaner
         */
         std::expected<void, RayTracer::Scene::Error> cameraResult = parseCamera(root["camera"]);
         if (!cameraResult.has_value()) {
@@ -151,17 +151,22 @@ namespace RayTracer
 
         // need to add resolution & field of view
 
-        if (setting.exists("position")) {
-            const libconfig::Setting &pos = setting["position"];
-            pos.lookupValue("x", position[0]);
-            pos.lookupValue("y", position[1]);
-            pos.lookupValue("z", position[2]);
+        try {
+            if (setting.exists("position")) {
+                const libconfig::Setting &pos = setting["position"];
+                pos.lookupValue("x", position[0]);
+                pos.lookupValue("y", position[1]);
+                pos.lookupValue("z", position[2]);
+            }
+            if (setting.exists("resolution")) {
+                const libconfig::Setting &pos = setting["resolution"];
+                pos.lookupValue("width", resolution[0]);
+                pos.lookupValue("height", resolution[1]);
+            }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::CAMERA_SYNTAX_ERROR);
         }
-        if (setting.exists("resolution")) {
-            const libconfig::Setting &pos = setting["resolution"];
-            pos.lookupValue("width", resolution[0]);
-            pos.lookupValue("height", resolution[1]);
-        }
+        
         setWidth(resolution[0]);
         setHeight(resolution[1]);
         setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2])));
@@ -174,15 +179,19 @@ namespace RayTracer
         auto primitives = getPrimitives();
         const libconfig::Setting &translations = setting["translation"];
 
-        for (int i = 0; i < translations.getLength(); i++) {
-            for (auto &prim : primitives) {
-                if (prim->getName() == translations[i].getName()) {
-                    translations[i].lookupValue("x", position[0]);
-                    translations[i].lookupValue("y", position[1]);
-                    translations[i].lookupValue("z", position[2]);
-                    prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+        try {
+            for (int i = 0; i < translations.getLength(); i++) {
+                for (auto &prim : primitives) {
+                    if (prim->getName() == translations[i].getName()) {
+                        translations[i].lookupValue("x", position[0]);
+                        translations[i].lookupValue("y", position[1]);
+                        translations[i].lookupValue("z", position[2]);
+                        prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+                    }
                 }
             }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::TRANSFORMATIONS_SYNTAX_ERROR);
         }
         return {};
     }
@@ -193,29 +202,37 @@ namespace RayTracer
         double diffuse = 0.0;
         int direction[3] = {0, 0, 0};
 
-        setting.lookupValue("ambient", ambient);
-        addLight(std::make_shared<AmbientLight>(ambient));
+        try {
+            setting.lookupValue("ambient", ambient);
+            addLight(std::make_shared<AmbientLight>(ambient));
 
-        setting.lookupValue("diffuse", diffuse);
-        // need to add Point
-        if (setting.exists("directional")) {
-            const libconfig::Setting &dir = setting["directional"];
-            dir.lookupValue("x", direction[0]);
-            dir.lookupValue("y", direction[1]);
-            dir.lookupValue("z", direction[2]);
+            setting.lookupValue("diffuse", diffuse);
+            // need to add Point
+            if (setting.exists("directional")) {
+                const libconfig::Setting &dir = setting["directional"];
+                dir.lookupValue("x", direction[0]);
+                dir.lookupValue("y", direction[1]);
+                dir.lookupValue("z", direction[2]);
+            }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::LIGHTS_SYNTAX_ERROR);
         }
         addLight(std::make_shared<DirectionalLight>(Math::Vector3d(direction[0], direction[1], direction[2]), diffuse));
         return {};
     }
 
     std::expected<void, Scene::Error> Scene::parsePrimitives(const libconfig::Setting &setting) {
-        for (int i = 0; i < setting.getLength(); i++) {
-            const libconfig::Setting &primitiveType = setting[setting[i].getName()];
-            for (int j = 0; j < primitiveType.getLength(); j++) {
-                const libconfig::Setting &newPrim = primitiveType[primitiveType[j].getName()];
-                const std::shared_ptr<IPrimitiveFactory> factory = getPrimitiveFactory(primitiveType);
-                _primitives.push_back(factory->getFromParsing(newPrim));
+        try {
+            for (int i = 0; i < setting.getLength(); i++) {
+                const libconfig::Setting &primitiveType = setting[setting[i].getName()];
+                for (int j = 0; j < primitiveType.getLength(); j++) {
+                    const libconfig::Setting &newPrim = primitiveType[primitiveType[j].getName()];
+                    const std::shared_ptr<IPrimitiveFactory> factory = getPrimitiveFactory(primitiveType.getName());
+                    _primitives.push_back(factory->getFromParsing(newPrim));
+                }
             }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::PRIMITIVES_SYNTAX_ERROR);
         }
         return {};
     }
@@ -227,5 +244,15 @@ namespace RayTracer
             }
         }
         return {};
+    }
+
+    std::string Scene::getErrorMsg(Error err) {
+        std::map<RayTracer::Scene::Error, std::string>::iterator it =
+            errorMsg.find(err);
+
+        if (it != errorMsg.end()) {
+            return errorMsg.at(err);
+        }
+        return std::string("unknown error");
     }
 }

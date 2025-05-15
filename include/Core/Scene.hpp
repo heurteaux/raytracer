@@ -23,12 +23,20 @@ namespace RayTracer {
         public:
             enum class Error {
                 CANNOT_READ_CONFIG_FILE,
-                SYNTAX_ERROR
+                SYNTAX_ERROR,
+                CAMERA_SYNTAX_ERROR,
+                PRIMITIVES_SYNTAX_ERROR,
+                LIGHTS_SYNTAX_ERROR,
+                TRANSFORMATIONS_SYNTAX_ERROR
             };
 
             static inline std::map<Error, std::string> errorMsg = {
                 {Error::CANNOT_READ_CONFIG_FILE, "I/O error while reading file"},
-                {Error::SYNTAX_ERROR, "Error in configuration file"}
+                {Error::SYNTAX_ERROR, "error in configuration file"},
+                {Error::CAMERA_SYNTAX_ERROR, "error while parsing camera settings"},
+                {Error::PRIMITIVES_SYNTAX_ERROR, "error while parsing primitives settings"},
+                {Error::LIGHTS_SYNTAX_ERROR, "error while parsing lights settings"},
+                {Error::TRANSFORMATIONS_SYNTAX_ERROR, "error while parsing transformations settings"}
             };
 
             Scene(std::unique_ptr<PluginLoader> pluginLoader);
@@ -49,6 +57,8 @@ namespace RayTracer {
             void setWidth(int width) { _width = width; }
             void setHeight(int height) { _height = height; }
             void setCamera(const std::shared_ptr<Camera> &cam);
+
+            static std::string getErrorMsg(Error err);
             
         private:
             std::shared_ptr<IPrimitiveFactory> getPrimitiveFactory(std::string primitiveType);
