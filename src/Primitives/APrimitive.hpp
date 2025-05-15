@@ -16,34 +16,33 @@
 #include <memory>
 
 namespace RayTracer {
-    class APrimitive : public IPrimitive {
+    class APrimitive : public IPrimitive
+    {
         public:
             APrimitive();
+            APrimitive(const APrimitive &other);
             APrimitive(const std::string &name);
             APrimitive(const std::string &name, const Math::Color &color);
             ~APrimitive() = default;
 
-            APrimitive(const APrimitive &other);
             APrimitive &operator=(const APrimitive &other);
 
-            void setName(const std::string &name) override;
+            void setName(const std::string &name) { _name = name; }
 
-            std::string getName() const override;
+            std::string getName() const { return _name; }
 
-            void translate(const Math::Vector3d &offset) override;
-
-            void setMaterial(const Material &material) override;
-            
-            virtual void rotate(const Math::Vector3d &angles) override;
+            void translate(const Math::Vector3d &offset);
+            void setMaterial(const Material &material) { _material = material; }
+            void rotate(const Math::Vector3d &angles);
+            void scale(const Math::Vector3d &factors);
 
         protected:
             std::string _name;
             Material _material;
             Math::Point3d _center;
-            
+
             void rotateVector(Math::Vector3d &vec, const Math::Vector3d &angles) const;
-            
-            void rotatePoint(Math::Point3d &pt, const Math::Point3d &center, const Math::Vector3d &angles) const;
+            void rotatePoint(const Math::Vector3d &angles);
 
     };
 }

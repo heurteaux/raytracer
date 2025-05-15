@@ -53,8 +53,6 @@ namespace RayTracer {
 
     void SceneLoader::parseTransformation(const libconfig::Setting &transSetting, std::shared_ptr<Scene> &scene)
     {
-        Math::Vector3d position(0, 0, 0);
-        Math::Vector3d rotation(0, 0, 0);
         auto primitives = scene->getPrimitives();
         
         if (transSetting.exists("translation")) {
@@ -62,6 +60,7 @@ namespace RayTracer {
             for (std::size_t i = 0; i < translations.getLength(); i++) {
                 for (auto &prim : primitives) {
                     if (prim->getName() == translations[i].getName()) {
+                        Math::Vector3d position(0.0, 0.0, 0.0);
                         translations[i].lookupValue("x", position.x);
                         translations[i].lookupValue("y", position.y);
                         translations[i].lookupValue("z", position.z);
@@ -76,10 +75,25 @@ namespace RayTracer {
             for (std::size_t i = 0; i < rotations.getLength(); i++) {
                 for (auto &prim : primitives) {
                     if (prim->getName() == rotations[i].getName()) {
+                        Math::Vector3d rotation(0.0, 0.0, 0.0);
                         rotations[i].lookupValue("x", rotation.x);
                         rotations[i].lookupValue("y", rotation.y);
                         rotations[i].lookupValue("z", rotation.z);
                         prim->rotate(rotation);
+                    }
+                }
+            }
+        }
+        if (transSetting.exists("scale")) {
+            const libconfig::Setting &scale = transSetting["scale"];
+            for (std::size_t i = 0; i < scale.getLength(); i++) {
+                for (auto &prim : primitives) {
+                    if (prim->getName() == scale[i].getName()) {
+                        Math::Vector3d scaleFact(0.0, 0.0, 0.0);
+                        scale[i].lookupValue("x", scaleFact.x);
+                        scale[i].lookupValue("y", scaleFact.y);
+                        scale[i].lookupValue("z", scaleFact.z);
+                        prim->scale(scaleFact);
                     }
                 }
             }

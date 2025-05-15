@@ -8,27 +8,29 @@
 #include "Cone.hpp"
 
 namespace RayTracer {
-    Cone::Cone(const Math::Point3d &base, const Math::Vector3d &axis, double radius)
-        : APrimitive("Cone"), base(base), axis(axis), radius(radius)
+    Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius)
+        : APrimitive("Cone"), axis(axis), radius(radius)
     {
-        startCone();
+        startCone(center);
     }
 
-    Cone::Cone(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const std::string &name)
-        : APrimitive(name), base(base), axis(axis), radius(radius)
+    Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const std::string &name)
+        : APrimitive(name), axis(axis), radius(radius)
     {
-        startCone();
+        startCone(center);
     }
 
-    Cone::Cone(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name)
-        : APrimitive(name, color), base(base), axis(axis), radius(radius)
+    Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name)
+        : APrimitive(name, color), axis(axis), radius(radius)
     {
-        startCone();
+        startCone(center);
     }
 
-    void Cone::startCone()
+    void Cone::startCone(const Math::Point3d &center)
     {
         double length = axis.length();
+
+        _center = center;
         if (length > 0) {
             this->axis = axis / length;
         }
@@ -36,7 +38,7 @@ namespace RayTracer {
 
     bool Cone::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
     {
-        Math::Vector3d oc(ray.origin.x - base.x, ray.origin.y - base.y, ray.origin.z - base.z);
+        Math::Vector3d oc(ray.origin.x - _center.x, ray.origin.y - _center.y, ray.origin.z - _center.z);
         double cosTheta = radius / axis.length();
         double cosTheta2 = cosTheta * cosTheta;
         
@@ -62,8 +64,8 @@ namespace RayTracer {
         
         if (t1 >= tMin && t1 <= tMax) {
             Math::Point3d hitPoint = ray.origin + ray.direction * t1;
-            Math::Vector3d hitToBase(hitPoint.x - base.x, hitPoint.y - base.y, hitPoint.z - base.z);
-            if (hitToBase.dot(v) > 0) {
+            Math::Vector3d hitTocenter(hitPoint.x - _center.x, hitPoint.y - _center.y, hitPoint.z - _center.z);
+            if (hitTocenter.dot(v) > 0) {
                 t = t1;
                 hasValidT = true;
             }
@@ -71,8 +73,8 @@ namespace RayTracer {
         
         if (!hasValidT && t2 >= tMin && t2 <= tMax) {
             Math::Point3d hitPoint = ray.origin + ray.direction * t2;
-            Math::Vector3d hitToBase(hitPoint.x - base.x, hitPoint.y - base.y, hitPoint.z - base.z);
-            if (hitToBase.dot(v) > 0) {
+            Math::Vector3d hitTocenter(hitPoint.x - _center.x, hitPoint.y - _center.y, hitPoint.z - _center.z);
+            if (hitTocenter.dot(v) > 0) {
                 t = t2;
                 hasValidT = true;
             }
@@ -84,18 +86,18 @@ namespace RayTracer {
         record.t = t;
         record.point = ray.origin + ray.direction * t;
         
-        Math::Vector3d hitToBase(
-            record.point.x - base.x,
-            record.point.y - base.y,
-            record.point.z - base.z
+        Math::Vector3d hitTocenter(
+            record.point.x - _center.x,
+            record.point.y - _center.y,
+            record.point.z - _center.z
         );
         
-        double projectionLength = hitToBase.dot(v);
+        double projectionLength = hitTocenter.dot(v);
         
         Math::Vector3d axisPoint(
-            base.x + v.x * projectionLength,
-            base.y + v.y * projectionLength,
-            base.z + v.z * projectionLength
+            _center.x + v.x * projectionLength,
+            _center.y + v.y * projectionLength,
+            _center.z + v.z * projectionLength
         );
         
         Math::Vector3d fromAxis(
@@ -116,6 +118,6 @@ namespace RayTracer {
     void Cone::rotate(const Math::Vector3d &angles)
     {
         rotateVector(axis, angles);
-        rotatePoint(base, _center, angles);
+        rotatePoint(angles);
     }
 }
