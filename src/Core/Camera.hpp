@@ -26,8 +26,8 @@ namespace RayTracer {
             ~Camera() = default;
 
             Ray ray(double u, double v) const override;
-            void rotate(Math::Point3d &origin, const Math::Vector3d &angles) override;
-            void updateScreen() override;
+            void rotate(Math::Point3d &origin, const Math::Vector3d &angles);
+            void updateScreen();
             
             void newDirection(const Math::Vector3d &angles, Math::Vector3d &forward, Math::Vector3d &right, Math::Vector3d &up);
 

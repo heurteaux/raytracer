@@ -20,9 +20,6 @@ namespace RayTracer {
 
             virtual Ray ray(double u, double v) const = 0;
             
-            virtual void rotate(Math::Point3d &origin, const Math::Vector3d &angles) = 0;
-            
-            virtual void updateScreen() = 0;
     };
 }
 
