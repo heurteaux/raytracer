@@ -18,16 +18,15 @@ int main(const int argc, UNUSED const char *argv[])
         std::cerr << "SCENE_FILE: scene configuration" << std::endl;
         return 84;
     }
-    RayTracer::PluginLoader pluginLoader("./plugins/");
-    std::expected<void, RayTracer::PluginLoader::Error> loadRes = pluginLoader.load();
+    std::unique_ptr<RayTracer::PluginLoader> pluginLoader = std::make_unique<RayTracer::PluginLoader>("./plugins/");
+    std::expected<void, RayTracer::PluginLoader::Error> loadRes = pluginLoader->load();
     if (!loadRes.has_value()) {
         std::string msg = 
             RayTracer::PluginLoader::getErrorMsg(loadRes.error());
         std::cerr << "PluginError: " << msg << std::endl;
         return 84;
     }
-    // std::shared_ptr<RayTracer::SceneLoader> sceneLoader = std::make_shared<RayTracer::SceneLoader>();
-    // std::shared_ptr<RayTracer::Scene> scene = std::make_shared<RayTracer::Scene>();
-    // sceneLoader->loadFromFile(argv[1], scene);
-    // return scene->render("output.ppm");
+    RayTracer::Scene scene(std::move(pluginLoader));
+    scene.loadConfig(argv[1]);
+    return scene.render("output.ppm");
 }

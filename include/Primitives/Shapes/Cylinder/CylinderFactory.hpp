@@ -10,13 +10,16 @@
 
 #include "Primitives/IPrimitiveFactory.hpp"
 
+#define PRIMITIVE_NAME "cylinder"
+
 namespace CylinderPlugin {
     class CylinderFactory: public RayTracer::IPrimitiveFactory {
         public:
             CylinderFactory() = default;
             ~CylinderFactory() override = default;
             std::unique_ptr<RayTracer::IPrimitive> getFromParsing(const libconfig::Setting &setting) const override;
-    };
+            std::string getPrimitiveName() const override;
+        };
 }
 
 #endif /* !CYLINDERFACTORY_HPP_ */

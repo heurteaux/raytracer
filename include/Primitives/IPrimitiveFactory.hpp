@@ -17,6 +17,7 @@ namespace RayTracer {
         public:
             virtual ~IPrimitiveFactory() = default;
             virtual std::unique_ptr<IPrimitive> getFromParsing(const libconfig::Setting &setting) const = 0;
+            virtual std::string getPrimitiveName() const;
     };
 }
 

@@ -29,9 +29,9 @@ namespace RayTracer {
         if (_pluginDirPath.empty())
             return std::unexpected(Error::EMPTY_PATH);
         if (!std::filesystem::exists(_pluginDirPath) ||
-            !std::filesystem::is_directory(_pluginDirPath))
+            !std::filesystem::is_directory(_pluginDirPath)) {
             return std::unexpected(Error::INVALID_PLUGINS_DIR);
-                _lights.clear();
+        }
         _primitives.clear();
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
@@ -73,14 +73,6 @@ namespace RayTracer {
 
     void PluginLoader::_storePlugin(std::unique_ptr<IPlugin> plugin) {
         switch (plugin->getPluginType()) {
-            case IPlugin::Type::Light: {
-                std::unique_ptr<ILight> lightPlugin = 
-                    std::get<std::unique_ptr<ILight>>(
-                        plugin->getPluginContainer()
-                    );
-                _lights.push_back(std::move(lightPlugin));
-                break;
-            }
             case IPlugin::Type::Shape: {
                 std::unique_ptr<IPrimitiveFactory> primitivePlugin = 
                     std::get<std::unique_ptr<IPrimitiveFactory>>(
@@ -89,11 +81,8 @@ namespace RayTracer {
                 _primitives.push_back(std::move(primitivePlugin));
                 break;
             }
+            /* add more cases here for more plugins */
         }
-    }
-
-    PluginLoader::LightHandlers &PluginLoader::getLights() {
-        return _lights;
     }
 
     PluginLoader::ShapeHandlers &PluginLoader::getShapes() {
@@ -101,7 +90,6 @@ namespace RayTracer {
     }
 
     PluginLoader::~PluginLoader() {
-        _lights.clear();
         _primitives.clear();
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);

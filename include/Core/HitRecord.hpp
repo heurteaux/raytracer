@@ -16,13 +16,14 @@
 namespace RayTracer {
 
     class IPrimitive;
+    /* forward declaration needed to avoid circular dependency */
 
     struct HitRecord {
         double t;
         Math::Point3d point;
         Math::Vector3d normal;
         Material material;
-        std::weak_ptr<IPrimitive> primitive;
+        std::shared_ptr<IPrimitive> primitive;
     };
 }
 

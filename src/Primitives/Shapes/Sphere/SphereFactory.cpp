@@ -15,4 +15,8 @@ namespace SpherePlugin {
     std::unique_ptr<RayTracer::IPrimitive> SphereFactory::getFromParsing(UNUSED const libconfig::Setting &setting) const {
         return std::make_unique<Sphere>();
     }
+
+    std::string SphereFactory::getPrimitiveName() const {
+        return PRIMITIVE_NAME;
+    }
 }

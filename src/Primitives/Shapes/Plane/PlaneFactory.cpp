@@ -15,4 +15,8 @@ namespace PlanePlugin {
     std::unique_ptr<RayTracer::IPrimitive> PlaneFactory::getFromParsing(UNUSED const libconfig::Setting &setting) const {
         return std::make_unique<Plane>();
     }
+
+    std::string PlaneFactory::getPrimitiveName() const {
+        return PRIMITIVE_NAME;
+    }
 }

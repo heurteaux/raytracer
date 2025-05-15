@@ -10,6 +10,8 @@
 
 #include "Primitives/IPrimitiveFactory.hpp"
 
+#define PRIMITIVE_NAME "plane"
+
 
 namespace PlanePlugin {
     class PlaneFactory: public RayTracer::IPrimitiveFactory {
@@ -17,7 +19,8 @@ namespace PlanePlugin {
             PlaneFactory() = default;
             ~PlaneFactory() override = default;
             std::unique_ptr<RayTracer::IPrimitive> getFromParsing(const libconfig::Setting &setting) const override;
-    };
+            std::string getPrimitiveName() const override;
+        };
 }
 
 #endif /* !PLANEFACTORY_HPP_ */

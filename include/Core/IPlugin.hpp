@@ -14,17 +14,15 @@
 #include "Primitives/IPrimitiveFactory.hpp"
 
 namespace RayTracer {
-    
     class IPlugin {
         public:
             using PluginContainer = std::variant<
-                std::unique_ptr<ILight>,
                 std::unique_ptr<IPrimitiveFactory>
                 /* TODO: add remaining plugin types here */
             >;
             
             enum class Type {
-                Light,
+                // Light,
                 Shape,
                 // Material,
                 // Camera,

@@ -34,7 +34,7 @@ namespace CylinderPlugin {
         }
     }
 
-    bool Cylinder::hit(UNUSED const Ray &ray, UNUSED double tMin, UNUSED double tMax, UNUSED HitRecord &record) const
+    bool Cylinder::hit(UNUSED const RayTracer::Ray &ray, UNUSED double tMin, UNUSED double tMax, UNUSED RayTracer::HitRecord &record) const
     {
         return false;
     }

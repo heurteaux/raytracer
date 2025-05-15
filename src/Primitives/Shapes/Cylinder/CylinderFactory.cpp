@@ -15,4 +15,8 @@ namespace CylinderPlugin {
     std::unique_ptr<RayTracer::IPrimitive> CylinderFactory::getFromParsing(UNUSED const libconfig::Setting &setting) const {
         return std::make_unique<Cylinder>();
     }
+
+    std::string CylinderFactory::getPrimitiveName() const {
+        return PRIMITIVE_NAME;
+    }
 }
