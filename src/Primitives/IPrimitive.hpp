@@ -27,6 +27,8 @@ namespace RayTracer {
             virtual void translate(const Math::Vector3d &offset) = 0;
             virtual void rotate(const Math::Vector3d &angles) = 0;
             virtual void scale(const Math::Vector3d &factors) = 0;
+            virtual void rotateVector(Math::Vector3d &vec, const Math::Vector3d &angles) const = 0;
+            virtual void rotatePoint(Math::Point3d &pt, const Math::Point3d &center, const Math::Vector3d &angles) const = 0;
             virtual void setMaterial(const Material &material) = 0;
             virtual void setName(const std::string &name) = 0;
             virtual std::string getName() const = 0;
@@ -45,6 +47,8 @@ namespace RayTracer {
         double transparency;
         double refraction;
         double reflection;
+        double height;
+        
     } primitiveData_t;
 }
 

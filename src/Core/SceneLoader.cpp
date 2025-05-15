@@ -148,6 +148,7 @@ namespace RayTracer {
         primData.radius = 0.0;
         primData.innerRadius = 0.0;
         primData.outerRadius = 0.0;
+        primData.height = -1.0;
         return primData;
     }
 
@@ -196,6 +197,7 @@ namespace RayTracer {
                 newPrim.lookupValue("transparency", lightData.transparency);
                 newPrim.lookupValue("refraction", lightData.refractiveIndex);
                 newPrim.lookupValue("reflection", lightData.reflectivity);
+                newPrim.lookupValue("height", primData.height);
 
                 primData.type = primType.getName();
                 primData.name = newPrim.getName();

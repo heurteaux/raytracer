@@ -26,7 +26,13 @@ namespace RayTracer {
         startCylinder(center);
     }
 
-    void Cylinder::startCylinder(const Math::Point3d &center)
+    Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name, double height)
+        : APrimitive(name, color), base(base), axis(axis), radius(radius), height(height)
+    {
+        startCylinder();
+    }
+
+    void Cylinder::startCylinder()
     {
         double length = axis.length();
 
@@ -50,13 +56,41 @@ namespace RayTracer {
             return false;
         
         double sqrt_d = std::sqrt(discriminant);
-        double t = (-b - sqrt_d) / (2.0 * a);
+        double t1 = (-b - sqrt_d) / (2.0 * a);
+        double t2 = (-b + sqrt_d) / (2.0 * a);
+        double t;
         
-        if (t < tMin || t > tMax) {
-            t = (-b + sqrt_d) / (2.0 * a);
-            if (t < tMin || t > tMax)
-                return false;
+        // Vérifier si les points d'intersection sont valides
+        bool found = false;
+        
+        // Essayer t1 d'abord
+        if (t1 >= tMin && t1 <= tMax) {
+            Math::Point3d hitPoint = ray.origin + ray.direction * t1;
+            Math::Vector3d hitToBase(hitPoint.x - base.x, hitPoint.y - base.y, hitPoint.z - base.z);
+            double projection = hitToBase.dot(axis);
+            
+            // Vérifier si l'intersection est dans les limites de hauteur
+            if (height < 0 || (projection >= 0 && projection <= height)) {
+                t = t1;
+                found = true;
+            }
         }
+        
+        // Essayer t2 si t1 n'est pas valide
+        if (!found && t2 >= tMin && t2 <= tMax) {
+            Math::Point3d hitPoint = ray.origin + ray.direction * t2;
+            Math::Vector3d hitToBase(hitPoint.x - base.x, hitPoint.y - base.y, hitPoint.z - base.z);
+            double projection = hitToBase.dot(axis);
+            
+            // Vérifier si l'intersection est dans les limites de hauteur
+            if (height < 0 || (projection >= 0 && projection <= height)) {
+                t = t2;
+                found = true;
+            }
+        }
+        
+        if (!found)
+            return false;
         
         record.t = t;
         record.point = ray.origin + ray.direction * t;
@@ -80,7 +114,10 @@ namespace RayTracer {
 
     void Cylinder::rotate(const Math::Vector3d &angles)
     {
+        std::cout << "Rotating cylinder: " << angles.x << ", " << angles.y << ", " << angles.z << std::endl;
         rotateVector(axis, angles);
-        rotatePoint(angles);
+        rotatePoint(base, _center, angles);
+        
+    
     }
 }

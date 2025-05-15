@@ -23,8 +23,15 @@ namespace RayTracer {
             plane->setMaterial(material);
             return plane;
         }
-        if (primData.type == "cylinder") {
-            std::shared_ptr<Cylinder> cylinder = std::make_shared<Cylinder>(primData.position, primData.axis, primData.radius, primData.color, primData.name);
+        if (primData.type == "cylinder" || primData.type == "cylinderLimit") {
+            double height = 0.0;
+            
+            if (primData.type == "cylinderLimit") {
+                height = primData.height;  // Utiliser la hauteur parsée au lieu d'une valeur hard-codée
+                std::cout << "Cylinder with height: " << height << std::endl;
+            }
+
+            std::shared_ptr<Cylinder> cylinder = std::make_shared<Cylinder>(primData.position, primData.axis, primData.radius, primData.color, primData.name, height);
             Material material(primData.color, lightData.reflectivity, lightData.transparency, lightData.refractiveIndex);
             cylinder->setMaterial(material);
             return cylinder;
