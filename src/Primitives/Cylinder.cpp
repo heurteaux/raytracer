@@ -9,30 +9,30 @@
 
 namespace RayTracer {
     Cylinder::Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius)
-        : APrimitive("cylinder"), axis(axis), _radius(radius)
+        : APrimitive("cylinder"), _base(center), axis(axis), _radius(radius)
     {
         startCylinder(center);
     }
 
     Cylinder::Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const std::string &name)
-        : APrimitive(name), axis(axis), _radius(radius)
+        : APrimitive(name), _base(center), axis(axis), _radius(radius)
     {
         startCylinder(center);
     }
 
     Cylinder::Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name)
-        : APrimitive(name, color), axis(axis), _radius(radius)
+        : APrimitive(name, color), _base(center), axis(axis), _radius(radius)
     {
         startCylinder(center);
     }
 
     Cylinder::Cylinder(const Math::Point3d &base, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name, double height)
-        : APrimitive(name, color), base(base), axis(axis), radius(radius), height(height)
+        : APrimitive(name, color), _base(base), axis(axis), _radius(radius), height(height)
     {
-        startCylinder();
+        startCylinder(_center);
     }
 
-    void Cylinder::startCylinder()
+    void Cylinder::startCylinder(const Math::Point3d &center)
     {
         double length = axis.length();
 
@@ -60,29 +60,24 @@ namespace RayTracer {
         double t2 = (-b + sqrt_d) / (2.0 * a);
         double t;
         
-        // Vérifier si les points d'intersection sont valides
         bool found = false;
         
-        // Essayer t1 d'abord
         if (t1 >= tMin && t1 <= tMax) {
             Math::Point3d hitPoint = ray.origin + ray.direction * t1;
-            Math::Vector3d hitToBase(hitPoint.x - base.x, hitPoint.y - base.y, hitPoint.z - base.z);
+            Math::Vector3d hitToBase(hitPoint.x - _base.x, hitPoint.y - _base.y, hitPoint.z - _base.z);
             double projection = hitToBase.dot(axis);
             
-            // Vérifier si l'intersection est dans les limites de hauteur
             if (height < 0 || (projection >= 0 && projection <= height)) {
                 t = t1;
                 found = true;
             }
         }
         
-        // Essayer t2 si t1 n'est pas valide
         if (!found && t2 >= tMin && t2 <= tMax) {
             Math::Point3d hitPoint = ray.origin + ray.direction * t2;
-            Math::Vector3d hitToBase(hitPoint.x - base.x, hitPoint.y - base.y, hitPoint.z - base.z);
+            Math::Vector3d hitToBase(hitPoint.x - _base.x, hitPoint.y - _base.y, hitPoint.z - _base.z);
             double projection = hitToBase.dot(axis);
             
-            // Vérifier si l'intersection est dans les limites de hauteur
             if (height < 0 || (projection >= 0 && projection <= height)) {
                 t = t2;
                 found = true;
@@ -116,8 +111,6 @@ namespace RayTracer {
     {
         std::cout << "Rotating cylinder: " << angles.x << ", " << angles.y << ", " << angles.z << std::endl;
         rotateVector(axis, angles);
-        rotatePoint(base, _center, angles);
-        
-    
+        rotatePoint(angles);
     }
 }

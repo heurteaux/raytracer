@@ -26,11 +26,13 @@ namespace RayTracer
             Cylinder (const Math::Point3d &base, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name, double height);
             
             bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const;
+            void rotate(const Math::Vector3d &angles);
 
         private:
             void startCylinder(const Math::Point3d &center);
+            Math::Point3d _base;   // Ajout du membre _base
             Math::Vector3d axis;
-            double radius;
+            double _radius;
             double height = -1; // -1 signifie un cylindre infini
     };
 }

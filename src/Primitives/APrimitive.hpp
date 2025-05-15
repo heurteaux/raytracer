@@ -27,21 +27,22 @@ namespace RayTracer {
 
             APrimitive &operator=(const APrimitive &other);
 
-            void setName(const std::string &name) { _name = name; }
+            void setName(const std::string &name) override { _name = name; }
 
-            std::string getName() const { return _name; }
+            std::string getName() const override { return _name; }
 
-            void translate(const Math::Vector3d &offset);
-            void setMaterial(const Material &material) { _material = material; }
-            void rotate(const Math::Vector3d &angles);
-            void scale(const Math::Vector3d &factors);
+            void translate(const Math::Vector3d &offset) override;
+            void setMaterial(const Material &material) override { _material = material; }
+            void rotate(const Math::Vector3d &angles) override;
+            void scale(const Math::Vector3d &factors) override;
 
         protected:
             std::string _name;
             Material _material;
             Math::Point3d _center;
 
-            void rotateVector(Math::Vector3d &vec, const Math::Vector3d &angles) const;
+            void rotateVector(Math::Vector3d &vec, const Math::Vector3d &angles) const override;
+            void rotatePoint(Math::Point3d &pt, const Math::Point3d &center, const Math::Vector3d &angles) const override;
             void rotatePoint(const Math::Vector3d &angles);
     };
 }

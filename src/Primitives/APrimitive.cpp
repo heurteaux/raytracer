@@ -107,4 +107,40 @@ namespace RayTracer {
     void APrimitive::rotate(const Math::Vector3d &angles)
     {
     }
+    
+    void APrimitive::rotatePoint(Math::Point3d &pt, const Math::Point3d &center, const Math::Vector3d &angles) const
+    {
+        // Translater le point pour que le centre de rotation soit à l'origine
+        Math::Vector3d translated(pt.x - center.x, pt.y - center.y, pt.z - center.z);
+        
+        // Appliquer les rotations
+        if (angles.y != 0) {
+            double theta = angles.y * M_PI / 180.0;
+            double nx = translated.x * cos(theta) - translated.z * sin(theta);
+            double nz = translated.x * sin(theta) + translated.z * cos(theta);
+            translated.x = nx;
+            translated.z = nz;
+        }
+        
+        if (angles.x != 0) {
+            double theta = angles.x * M_PI / 180.0;
+            double ny = translated.y * cos(theta) - translated.z * sin(theta);
+            double nz = translated.y * sin(theta) + translated.z * cos(theta);
+            translated.y = ny;
+            translated.z = nz;
+        }
+        
+        if (angles.z != 0) {
+            double theta = angles.z * M_PI / 180.0;
+            double nx = translated.x * cos(theta) - translated.y * sin(theta);
+            double ny = translated.x * sin(theta) + translated.y * cos(theta);
+            translated.x = nx;
+            translated.y = ny;
+        }
+        
+        // Retranslater pour revenir au centre d'origine
+        pt.x = translated.x + center.x;
+        pt.y = translated.y + center.y;
+        pt.z = translated.z + center.z;
+    }
 }
