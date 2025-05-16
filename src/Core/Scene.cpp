@@ -90,24 +90,24 @@ namespace RayTracer
         return std::pow(std::max(0.0, viewDir.dot(reflectDir)), shininess);
     }
     
-    Math::Color Scene::calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Math::Color &lightColor) const
+    Color Scene::calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Color &lightColor) const
     {
         double diff = std::max(0.0, hit.normal.dot(lightDir));
 
-        return lightColor * hit.material.getColor() * diff * hit.material.getDiffuseFactor();
+        return lightColor * hit.material->getColor() * diff * hit.material->getDiffuseFactor();
     }
 
-    Math::Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const
+    Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const
     {
-        Math::Color ambient = hit.material.getColor() * hit.material.getAmbientFactor();
-        Math::Color diffuse(0, 0, 0);
-        Math::Color specular(0, 0, 0);
+        Color ambient = hit.material->getColor() * hit.material->getAmbientFactor();
+        Color diffuse(0, 0, 0);
+        Color specular(0, 0, 0);
 
         const double shininess = 240.0;
         
         if (auto directionalLight = std::dynamic_pointer_cast<DirectionalLight>(light)) {
             Math::Vector3d lightDir = directionalLight->getDirection().normalized() * (-1);
-            Math::Color lightColor = Math::Color(1.0, 1.0, 1.0) * directionalLight->getIntensity();
+            Color lightColor = Color(1.0, 1.0, 1.0) * directionalLight->getIntensity();
             // (loi de Lambert)
             diffuse = diffuse + calculateDiffuse(lightDir, hit, lightColor);
             // (Phong)
@@ -116,7 +116,7 @@ namespace RayTracer
         return ambient + diffuse + specular;
     }
 
-    Math::Color Scene::lightEffects(Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const
+    Color Scene::lightEffects(Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const
     {
         Color reflectedColor(0, 0, 0);
         Color refractedColor(0, 0, 0);
