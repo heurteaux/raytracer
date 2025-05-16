@@ -28,7 +28,8 @@ namespace RayTracer {
                 CAMERA_SYNTAX_ERROR,
                 PRIMITIVES_SYNTAX_ERROR,
                 LIGHTS_SYNTAX_ERROR,
-                TRANSFORMATIONS_SYNTAX_ERROR
+                TRANSFORMATIONS_SYNTAX_ERROR,
+                UNKNOWN_PRIMITIVE
             };
 
             static inline std::map<Error, std::string> errorMsg = {
@@ -37,7 +38,8 @@ namespace RayTracer {
                 {Error::CAMERA_SYNTAX_ERROR, "error while parsing camera settings"},
                 {Error::PRIMITIVES_SYNTAX_ERROR, "error while parsing primitives settings"},
                 {Error::LIGHTS_SYNTAX_ERROR, "error while parsing lights settings"},
-                {Error::TRANSFORMATIONS_SYNTAX_ERROR, "error while parsing transformations settings"}
+                {Error::TRANSFORMATIONS_SYNTAX_ERROR, "error while parsing transformations settings"},
+                {Error::UNKNOWN_PRIMITIVE, "error while parsing primitives, unknown given primitive"}
             };
 
             Scene(std::unique_ptr<PluginLoader> pluginLoader);
@@ -69,7 +71,7 @@ namespace RayTracer {
             static std::string getErrorMsg(Error err);
             
         private:
-            std::shared_ptr<IPrimitiveFactory> getPrimitiveFactory(std::string primitiveType);
+            std::optional<std::shared_ptr<IPrimitiveFactory>> getPrimitiveFactory(std::string primitiveType);
             std::expected<void, Error> parseCamera(const libconfig::Setting &setting);
             std::expected<void, Error> parsePrimitives(const libconfig::Setting &setting);
             std::expected<void, Error> parseTransformation(const libconfig::Setting &setting);

@@ -318,9 +318,12 @@ namespace RayTracer
                 const libconfig::Setting &primitiveType = setting[setting[i].getName()];
                 for (int j = 0; j < primitiveType.getLength(); j++) {
                     const libconfig::Setting &newPrim = primitiveType[primitiveType[j].getName()];
-                    const std::shared_ptr<IPrimitiveFactory> factory = getPrimitiveFactory(primitiveType.getName());
+                    const std::optional<std::shared_ptr<IPrimitiveFactory>> factory = getPrimitiveFactory(primitiveType.getName());
+                    if (!factory.has_value()) {
+                        return std::unexpected(Error::UNKNOWN_PRIMITIVE);
+                    }
                     std::expected<std::unique_ptr<RayTracer::IPrimitive>, std::string>
-                        newPrimitive = factory->getFromParsing(newPrim);
+                        newPrimitive = factory.value()->getFromParsing(newPrim);
                     if (newPrimitive.has_value()) {
                         _primitives.push_back(std::move(newPrimitive.value()));
                     }
@@ -332,13 +335,13 @@ namespace RayTracer
         return {};
     }
 
-    std::shared_ptr<IPrimitiveFactory> Scene::getPrimitiveFactory(std::string primitiveType) {
+    std::optional<std::shared_ptr<IPrimitiveFactory>> Scene::getPrimitiveFactory(std::string primitiveType) {
         for (std::shared_ptr<RayTracer::IPrimitiveFactory> primitive: _pluginLoader->getShapes()) {
             if (primitive->getPrimitiveName() == primitiveType) {
-                return primitive;
+                return {primitive};
             }
         }
-        return {};
+        return std::nullopt;
     }
 
     std::string Scene::getErrorMsg(Error err) {
