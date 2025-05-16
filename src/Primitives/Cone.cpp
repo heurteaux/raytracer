@@ -20,7 +20,7 @@ namespace RayTracer {
         startCone(center);
     }
 
-    Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name)
+    Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Color color, const std::string &name)
         : APrimitive(name, color), _axis(axis), _radius(radius)
     {
         startCone(center);

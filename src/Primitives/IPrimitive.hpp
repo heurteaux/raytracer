@@ -10,8 +10,9 @@
 
 #include "../Math/Point3d.hpp"
 #include "../Math/Vector3d.hpp"
-#include "../Materials/Material.hpp"
+#include "../Materials/IMaterial.hpp"
 #include <string>
+#include <memory>
 
 namespace RayTracer {
 
@@ -27,7 +28,7 @@ namespace RayTracer {
             virtual void translate(const Math::Vector3d &offset) = 0;
             virtual void rotate(const Math::Vector3d &angles) = 0;
             virtual void scale(const double factors) = 0;
-            virtual void setMaterial(const Material &material) = 0;
+            virtual void setMaterial(const std::shared_ptr<IMaterial> &material) = 0;
             virtual void setName(const std::string &name) = 0;
             virtual std::string getName() const = 0;
     };
@@ -36,7 +37,7 @@ namespace RayTracer {
         std::string type;
         std::string name;
         Math::Point3d position;
-        Math::Color color;
+        Color color;
         Math::Vector3d normal;
         Math::Vector3d axis;    
         double radius;

@@ -38,7 +38,7 @@ namespace RayTracer {
                 
             int render(const std::string &filename) const;
     
-            void writeColor(std::ofstream &out, const Math::Color &color) const;
+            void writeColor(std::ofstream &out, const Color &color) const;
     
             void setWidth(int width) { _width = width; }
             int getWidth() const { return _width; }
@@ -46,8 +46,8 @@ namespace RayTracer {
             void setHeight(int height) { _height = height; }
             int getHeight() const { return _height; }
 
-            Math::Color traceRay(const Ray &ray, int depth) const;
-            Math::Color lightEffects(Math::Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const;
+            Color traceRay(const Ray &ray, int depth) const;
+            Color lightEffects(Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const;
             Math::Color phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const;
             double calculateSpecular(const Math::Vector3d &lightDir, const Math::Vector3d &normal, const Math::Vector3d &viewDir, double shininess) const;
             Math::Color calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Math::Color &lightColor) const;

@@ -20,7 +20,7 @@ namespace RayTracer {
         startCylinder(center);
     }
 
-    Cylinder::Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name)
+    Cylinder::Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Color color, const std::string &name)
         : APrimitive(name, color), axis(axis), _radius(radius)
     {
         startCylinder(center);

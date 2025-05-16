@@ -13,7 +13,7 @@
 #include "Math/Vector3d.hpp"
 #include "Primitives/Sphere.hpp"
 #include "Primitives/IPrimitive.hpp"
-#include "Materials/Material.hpp"
+#include "Materials/IMaterial.hpp"
 #include "Lights/ILight.hpp"
 #include <iostream>
 #include <vector>
