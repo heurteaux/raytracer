@@ -31,6 +31,8 @@
 #include <filesystem>
 #include <thread>
 
+#include "PPMLoader.hpp"
+
 
 int main(const int argc, const char *argv[])
 {
@@ -43,5 +45,8 @@ int main(const int argc, const char *argv[])
     std::shared_ptr<RayTracer::Scene> scene = std::make_shared<RayTracer::Scene>();
     sceneLoader->instancePluginsFromDir("plugins", scene);
     sceneLoader->loadFromFile(argv[1], scene);
-    return scene->render("output.ppm");
+    scene->render("output.ppm");
+    RayTracer::PPMLoader loader;
+    loader.display(loader.loadFromFile("output.ppm"));
+    return 0;
 }
