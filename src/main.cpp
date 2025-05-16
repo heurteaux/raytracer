@@ -11,7 +11,7 @@
 #include "Core/HitRecord.hpp"
 #include "Math/Point3d.hpp"
 #include "Math/Vector3d.hpp"
-#include "Primitives/Sphere.hpp"
+#include "Primitives/Shapes/Sphere/Sphere.hpp"
 #include "Primitives/IPrimitive.hpp"
 #include "Materials/IMaterial.hpp"
 #include "Lights/ILight.hpp"
@@ -22,18 +22,16 @@
 #include "Core/PluginLoader.hpp"
 #include <string>
 #include <cmath>
-#include "Primitives/Plane.hpp"
+#include "Primitives/Shapes/Plane/Plane.hpp"
 #include "Lights/DirectionalLight.hpp"
 #include "Lights/AmbientLight.hpp"
 #include "Exception/Exception.hpp"
-#include "Core/SceneLoader.hpp"
-#include "Core/DLLoader.hpp"
 #include "Primitives/IPrimitive.hpp"
 
 #include <filesystem>
 #include <thread>
 
-#include "PPMLoader.hpp"
+#include "Core/PPMLoader.hpp"
 #include "Materials/ChessBoard.hpp"
 
 

@@ -14,13 +14,13 @@ namespace PlanePlugin {
         startPlane(center);
     }
 
-    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal, const Color &color)
+    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal, const Math::Color &color)
         : APrimitive("plane", color), normal(normal)
     {
         startPlane(center);
     }
 
-    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal, const Color &color, const std::string &name)
+    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal, const Math::Color &color, const std::string &name)
         : APrimitive(name, color), normal(normal)
     {
         startPlane(center);

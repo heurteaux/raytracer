@@ -30,7 +30,7 @@ namespace SpherePlugin {
         _radius = radius;
     }
 
-    Sphere::Sphere(const Math::Point3d &center, double radius, const Color color, const std::string &name)
+    Sphere::Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name)
         : APrimitive(name, color)
     {
         _center = center;

@@ -8,9 +8,9 @@
 #ifndef COLOR_HPP_
 #define COLOR_HPP_
 
-namespace RayTracer {
-    class Color {
-
+namespace Math {
+    class Color
+    {
         public:
             /* Constructors */
             Color() = default;

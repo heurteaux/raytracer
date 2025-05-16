@@ -20,7 +20,7 @@ namespace RayTracer
         _width(0), _height(0)
     {}
 
-    void Scene::writeColor(std::ofstream &out, const Color &color) const
+    void Scene::writeColor(std::ofstream &out, const Math::Color &color) const
     {
         int r = static_cast<int>(255.99 * std::min(1.0, color.r));
         int g = static_cast<int>(255.99 * std::min(1.0, color.g));
@@ -83,32 +83,31 @@ namespace RayTracer
         return (Rs * Rs + Rp * Rp) / 2.0;
     }
 
-    double Scene::calculateSpecular(const Math::Vector3d &lightDir, const Math::Vector3d &normal, 
-        const Math::Vector3d &viewDir, double shininess) const
+    double Scene::calculateSpecular(const Math::Vector3d &lightDir, const Math::Vector3d &normal, const Math::Vector3d &viewDir, double shininess) const
     {
         Math::Vector3d reflectDir = reflection(Math::Vector3d(-lightDir.x, -lightDir.y, -lightDir.z), normal).normalized();
 
         return std::pow(std::max(0.0, viewDir.dot(reflectDir)), shininess);
     }
     
-    Color Scene::calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Color &lightColor) const
+    Math::Color Scene::calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Math::Color &lightColor) const
     {
         double diff = std::max(0.0, hit.normal.dot(lightDir));
 
         return lightColor * hit.material->getColor() * diff * hit.material->getDiffuseFactor();
     }
 
-    Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const
+    Math::Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const
     {
-        Color ambient = hit.material->getColorAt(hit.point) * hit.material->getAmbientFactor();
-        Color diffuse(0, 0, 0);
-        Color specular(0, 0, 0);
+        Math::Color ambient = hit.material->getColorAt(hit.point) * hit.material->getAmbientFactor();
+        Math::Color diffuse(0, 0, 0);
+        Math::Color specular(0, 0, 0);
 
         const double shininess = 240.0;
         
         if (auto directionalLight = std::dynamic_pointer_cast<DirectionalLight>(light)) {
             Math::Vector3d lightDir = directionalLight->getDirection().normalized() * (-1);
-            Color lightColor = Color(1.0, 1.0, 1.0) * directionalLight->getIntensity();
+            Math::Color lightColor = Math::Color(1.0, 1.0, 1.0) * directionalLight->getIntensity();
             // (loi de Lambert)
             diffuse = diffuse + calculateDiffuse(lightDir, hit, lightColor);
             // (Phong)
@@ -117,10 +116,10 @@ namespace RayTracer
         return ambient + diffuse + specular;
     }
 
-    Color Scene::lightEffects(Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const
+    Math::Color Scene::lightEffects(Math::Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const
     {
-        Color reflectedColor(0, 0, 0);
-        Color refractedColor(0, 0, 0);
+        Math::Color reflectedColor(0, 0, 0);
+        Math::Color refractedColor(0, 0, 0);
         double reflectivity = closestHit.material->getReflectivity();
         double transparency = closestHit.material->getTransparency();
         double sum = reflectivity + transparency;
@@ -158,8 +157,8 @@ namespace RayTracer
             }
 
             if (transparency > 0.0) {
-                Color objectColor = closestHit.material->getColor();
-                refractedColor = Color(
+                Math::Color objectColor = closestHit.material->getColor();
+                refractedColor = Math::Color(
                     refractedColor.r * (0.5 + 0.3 * objectColor.r),
                     refractedColor.g * (0.5 + 0.3 * objectColor.g),
                     refractedColor.b * (0.5 + 0.3 * objectColor.b)
@@ -172,10 +171,10 @@ namespace RayTracer
         return pixel;
     }
 
-    Color Scene::traceRay(const Ray &ray, int depth) const
+    Math::Color Scene::traceRay(const Ray &ray, int depth) const
     {
         if (depth <= 0)
-            return Color(0, 0, 0);
+            return Math::Color(0, 0, 0);
 
         HitRecord closestHit;
         bool hitAnything = false;
@@ -192,7 +191,7 @@ namespace RayTracer
 
         if (hitAnything)
         {
-            Color pixel(0, 0, 0);
+            Math::Color pixel(0, 0, 0);
 
             for (const auto &light : _lights) {
                 if (!light->isShadowed(closestHit.point, _primitives)) {
@@ -204,8 +203,7 @@ namespace RayTracer
         } else {
             // back ground
             double t = 0.5 * (ray.direction.y + 1.0);
-            Color pixel = Color(1.0, 1.0, 1.0) * (1.0 - t) + Color(0.5, 0.7, 1.0) * t;
-            return pixel;
+            return Math::Color(1.0, 1.0, 1.0) * (1.0 - t) + Math::Color(0.5, 0.7, 1.0) * t;
         }
     }
 

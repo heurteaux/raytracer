@@ -20,7 +20,7 @@ namespace RayTracer
             DirectionalLight(const Math::Vector3d &direction, double intensity);
             ~DirectionalLight() = default;
 
-            Color calculateLighting(const RayTracer::HitRecord &record, const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const override;
+            Math::Color calculateLighting(const RayTracer::HitRecord &record, const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const override;
 
             bool isShadowed(const Math::Point3d &point, const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const override;
             
@@ -29,6 +29,7 @@ namespace RayTracer
             
             Math::Vector3d getDirection() const { return direction; }
             double getIntensity() const { return intensity; }
+
         private:
             Math::Vector3d direction;
             double intensity;

@@ -5,7 +5,7 @@
 ** PPMLoader.cpp
 */
 
-#include "PPMLoader.hpp"
+#include "Core/PPMLoader.hpp"
 
 namespace RayTracer {
 

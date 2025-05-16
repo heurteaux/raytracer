@@ -8,7 +8,7 @@
 #include "Lights/AmbientLight.hpp"
 
 namespace RayTracer {
-    Color AmbientLight::calculateLighting(const HitRecord &record,  UNUSED const std::vector<std::shared_ptr<IPrimitive>> &primitives) const
+    Math::Color AmbientLight::calculateLighting(const HitRecord &record,  UNUSED const std::vector<std::shared_ptr<IPrimitive>> &primitives) const
     {
         return record.material->getColor() *intensity;
     }

@@ -11,15 +11,15 @@
 namespace RayTracer {
 
     APrimitive::APrimitive()
-        : _name(""), _material(std::make_shared<AMaterial>()), _center(Math::Point3d(0, 0, 0))
+        : _name(""), _material(std::make_shared<Material>()), _center(Math::Point3d(0, 0, 0))
     {}
 
-    APrimitive::APrimitive(const std::string &name, const Color &color)
-        : _name(name), _material(std::make_shared<AMaterial>(color)), _center(Math::Point3d(0, 0, 0))
+    APrimitive::APrimitive(const std::string &name, const Math::Color &color)
+        : _name(name), _material(std::make_shared<Material>(color)), _center(Math::Point3d(0, 0, 0))
     {}
 
     APrimitive::APrimitive(const std::string &name)
-        : _name(name), _material(std::make_shared<AMaterial>()), _center(Math::Point3d(0, 0, 0))
+        : _name(name), _material(std::make_shared<Material>()), _center(Math::Point3d(0, 0, 0))
     {}
 
     APrimitive::APrimitive(const APrimitive &other)

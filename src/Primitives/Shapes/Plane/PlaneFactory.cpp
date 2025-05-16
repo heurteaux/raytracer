@@ -88,10 +88,10 @@ namespace PlanePlugin {
             std::unique_ptr<Plane> plane = std::make_unique<Plane>(point, normal, color, name);
 
             // Create and set material with all properties
-            RayTracer::Material material(color);
-            material.setTransparency(transparency);
-            material.setRefractiveIndex(refraction);
-            material.setReflectivity(reflection);
+            std::shared_ptr<RayTracer::Material> material = std::make_shared<RayTracer::Material>(color);
+            material->setTransparency(transparency);
+            material->setRefractiveIndex(refraction);
+            material->setReflectivity(reflection);
             plane->setMaterial(material);
 
             return plane;
