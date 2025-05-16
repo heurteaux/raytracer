@@ -68,6 +68,13 @@ namespace CylinderPlugin {
             } else {
                 cylinder = std::make_unique<Cylinder>(base, axis, radius, name);
             }
+
+            if (setting.exists("shininess")) {
+                double shininess = 1000.0;
+                setting.lookupValue("shininess", shininess);
+                cylinder->setMaterial(std::make_shared<RayTracer::Material>(color, shininess));
+            }
+
             return cylinder;
         } catch (const libconfig::SettingTypeException &e) {
             return std::unexpected(std::string("Cylinder: Type error in configuration: ") + e.what());

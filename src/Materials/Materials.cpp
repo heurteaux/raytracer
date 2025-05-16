@@ -10,74 +10,43 @@
 namespace RayTracer {
     Material::Material()
         : _color(0.0, 0.0, 0.0),
-          _ambientFactor(1.0),
-          _diffuseFactor(1.0),
           _reflectivity(0.0),
           _transparency(0.0),
           _refractiveIndex(0.0),
-          _specularFactor(0.0)
+          _shininessFactor(1000.0)
     {}
 
     Material::Material(const Math::Color &color)
         : _color(color),
-          _ambientFactor(1.0),
-          _diffuseFactor(1.0),
           _reflectivity(0.0),
           _transparency(0.0),
           _refractiveIndex(0.0),
-          _specularFactor(0.0)
+          _shininessFactor(1000.0)
     {}
 
-    Material::Material(const Math::Color &color, const double ambient, const double diffuse)
+    Material::Material(const Math::Color &color, const double shininess)
         : _color(color),
-          _ambientFactor(ambient),
-          _diffuseFactor(diffuse),
           _reflectivity(0.0),
           _transparency(0.0),
           _refractiveIndex(0.0),
-          _specularFactor(0.0)
+          _shininessFactor(shininess)
     {}
 
-    Material::Material(const Math::Color &color, const double ambient, const double diffuse, 
-            const double reflectivity, const double transparency, const double refractiveIndex)
+    Material::Material(const Math::Color &color, const double reflectivity,
+      const double transparency, const double refractiveIndex)
         : _color(color),
-          _ambientFactor(ambient),
-          _diffuseFactor(diffuse),
           _reflectivity(reflectivity),
           _transparency(transparency),
           _refractiveIndex(refractiveIndex),
-          _specularFactor(0.0)
+          _shininessFactor(1000.0)
     {}
 
-    Material::Material(const Math::Color &color, const double ambient, const double diffuse, 
-      const double reflectivity, const double transparency, const double refractiveIndex, const double specular)
-      : _color(color),
-        _ambientFactor(ambient),
-        _diffuseFactor(diffuse),
-        _reflectivity(reflectivity),
-        _transparency(transparency),
-        _refractiveIndex(refractiveIndex),
-        _specularFactor(specular)
-    {}
-
-    Material::Material(const Math::Color &color, const double reflectivity, 
-            const double transparency, const double refractiveIndex)
-        : _color(color),
-          _ambientFactor(1.0),
-          _diffuseFactor(1.0),
-          _reflectivity(reflectivity),
-          _transparency(transparency),
-          _refractiveIndex(refractiveIndex),
-          _specularFactor(0.0)
-    {}
     Material::Material(const Math::Color &color, const double reflectivity, 
       const double transparency, const double refractiveIndex, const double specular)
     : _color(color),
-      _ambientFactor(1.0),
-      _diffuseFactor(1.0),
       _reflectivity(reflectivity),
       _transparency(transparency),
       _refractiveIndex(refractiveIndex),
-      _specularFactor(specular) 
+      _shininessFactor(specular) 
   {}
 }

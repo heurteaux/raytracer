@@ -22,6 +22,7 @@ namespace SpherePlugin {
             Sphere(const Math::Point3d &center, double radius);
             Sphere(const Math::Point3d &center, double radius, const std::string &name);
             Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name);
+            Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name, const double shininess);
             ~Sphere() = default;
 
             bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const override;

@@ -18,20 +18,16 @@ namespace RayTracer {
             virtual ~IMaterial() = default;
 
             virtual const Math::Color &getColor() const = 0;
-            virtual double getAmbientFactor() const = 0;
-            virtual double getDiffuseFactor() const = 0;
             virtual double getReflectivity() const = 0;
             virtual double getTransparency() const = 0;
             virtual double getRefractiveIndex() const = 0;
-            virtual double getSpecularFactor() const = 0;
+            virtual double getShininessFactor() const = 0;
 
             virtual void setColor(const Math::Color &c) = 0;
-            virtual void setAmbientFactor(double ambient) = 0;
-            virtual void setDiffuseFactor(double diffuse) = 0;
             virtual void setReflectivity(double reflectivity) = 0;
             virtual void setTransparency(double transparency) = 0;
             virtual void setRefractiveIndex(double refractiveIndex) = 0;
-            virtual void setSpecularFactor(double specular) = 0;
+            virtual void setShininessFactor(double specular) = 0;
 
             virtual const Math::Color &getColorAt(const Math::Point3d &point) const = 0;
     };

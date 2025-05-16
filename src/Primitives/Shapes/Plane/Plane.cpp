@@ -26,6 +26,12 @@ namespace PlanePlugin {
         startPlane(center);
     }
 
+    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal, const Math::Color &color, const std::string &name, const double shininess)
+    : APrimitive(name, color, shininess), normal(normal)
+    {
+        startPlane(center);
+    }
+
     void Plane::startPlane(const Math::Point3d &center)
     {
         double length = normal.length();

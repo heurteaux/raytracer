@@ -23,6 +23,7 @@ namespace RayTracer {
             APrimitive(const APrimitive &other);
             APrimitive(const std::string &name);
             APrimitive(const std::string &name, const Math::Color &color);
+            APrimitive(const std::string &name, const Math::Color &color, const double shininess);
             ~APrimitive() = default;
 
             APrimitive &operator=(const APrimitive &other);

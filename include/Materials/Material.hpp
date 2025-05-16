@@ -18,42 +18,33 @@ namespace RayTracer {
         public:
             Material();
             Material(const Math::Color &color);
-            Material(const Math::Color &color, const double ambient, const double diffuse);
-            Material(const Math::Color &color, const double ambient, const double diffuse, const double reflectivity, const double transparency, const double refractiveIndex);
-            Material(const Math::Color &color, const double ambient, const double diffuse, const double reflectivity, const double transparency, const double refractiveIndex, const double specular);
+            Material(const Math::Color &color, const double shininess);
             Material(const Math::Color &color, const double reflectivity, const double transparency, const double refractiveIndex);
             Material(const Math::Color &color, const double reflectivity, const double transparency, const double refractiveIndex, const double specular);
             ~Material() = default;
 
             const Math::Color &getColor() const { return _color; }
-            double getAmbientFactor() const { return _ambientFactor; }
-            double getDiffuseFactor() const { return _diffuseFactor; }
             double getReflectivity() const { return _reflectivity; }
             double getTransparency() const { return _transparency; }
             double getRefractiveIndex() const { return _refractiveIndex; }
-            double getSpecularFactor() const { return _specularFactor; }
+            double getShininessFactor() const { return _shininessFactor; }
 
             void setColor(const Math::Color &c) { _color = c; }
-            void setAmbientFactor(double a) { _ambientFactor = a; }
-            void setDiffuseFactor(double d) { _diffuseFactor = d; }
             void setReflectivity(double r) { _reflectivity = r; }
             void setTransparency(double t) { _transparency = t; }
             void setRefractiveIndex(double ri) { _refractiveIndex = ri; }
-            void setSpecularFactor(double s) { _specularFactor = s; }
+            void setShininessFactor(double s) { _shininessFactor = s; }
 
             const Math::Color &getColorAt(const Math::Point3d &point) const { (void)point; return _color; }
 
         protected:
             Math::Color _color;
 
-            double _ambientFactor;
-            double _diffuseFactor;
-
             double _reflectivity;
             double _transparency;
             double _refractiveIndex;
 
-            double _specularFactor;
+            double _shininessFactor;
         };
 }
 
