@@ -21,6 +21,9 @@ namespace RayTracer
             Math::Color calculateLighting(const HitRecord &record, const std::vector<std::shared_ptr<IPrimitive>> &primitives) const override;
             bool isShadowed(const Math::Point3d &point, const std::vector<std::shared_ptr<IPrimitive>> &primitives) const override;
 
+            void setIntensity(double intensity) { this->intensity = intensity; }
+            double getIntensity() const { return intensity; }
+
         private:
             double intensity;
     };

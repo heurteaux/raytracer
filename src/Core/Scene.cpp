@@ -90,19 +90,16 @@ namespace RayTracer
         return std::pow(std::max(0.0, viewDir.dot(reflectDir)), shininess);
     }
     
-    Math::Color Scene::calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Math::Color &lightColor) const
+    Math::Color Scene::calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Math::Color &lightColor, const double diffuseFactor) const
     {
         double diff = std::max(0.0, hit.normal.dot(lightDir));
 
-        return lightColor * hit.material->getColor() * diff * hit.material->getDiffuseFactor();
+        return lightColor * hit.material->getColor() * diff * diffuseFactor;
     }
 
-    Math::Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const
+    Math::Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light, const double ambientFactor) const
     {
-        Math::Color ambient = hit.material->getColorAt(hit.point) * hit.material->getAmbientFactor();
-        std::cout << "ambient: " << hit.material->getAmbientFactor() << std::endl;
-        std::cout << "diffuse: " << hit.material->getDiffuseFactor() << std::endl;
-        std::cout << "colorAt: " << hit.material->getColorAt(hit.point).r << " " << hit.material->getColorAt(hit.point).g << " " << hit.material->getColorAt(hit.point).b << std::endl;
+        Math::Color ambient = hit.material->getColorAt(hit.point) * ambientFactor;
         Math::Color diffuse(0.0, 0.0, 0.0);
         Math::Color specular(0.0, 0.0, 0.0);
 
@@ -112,10 +109,10 @@ namespace RayTracer
             Math::Vector3d lightDir = directionalLight->getDirection().normalized() * (-1);
             Math::Color lightColor = Math::Color(1.0, 1.0, 1.0) * directionalLight->getIntensity();
             // (loi de Lambert)
-            diffuse = diffuse + calculateDiffuse(lightDir, hit, lightColor);
+            diffuse = diffuse + calculateDiffuse(lightDir, hit, lightColor, directionalLight->getIntensity());
             // (Phong)
             // finir d'ajouter la specularité au matériaux dans le parsing
-            specular = specular + lightColor * calculateSpecular(lightDir, hit.normal, viewDir, shininess) * hit.material->getSpecularFactor();
+            specular = specular + lightColor * calculateSpecular(lightDir, hit.normal, viewDir, shininess);
         }
         return ambient + diffuse + specular;
     }
@@ -196,11 +193,19 @@ namespace RayTracer
         if (hitAnything)
         {
             Math::Color pixel(0, 0, 0);
+            double ambient = 0.0;
+
+            for (const auto &light : _lights) {
+                if (auto ambientLight = std::dynamic_pointer_cast<AmbientLight>(light)) {
+                    ambient = ambientLight->getIntensity();
+                    break;
+                }
+            }
 
             for (const auto &light : _lights) {
                 if (!light->isShadowed(closestHit.point, _primitives)) {
                     pixel = pixel + light->calculateLighting(closestHit, _primitives);
-                    pixel = pixel + phongReflection(closestHit, ray.direction.normalized() * (-1), light);
+                    pixel = pixel + phongReflection(closestHit, ray.direction.normalized() * (-1), light, ambient);
                 }
             }
             return lightEffects(pixel, closestHit, ray.direction.normalized(), depth);
