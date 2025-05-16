@@ -26,7 +26,7 @@ namespace RayTracer {
             virtual bool hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const = 0;
             virtual void translate(const Math::Vector3d &offset) = 0;
             virtual void rotate(const Math::Vector3d &angles) = 0;
-            virtual void scale(const Math::Vector3d &factors) = 0;
+            virtual void scale(const double factors) = 0;
             virtual void rotateVector(Math::Vector3d &vec, const Math::Vector3d &angles) const = 0;
             virtual void rotatePoint(Math::Point3d &pt, const Math::Point3d &center, const Math::Vector3d &angles) const = 0;
             virtual void setMaterial(const Material &material) = 0;

@@ -89,10 +89,8 @@ namespace RayTracer {
             for (std::size_t i = 0; i < scale.getLength(); i++) {
                 for (auto &prim : primitives) {
                     if (prim->getName() == scale[i].getName()) {
-                        Math::Vector3d scaleFact(0.0, 0.0, 0.0);
-                        scale[i].lookupValue("x", scaleFact.x);
-                        scale[i].lookupValue("y", scaleFact.y);
-                        scale[i].lookupValue("z", scaleFact.z);
+                        double scaleFact = 1.0;
+                        scale[i].lookupValue("factor", scaleFact);
                         prim->scale(scaleFact);
                     }
                 }
@@ -106,9 +104,6 @@ namespace RayTracer {
         Math::Vector3d rotation(0, 0, 0);
         double fov = 0.0;
         Math::Point3d position(0, 0, 0);
-
-
-        // need to add resolution & field of view
 
         if (cameraSetting.exists("position")) {
             const libconfig::Setting &pos = cameraSetting["position"];

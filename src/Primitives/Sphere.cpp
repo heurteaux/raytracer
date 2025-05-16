@@ -36,9 +36,9 @@ namespace RayTracer {
         _radius = radius;
     }
 
-    void Sphere::scale(const Math::Vector3d &factors)
+    void Sphere::scale(const double factors)
     {
-        _radius *= factors.x;
+        _radius *= factors;
     }
 
     bool Sphere::hit(const Ray &ray, double tMin, double tMax, HitRecord &record) const
