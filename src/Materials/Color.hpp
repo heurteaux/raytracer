@@ -3,6 +3,7 @@
 
 namespace Math {
     class Color {
+
         public:
             Color();
             Color(double r, double g, double b);

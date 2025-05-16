@@ -10,12 +10,14 @@
 
 #include "../Primitives/IPrimitive.hpp"
 #include "../Lights/ILight.hpp"
+#include "../Lights/DirectionalLight.hpp"
 #include "RayTracer.hpp"
 #include "Camera.hpp"
 #include <vector>
 #include <memory>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 namespace RayTracer {
 
@@ -46,7 +48,10 @@ namespace RayTracer {
 
             Math::Color traceRay(const Ray &ray, int depth) const;
             Math::Color lightEffects(Math::Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const;
-            
+            Math::Color phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const;
+            double calculateSpecular(const Math::Vector3d &lightDir, const Math::Vector3d &normal, const Math::Vector3d &viewDir, double shininess) const;
+            Math::Color calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Math::Color &lightColor) const;
+        
         private:
             std::vector<std::shared_ptr<IPrimitive>> _primitives;
             std::vector<std::shared_ptr<ILight>> _lights;

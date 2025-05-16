@@ -82,6 +82,40 @@ namespace RayTracer
         return (Rs * Rs + Rp * Rp) / 2.0;
     }
 
+    double Scene::calculateSpecular(const Math::Vector3d &lightDir, const Math::Vector3d &normal, 
+        const Math::Vector3d &viewDir, double shininess) const
+    {
+        Math::Vector3d reflectDir = reflection(Math::Vector3d(-lightDir.x, -lightDir.y, -lightDir.z), normal).normalized();
+
+        return std::pow(std::max(0.0, viewDir.dot(reflectDir)), shininess);
+    }
+    
+    Math::Color Scene::calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Math::Color &lightColor) const
+    {
+        double diff = std::max(0.0, hit.normal.dot(lightDir));
+
+        return lightColor * hit.material.getColor() * diff * hit.material.getDiffuseFactor();
+    }
+
+    Math::Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const
+    {
+        Math::Color ambient = hit.material.getColor() * hit.material.getAmbientFactor();
+        Math::Color diffuse(0, 0, 0);
+        Math::Color specular(0, 0, 0);
+
+        const double shininess = 240.0;
+        
+        if (auto directionalLight = std::dynamic_pointer_cast<DirectionalLight>(light)) {
+            Math::Vector3d lightDir = directionalLight->getDirection().normalized() * (-1);
+            Math::Color lightColor = Math::Color(1.0, 1.0, 1.0) * directionalLight->getIntensity();
+            // (loi de Lambert)
+            diffuse = diffuse + calculateDiffuse(lightDir, hit, lightColor);
+            // (Phong)
+            specular = specular + lightColor * calculateSpecular(lightDir, hit.normal, viewDir, shininess);
+        }
+        return ambient + diffuse + specular;
+    }
+
     Math::Color Scene::lightEffects(Math::Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const
     {
         Math::Color reflectedColor(0, 0, 0);
@@ -162,6 +196,7 @@ namespace RayTracer
             for (const auto &light : _lights) {
                 if (!light->isShadowed(closestHit.point, _primitives)) {
                     pixel = pixel + light->calculateLighting(closestHit, _primitives);
+                    pixel = pixel + phongReflection(closestHit, ray.direction.normalized() * (-1), light);
                 }
             }
             return lightEffects(pixel, closestHit, ray.direction.normalized(), depth);
