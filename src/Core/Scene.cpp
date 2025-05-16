@@ -327,6 +327,8 @@ namespace RayTracer
                         newPrimitive = factory.value()->getFromParsing(newPrim);
                     if (newPrimitive.has_value()) {
                         _primitives.push_back(std::move(newPrimitive.value()));
+                    } else {
+                        std::cout << "parsingError: " << newPrimitive.error() << std::endl;
                     }
                 }
             }

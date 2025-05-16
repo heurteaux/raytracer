@@ -28,7 +28,7 @@ namespace PlanePlugin {
         private:
             void startPlane(const Math::Point3d &center);
             Math::Vector3d normal;
-        };
+    };
 }
 
 #endif
