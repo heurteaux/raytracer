@@ -17,7 +17,7 @@ Math::Rectangle3D::~Rectangle3D()
 
 }
 
-Math::Point3d Math::Rectangle3D::pointAt(double u, double v) const
+Math::Point3d Math::Rectangle3D::pointAt(const double u, const double v) const
 {
     return Point3d(origin.x + u * bottom_side.x + v * left_side.x,
                    origin.y + u * bottom_side.y + v * left_side.y,

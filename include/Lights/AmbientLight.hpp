@@ -8,7 +8,7 @@
 #ifndef AMBIENTLIGHT_H
 #define AMBIENTLIGHT_H
 
-#include "ILight.hpp"
+#include "Lights/ILight.hpp"
 #include "Core/RayTracer.hpp"
 #include "Primitives/IPrimitive.hpp"
 

@@ -26,6 +26,21 @@ namespace RayTracer {
             virtual void setName(const std::string &name) = 0;
             virtual std::string getName() const = 0;
     };
+
+    typedef struct primitiveData_s {
+        std::string type;
+        std::string name;
+        Math::Point3d position;
+        Math::Color color;
+        Math::Vector3d normal;
+        Math::Vector3d axis;    
+        double radius;
+        double innerRadius;
+        double outerRadius;
+        double transparency;
+        double refraction;
+        double reflection;
+    } primitiveData_t;
 }
 
 #endif // IPRIMITIVE_HPP_

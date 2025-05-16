@@ -14,31 +14,34 @@ namespace RayTracer {
     class Material
     {
         public:
-            /* Constructors */
-            Material() = default;
-            Material(const Math::Color &color)
-                : _color(color), _ambientFactor(1.0), _diffuseFactor(1.0) {}
-            Material(const Math::Color &color, const double ambient, const double diffuse)
-                : _color(color), _ambientFactor(ambient), _diffuseFactor(diffuse) {}
+            /* constructors */
+            Material();
+            Material(const Math::Color &color);
+            Material(const Math::Color &color, const double ambient, const double diffuse);
+            Material(const Math::Color &color, const double ambient, const double diffuse, 
+                    const double reflectivity, const double transparency, const double refractiveIndex);
+            Material(const Math::Color &color, const double reflectivity, const double transparency, 
+                    const double refractiveIndex);
+
 
             /* Destructor */
             ~Material() = default;
 
             /* Getters */
-            const Math::Color &getColor() const { return _color; }
-            double getAmbientFactor() const { return _ambientFactor; }
-            double getDiffuseFactor() const { return _diffuseFactor; }
-            double getReflectivity() const { return _reflectivity; }
-            double getTransparency() const { return _transparency; }
-            double getRefractiveIndex() const { return _refractiveIndex; }
+            const Math::Color &getColor() const;
+            double getAmbientFactor() const;
+            double getDiffuseFactor() const;
+            double getReflectivity() const;
+            double getTransparency() const;
+            double getRefractiveIndex() const;
 
             /* Setters */
-            void setColor(const Math::Color &c) { _color = c; }
-            void setAmbientFactor(double a) { _ambientFactor = a; }
-            void setDiffuseFactor(double d) { _diffuseFactor = d; }
-            void setReflectivity(double r) { _reflectivity = r; }
-            void setTransparency(double t) { _transparency = t; }
-            void setRefractiveIndex(double ri) { _refractiveIndex = ri; }
+            void setColor(const Math::Color &c);
+            void setAmbientFactor(double a);
+            void setDiffuseFactor(double d);
+            void setReflectivity(double r);
+            void setTransparency(double t);
+            void setRefractiveIndex(double ri);
 
         private:
             /* Private member variable*/

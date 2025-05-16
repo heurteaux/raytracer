@@ -21,26 +21,11 @@ namespace RayTracer
         public:
             Ray() = default;
             Ray(const Math::Point3d &origin, const Math::Vector3d &direction);
-            ~Ray();
+            ~Ray() = default;
             Math::Point3d origin;
             Math::Vector3d direction;
 
         private:
-
-    };
-
-    class Camera
-    {
-        public:
-            Camera() = default;
-            Camera(const Math::Point3d &origin);
-            ~Camera();
-
-            Ray ray(double u, double v) const;
-
-        private:
-            Math::Point3d origin;
-            Math::Rectangle3D screen;
 
     };
 }

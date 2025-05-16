@@ -17,14 +17,12 @@ namespace Math
     {
         public:
             Rectangle3D();
-            ~Rectangle3D();
-
-            Point3d pointAt(double u, double v) const;
-
             Rectangle3D(const Math::Point3d &origin, const Math::Vector3d &bottom_side, const Math::Vector3d &left_side)
                 : origin(origin), bottom_side(bottom_side), left_side(left_side) {};
+            ~Rectangle3D();
 
-        private:
+            Point3d pointAt(const double u, const double v) const;
+
             Point3d origin;
             Vector3d bottom_side;
             Vector3d left_side;

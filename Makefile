@@ -92,7 +92,7 @@ fclean: clean
 	@rm -f output.ppm output.jpg
 	@echo "✅ Full clean complete."
 
-re: fclean dev
+re: fclean all
 	@echo "🔄 Full recompilation complete."
 
 release: display_ascii check-tools $(BUILD_DIR) check_plugins configure_release build move

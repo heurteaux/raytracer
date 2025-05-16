@@ -37,6 +37,11 @@ namespace CylinderPlugin {
                 if (ax.exists("z"))
                     axis.z = static_cast<double>(ax["z"]);
             }
+            
+            double radius = 1.0;
+            if (setting.exists("radius")) {
+                radius = static_cast<double>(setting["radius"]);
+            }
 
             Math::Color color(1.0, 1.0, 1.0);
             if (setting.exists("color")) {
@@ -59,9 +64,9 @@ namespace CylinderPlugin {
 
             std::unique_ptr<Cylinder> cylinder;
             if (setting.exists("color")) {
-                cylinder = std::make_unique<Cylinder>(base, axis, color, name);
+                cylinder = std::make_unique<Cylinder>(base, axis, radius, color, name);
             } else {
-                cylinder = std::make_unique<Cylinder>(base, axis, name);
+                cylinder = std::make_unique<Cylinder>(base, axis, radius, name);
             }
             return cylinder;
         } catch (const libconfig::SettingTypeException &e) {

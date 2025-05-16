@@ -8,7 +8,7 @@
 #ifndef DIRECTIONALLIGHT_H
 #define DIRECTIONALLIGHT_H
 
-#include "ILight.hpp"
+#include "Lights/ILight.hpp"
 #include "Core/RayTracer.hpp"
 #include "Primitives/IPrimitive.hpp"
 

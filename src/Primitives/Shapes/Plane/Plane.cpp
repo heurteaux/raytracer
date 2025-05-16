@@ -8,27 +8,29 @@
 #include "Primitives/Shapes/Plane/Plane.hpp"
 
 namespace PlanePlugin {
-    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal)
-        : APrimitive("plane"), point(point), normal(normal)
+    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal)
+        : APrimitive("plane"), normal(normal)
     {
-        startPlane();
+        startPlane(center);
     }
 
-    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal, const Math::Color &color)
-        : APrimitive("plane", color), point(point), normal(normal)
+    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal, const Math::Color &color)
+        : APrimitive("plane", color), normal(normal)
     {
-        startPlane();
+        startPlane(center);
     }
 
-    Plane::Plane(const Math::Point3d &point, const Math::Vector3d &normal, const Math::Color &color, const std::string &name)
-        : APrimitive(name, color), point(point), normal(normal)
+    Plane::Plane(const Math::Point3d &center, const Math::Vector3d &normal, const Math::Color &color, const std::string &name)
+        : APrimitive(name, color), normal(normal)
     {
-        startPlane();
+        startPlane(center);
     }
 
-    void Plane::startPlane()
+    void Plane::startPlane(const Math::Point3d &center)
     {
         double length = normal.length();
+
+        _center = center;
         if (length > 0) {
             this->normal = normal / length;
         }
@@ -42,7 +44,7 @@ namespace PlanePlugin {
             return false;
         }
 
-        Math::Vector3d p0_l0(point.x - ray.origin.x, point.y - ray.origin.y, point.z - ray.origin.z);
+        Math::Vector3d p0_l0(_center.x - ray.origin.x, _center.y - ray.origin.y, _center.z - ray.origin.z);
         double t = p0_l0.dot(normal) / denominator;
 
         if (t < tMin || t > tMax) {
@@ -57,24 +59,10 @@ namespace PlanePlugin {
         return true;
     }
 
-    void Plane::translate(const Math::Vector3d &offset)
-    {
-        point = point + offset;
-    }
-
     void Plane::rotate(const Math::Vector3d &angles)
     {
-        double theta = angles.y * M_PI / 180.0; // Convert to radians
+        rotateVector(normal, angles);
         
-        double nx = normal.x * cos(theta) - normal.z * sin(theta);
-        double nz = normal.x * sin(theta) + normal.z * cos(theta);
-        
-        normal.x = nx;
-        normal.z = nz;
-        
-        double length = normal.length();
-        if (length > 0) {
-            normal = normal / length;
-        }
+        rotatePoint(angles);
     }
 }

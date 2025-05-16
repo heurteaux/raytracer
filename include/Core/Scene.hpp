@@ -12,6 +12,7 @@
 #include "Lights/ILight.hpp"
 #include "Core/RayTracer.hpp"
 #include "Core/PluginLoader.hpp"
+#include "Core/Camera.hpp"
 #include <vector>
 #include <memory>
 #include <iostream>
@@ -44,8 +45,15 @@ namespace RayTracer {
             
             std::expected<void, Error> loadConfig(std::string configPath);
             int render(const std::string &filename) const;
-            void write_color(std::ofstream &out, const Math::Color &color) const;
+            void writeColor(std::ofstream &out, const Math::Color &color) const;
             void addLight(std::shared_ptr<ILight> light);
+            
+            /* 
+             *  TODO: needs to be moved to a proper place or be reviewed
+             *  anyways I dunno wtf if does so let it sit here
+            */
+            Math::Color traceRay(const Ray &ray, int depth) const;
+            Math::Color lightEffects(Math::Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const;
 
             /* getters */
             int getHeight() const { return _height; }

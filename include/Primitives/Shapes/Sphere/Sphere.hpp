@@ -18,20 +18,16 @@ namespace SpherePlugin {
     class Sphere : public RayTracer::APrimitive
     {
         public:
-            Sphere() = default;
+            Sphere();
             Sphere(const Math::Point3d &center, double radius);
             Sphere(const Math::Point3d &center, double radius, const std::string &name);
             Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name);
             ~Sphere() = default;
 
-            bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const;
-            void translate(const Math::Vector3d &offset);
-            void rotate(const Math::Vector3d &angles);
-
-            bool hits(const RayTracer::Ray &ray) const;
+            bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const override;
+            void scale(const double factors) override;
 
         private:
-            Math::Point3d _center;
             double _radius;
     };
 }
