@@ -8,7 +8,6 @@
 #include <iostream>
 #include <memory>
 #include "Core/Scene.hpp"
-#include "Core/SceneLoader.hpp"
 #include "Core/PluginLoader.hpp"
 
 int main(const int argc, UNUSED const char *argv[])
