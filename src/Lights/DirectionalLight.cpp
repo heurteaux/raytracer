@@ -31,11 +31,9 @@ namespace RayTracer
     {
         RayTracer::Ray shadowRay(point, Math::Vector3d(-direction.x, -direction.y, -direction.z));
 
-        for (const auto &primitive : primitives)
-        {
+        for (const auto &primitive : primitives) {
             RayTracer::HitRecord tempRecord;
-            if (primitive->hit(shadowRay, 0.001, std::numeric_limits<double>::infinity(), tempRecord))
-            {
+            if (primitive->hit(shadowRay, 0.001, std::numeric_limits<double>::infinity(), tempRecord)) {
                 return true;
             }
         }

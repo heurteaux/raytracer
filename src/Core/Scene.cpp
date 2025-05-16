@@ -100,8 +100,11 @@ namespace RayTracer
     Math::Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const
     {
         Math::Color ambient = hit.material->getColorAt(hit.point) * hit.material->getAmbientFactor();
-        Math::Color diffuse(0, 0, 0);
-        Math::Color specular(0, 0, 0);
+        std::cout << "ambient: " << hit.material->getAmbientFactor() << std::endl;
+        std::cout << "diffuse: " << hit.material->getDiffuseFactor() << std::endl;
+        std::cout << "colorAt: " << hit.material->getColorAt(hit.point).r << " " << hit.material->getColorAt(hit.point).g << " " << hit.material->getColorAt(hit.point).b << std::endl;
+        Math::Color diffuse(0.0, 0.0, 0.0);
+        Math::Color specular(0.0, 0.0, 0.0);
 
         const double shininess = 32.0;
         
