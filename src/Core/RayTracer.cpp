@@ -5,7 +5,7 @@
 ** RayTracer.cpp
 */
 
-#include "RayTracer.hpp"
+#include "Core/RayTracer.hpp"
 #include <iostream>
 
 namespace RayTracer {

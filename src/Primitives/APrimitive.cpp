@@ -5,7 +5,7 @@
 ** APrimitive
 */
 
-#include "APrimitive.hpp"
+#include "Primitives/APrimitive.hpp"
 #include <iostream>
 
 namespace RayTracer {
@@ -104,7 +104,10 @@ namespace RayTracer {
         }
     }
     
-    void APrimitive::rotate(const Math::Vector3d &angles)
-    {
-    }
+    /*
+     *  by default no implementation for rotation is provided
+     *  as some classes don't need it (spheres)
+    */
+    void APrimitive::rotate(UNUSED const Math::Vector3d &angles)
+    {}
 }

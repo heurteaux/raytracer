@@ -5,7 +5,7 @@
 ** Point3d.cpp
 */
 
-#include "Point3d.hpp"
+#include "Math/Point3d.hpp"
 
 namespace Math {
 

@@ -1,4 +1,11 @@
-#include "DirectionalLight.hpp"
+/*
+** EPITECH PROJECT, 2025
+** raytracer
+** File description:
+** DirectionalLight
+*/
+
+#include "Lights/DirectionalLight.hpp"
 
 namespace RayTracer
 {

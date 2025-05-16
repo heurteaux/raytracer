@@ -5,14 +5,20 @@
 ** Scene
 */
 
-#include "Scene.hpp"
+#include "Core/Scene.hpp"
+#include "Core/PluginLoader.hpp"
+#include "Lights/AmbientLight.hpp"
+#include "Lights/DirectionalLight.hpp"
+#include "Primitives/IPrimitiveFactory.hpp"
+#include <functional>
+#include <optional>
 
 namespace RayTracer
 {
-    Scene::Scene() : _camera(std::make_shared<Camera>()), _width(0), _height(0)
-    {
-
-    }
+    Scene::Scene(std::unique_ptr<PluginLoader> pluginLoader) :
+        _pluginLoader(std::move(pluginLoader)), _camera(std::make_shared<Camera>()),
+        _width(0), _height(0)
+    {}
 
     void Scene::writeColor(std::ofstream &out, const Math::Color &color) const
     {
@@ -20,11 +26,6 @@ namespace RayTracer
         int g = static_cast<int>(255.99 * std::min(1.0, color.g));
         int b = static_cast<int>(255.99 * std::min(1.0, color.b));
         out << r << " " << g << " " << b << "\n";
-    }
-
-    void Scene::addPrimitive(std::shared_ptr<IPrimitive> primitive)
-    {
-        _primitives.push_back(primitive);
     }
 
     void Scene::addLight(std::shared_ptr<ILight> light)
@@ -198,5 +199,161 @@ namespace RayTracer
         std::cerr << "\nDone.\n";
         outFile.close();
         return 0;
+    }
+
+    /* refactor: not cleaned */
+    std::expected<void, Scene::Error> Scene::loadConfig(std::string configPath) {
+        libconfig::Config cfg;
+        try {
+            cfg.readFile(configPath.c_str());
+        } catch (const libconfig::FileIOException &fioex) {
+            return std::unexpected(Error::CANNOT_READ_CONFIG_FILE);
+        } catch (const libconfig::ConfigException &ex) {
+            return std::unexpected(Error::SYNTAX_ERROR);
+        }
+        const libconfig::Setting &root = cfg.getRoot();
+        /* 
+         *  the scheme bellow is shitty and ugly, we must replace it
+         *  with monadic operations like `.and_then()`
+         *  TODO: make it cleaner
+        */
+        std::expected<void, RayTracer::Scene::Error> cameraResult = parseCamera(root["camera"]);
+        if (!cameraResult.has_value()) {
+            return cameraResult;
+        }
+        std::expected<void, RayTracer::Scene::Error> primitivesResult = parsePrimitives(root["primitives"]);
+        if (!primitivesResult.has_value()) {
+            return primitivesResult;
+        }
+        std::expected<void, RayTracer::Scene::Error> transformationResult = parseTransformation(root["transformations"]);
+        if (!transformationResult.has_value()) {
+            return transformationResult;
+        }
+        std::expected<void, RayTracer::Scene::Error> lightsResult = parseLights(root["lights"]);
+        if (!lightsResult.has_value()) {
+            return lightsResult;
+        }
+        return {};
+    }
+
+    /* refactor: not cleaned */
+    std::expected<void, Scene::Error> Scene::parseCamera(const libconfig::Setting &setting) {
+        int resolution[2] = {0, 0};
+        int position[3] = {0, 0, 0};
+
+        // need to add resolution & field of view
+
+        try {
+            if (setting.exists("position")) {
+                const libconfig::Setting &pos = setting["position"];
+                pos.lookupValue("x", position[0]);
+                pos.lookupValue("y", position[1]);
+                pos.lookupValue("z", position[2]);
+            }
+            if (setting.exists("resolution")) {
+                const libconfig::Setting &pos = setting["resolution"];
+                pos.lookupValue("width", resolution[0]);
+                pos.lookupValue("height", resolution[1]);
+            }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::CAMERA_SYNTAX_ERROR);
+        }
+        
+        setWidth(resolution[0]);
+        setHeight(resolution[1]);
+        setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2])));
+        return {};
+    }
+
+    /* refactor: not cleaned */
+    std::expected<void, Scene::Error> Scene::parseTransformation(const libconfig::Setting &setting) {
+        int position[3] = {0, 0, 0};
+        auto primitives = getPrimitives();
+        const libconfig::Setting &translations = setting["translation"];
+
+        try {
+            for (int i = 0; i < translations.getLength(); i++) {
+                for (auto &prim : primitives) {
+                    if (prim->getName() == translations[i].getName()) {
+                        translations[i].lookupValue("x", position[0]);
+                        translations[i].lookupValue("y", position[1]);
+                        translations[i].lookupValue("z", position[2]);
+                        prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+                    }
+                }
+            }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::TRANSFORMATIONS_SYNTAX_ERROR);
+        }
+        return {};
+    }
+
+    /* refactor: not cleaned */
+    std::expected<void, Scene::Error> Scene::parseLights(const libconfig::Setting &setting) {
+        double ambient = 0.0;
+        double diffuse = 0.0;
+        int direction[3] = {0, 0, 0};
+
+        try {
+            setting.lookupValue("ambient", ambient);
+            addLight(std::make_shared<AmbientLight>(ambient));
+
+            setting.lookupValue("diffuse", diffuse);
+            // need to add Point
+            if (setting.exists("directional")) {
+                const libconfig::Setting &dir = setting["directional"];
+                dir.lookupValue("x", direction[0]);
+                dir.lookupValue("y", direction[1]);
+                dir.lookupValue("z", direction[2]);
+            }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::LIGHTS_SYNTAX_ERROR);
+        }
+        addLight(std::make_shared<DirectionalLight>(Math::Vector3d(direction[0], direction[1], direction[2]), diffuse));
+        return {};
+    }
+
+    std::expected<void, Scene::Error> Scene::parsePrimitives(const libconfig::Setting &setting) {
+        try {
+            for (int i = 0; i < setting.getLength(); i++) {
+                const libconfig::Setting &primitiveType = setting[setting[i].getName()];
+                for (int j = 0; j < primitiveType.getLength(); j++) {
+                    const libconfig::Setting &newPrim = primitiveType[primitiveType[j].getName()];
+                    const std::optional<std::shared_ptr<IPrimitiveFactory>> factory = getPrimitiveFactory(primitiveType.getName());
+                    if (!factory.has_value()) {
+                        return std::unexpected(Error::UNKNOWN_PRIMITIVE);
+                    }
+                    std::expected<std::unique_ptr<RayTracer::IPrimitive>, std::string>
+                        newPrimitive = factory.value()->getFromParsing(newPrim);
+                    if (newPrimitive.has_value()) {
+                        _primitives.push_back(std::move(newPrimitive.value()));
+                    } else {
+                        std::cout << "parsingError: " << newPrimitive.error() << std::endl;
+                    }
+                }
+            }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::PRIMITIVES_SYNTAX_ERROR);
+        }
+        return {};
+    }
+
+    std::optional<std::shared_ptr<IPrimitiveFactory>> Scene::getPrimitiveFactory(std::string primitiveType) {
+        for (std::shared_ptr<RayTracer::IPrimitiveFactory> primitive: _pluginLoader->getShapes()) {
+            if (primitive->getPrimitiveName() == primitiveType) {
+                return {primitive};
+            }
+        }
+        return std::nullopt;
+    }
+
+    std::string Scene::getErrorMsg(Error err) {
+        std::map<RayTracer::Scene::Error, std::string>::iterator it =
+            errorMsg.find(err);
+
+        if (it != errorMsg.end()) {
+            return errorMsg.at(err);
+        }
+        return std::string("unknown error");
     }
 }

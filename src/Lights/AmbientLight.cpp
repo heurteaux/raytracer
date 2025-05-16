@@ -5,7 +5,7 @@
 ** AmbientLight.cpp
 */
 
-#include "AmbientLight.hpp"
+#include "Lights/AmbientLight.hpp"
 
 namespace RayTracer {
     Math::Color AmbientLight::calculateLighting(const HitRecord &record,  UNUSED const std::vector<std::shared_ptr<IPrimitive>> &primitives) const
