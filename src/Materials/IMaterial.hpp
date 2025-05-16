@@ -9,6 +9,7 @@
 #define IMATERIAL_HPP_
 
 #include "Color.hpp"
+#include "../Math/Point3d.hpp"
 
 namespace RayTracer {
     class IMaterial
@@ -29,6 +30,8 @@ namespace RayTracer {
             virtual void setReflectivity(double reflectivity) = 0;
             virtual void setTransparency(double transparency) = 0;
             virtual void setRefractiveIndex(double refractiveIndex) = 0;
+
+            virtual const Color &getColorAt(const Math::Point3d &point) const = 0;
     };
 }
 

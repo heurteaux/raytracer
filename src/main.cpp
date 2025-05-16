@@ -32,6 +32,7 @@
 #include <thread>
 
 #include "PPMLoader.hpp"
+#include "Materials/ChessBoard.hpp"
 
 
 int main(const int argc, const char *argv[])
@@ -44,6 +45,12 @@ int main(const int argc, const char *argv[])
     std::shared_ptr<RayTracer::SceneLoader> sceneLoader = std::make_shared<RayTracer::SceneLoader>();
     std::shared_ptr<RayTracer::Scene> scene = std::make_shared<RayTracer::Scene>();
     sceneLoader->instancePluginsFromDir("plugins", scene);
+
+    std::shared_ptr<RayTracer::Plane> plane = std::make_shared<RayTracer::Plane>(Math::Point3d(0, -1, 0), Math::Vector3d(0, 1, 0), RayTracer::Color(0.5, 0.5, 0.5));
+    std::shared_ptr<RayTracer::IMaterial> material = std::make_shared<RayTracer::ChessBoard>();
+    plane->setMaterial(material);
+    scene->addPrimitive(plane);
+
     sceneLoader->loadFromFile(argv[1], scene);
     scene->render("output.ppm");
     RayTracer::PPMLoader loader;

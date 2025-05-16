@@ -99,7 +99,7 @@ namespace RayTracer
 
     Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light) const
     {
-        Color ambient = hit.material->getColor() * hit.material->getAmbientFactor();
+        Color ambient = hit.material->getColorAt(hit.point) * hit.material->getAmbientFactor();
         Color diffuse(0, 0, 0);
         Color specular(0, 0, 0);
 
@@ -181,7 +181,7 @@ namespace RayTracer
         double closestFar = std::numeric_limits<double>::infinity();
 
         for (const auto &primitive : _primitives) {
-            RayTracer::HitRecord tempRecord;
+            HitRecord tempRecord;
             if (primitive->hit(ray, 0.001, closestFar, tempRecord)) {
                 hitAnything = true;
                 closestFar = tempRecord.t;

@@ -9,6 +9,8 @@
 #define MATERIAL_HPP_
 
 #include "IMaterial.hpp"
+#include "Color.hpp"
+#include "../Math/Point3d.hpp"
 
 namespace RayTracer {
     class AMaterial : public IMaterial
@@ -62,7 +64,12 @@ namespace RayTracer {
             void setTransparency(double t) { _transparency = t; }
             void setRefractiveIndex(double ri) { _refractiveIndex = ri; }
 
-        private:
+            const Color &getColorAt(const Math::Point3d &point) const
+            {
+                return _color;
+            }
+
+        protected:
             Color _color;
 
             double _ambientFactor;
