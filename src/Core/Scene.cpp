@@ -11,6 +11,7 @@
 #include "Lights/DirectionalLight.hpp"
 #include "Primitives/IPrimitiveFactory.hpp"
 #include <functional>
+#include <optional>
 
 namespace RayTracer
 {

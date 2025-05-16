@@ -2,9 +2,9 @@ EXECUTABLE := "raytracer"
 BUILD_DIR := "build"
 PLUGINS_DIR := "plugins"
 CMAKE_RELEASE_FLAGS := -G Ninja -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+    -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
 CMAKE_DEBUG_FLAGS := -G Ninja -DCMAKE_BUILD_TYPE=Debug \
-    -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
     -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
     -DCMAKE_C_FLAGS="-Wall -Wextra -Werror"
 ASCII_ART := "art.txt"

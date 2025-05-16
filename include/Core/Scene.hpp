@@ -18,6 +18,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <optional>
 
 namespace RayTracer {
     class Scene {

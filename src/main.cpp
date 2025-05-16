@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <memory>
+#include <optional>
 #include "Core/Scene.hpp"
 #include "Core/PluginLoader.hpp"
 

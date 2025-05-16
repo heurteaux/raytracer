@@ -53,7 +53,7 @@ namespace PlanePlugin {
             }
 
             std::string name = "plane";
-            if (setting.exists("name") && setting["name"].isString()) {
+            if (setting.exists("name") && setting["name"].getType() == libconfig::Setting::TypeString) {
                 name = static_cast<const char*>(setting["name"]);
             } else if (setting.getName()) {
                 name = setting.getName();
