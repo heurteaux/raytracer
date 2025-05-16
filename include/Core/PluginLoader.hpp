@@ -42,7 +42,6 @@ namespace RayTracer {
 
             std::expected<void, Error> load();
             ShapeHandlers &getShapes();
-            /* TODO: add remaining plugins types here */
 
             static std::string getErrorMsg(Error err);
 
