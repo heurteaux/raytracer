@@ -34,6 +34,7 @@
 #include "Core/PPMLoader.hpp"
 #include "Materials/ChessBoard.hpp"
 
+#define PPM_File "output.ppm"
 
 int main(const int argc, UNUSED const char *argv[])
 {
@@ -58,5 +59,8 @@ int main(const int argc, UNUSED const char *argv[])
         std::cerr << "ConfigFileError: " << msg << std::endl;
         return 84;
     }
-    return scene.render("output.ppm");
+    int returnValue = scene.render(PPM_File);
+    RayTracer::PPMLoader loader;
+    loader.display(loader.loadFromFile(PPM_File));
+    return returnValue;
 }
