@@ -14,7 +14,8 @@ namespace RayTracer {
           _diffuseFactor(1.0),
           _reflectivity(0.0),
           _transparency(0.0),
-          _refractiveIndex(0.0) 
+          _refractiveIndex(0.0),
+          _specularFactor(0.0)
     {}
 
     Material::Material(const Math::Color &color)
@@ -23,7 +24,8 @@ namespace RayTracer {
           _diffuseFactor(1.0),
           _reflectivity(0.0),
           _transparency(0.0),
-          _refractiveIndex(0.0) 
+          _refractiveIndex(0.0),
+          _specularFactor(0.0)
     {}
 
     Material::Material(const Math::Color &color, const double ambient, const double diffuse)
@@ -32,7 +34,8 @@ namespace RayTracer {
           _diffuseFactor(diffuse),
           _reflectivity(0.0),
           _transparency(0.0),
-          _refractiveIndex(0.0) 
+          _refractiveIndex(0.0),
+          _specularFactor(0.0)
     {}
 
     Material::Material(const Math::Color &color, const double ambient, const double diffuse, 
@@ -42,7 +45,19 @@ namespace RayTracer {
           _diffuseFactor(diffuse),
           _reflectivity(reflectivity),
           _transparency(transparency),
-          _refractiveIndex(refractiveIndex) 
+          _refractiveIndex(refractiveIndex),
+          _specularFactor(0.0)
+    {}
+
+    Material::Material(const Math::Color &color, const double ambient, const double diffuse, 
+      const double reflectivity, const double transparency, const double refractiveIndex, const double specular)
+      : _color(color),
+        _ambientFactor(ambient),
+        _diffuseFactor(diffuse),
+        _reflectivity(reflectivity),
+        _transparency(transparency),
+        _refractiveIndex(refractiveIndex),
+        _specularFactor(specular)
     {}
 
     Material::Material(const Math::Color &color, const double reflectivity, 
@@ -52,6 +67,17 @@ namespace RayTracer {
           _diffuseFactor(1.0),
           _reflectivity(reflectivity),
           _transparency(transparency),
-          _refractiveIndex(refractiveIndex) 
+          _refractiveIndex(refractiveIndex),
+          _specularFactor(0.0)
     {}
+    Material::Material(const Math::Color &color, const double reflectivity, 
+      const double transparency, const double refractiveIndex, const double specular)
+    : _color(color),
+      _ambientFactor(1.0),
+      _diffuseFactor(1.0),
+      _reflectivity(reflectivity),
+      _transparency(transparency),
+      _refractiveIndex(refractiveIndex),
+      _specularFactor(specular) 
+  {}
 }

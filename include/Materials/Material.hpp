@@ -20,7 +20,9 @@ namespace RayTracer {
             Material(const Math::Color &color);
             Material(const Math::Color &color, const double ambient, const double diffuse);
             Material(const Math::Color &color, const double ambient, const double diffuse, const double reflectivity, const double transparency, const double refractiveIndex);
+            Material(const Math::Color &color, const double ambient, const double diffuse, const double reflectivity, const double transparency, const double refractiveIndex, const double specular);
             Material(const Math::Color &color, const double reflectivity, const double transparency, const double refractiveIndex);
+            Material(const Math::Color &color, const double reflectivity, const double transparency, const double refractiveIndex, const double specular);
             ~Material() = default;
 
             const Math::Color &getColor() const { return _color; }
@@ -29,6 +31,7 @@ namespace RayTracer {
             double getReflectivity() const { return _reflectivity; }
             double getTransparency() const { return _transparency; }
             double getRefractiveIndex() const { return _refractiveIndex; }
+            double getSpecularFactor() const { return _specularFactor; }
 
             void setColor(const Math::Color &c) { _color = c; }
             void setAmbientFactor(double a) { _ambientFactor = a; }
@@ -36,6 +39,7 @@ namespace RayTracer {
             void setReflectivity(double r) { _reflectivity = r; }
             void setTransparency(double t) { _transparency = t; }
             void setRefractiveIndex(double ri) { _refractiveIndex = ri; }
+            void setSpecularFactor(double s) { _specularFactor = s; }
 
             const Math::Color &getColorAt(const Math::Point3d &point) const { (void)point; return _color; }
 
@@ -48,6 +52,8 @@ namespace RayTracer {
             double _reflectivity;
             double _transparency;
             double _refractiveIndex;
+
+            double _specularFactor;
         };
 }
 

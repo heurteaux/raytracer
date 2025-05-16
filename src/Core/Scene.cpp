@@ -103,7 +103,7 @@ namespace RayTracer
         Math::Color diffuse(0, 0, 0);
         Math::Color specular(0, 0, 0);
 
-        const double shininess = 240.0;
+        const double shininess = 32.0;
         
         if (auto directionalLight = std::dynamic_pointer_cast<DirectionalLight>(light)) {
             Math::Vector3d lightDir = directionalLight->getDirection().normalized() * (-1);
@@ -111,7 +111,8 @@ namespace RayTracer
             // (loi de Lambert)
             diffuse = diffuse + calculateDiffuse(lightDir, hit, lightColor);
             // (Phong)
-            specular = specular + lightColor * calculateSpecular(lightDir, hit.normal, viewDir, shininess);
+            // finir d'ajouter la specularité au matériaux dans le parsing
+            specular = specular + lightColor * calculateSpecular(lightDir, hit.normal, viewDir, shininess) * hit.material->getSpecularFactor();
         }
         return ambient + diffuse + specular;
     }

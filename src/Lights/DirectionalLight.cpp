@@ -12,8 +12,8 @@ namespace RayTracer
     DirectionalLight::DirectionalLight(const Math::Vector3d &direction, double intensity = 1.0) : direction(direction), intensity(intensity)
     {
         double length = direction.length();
-        if (length > 0)
-        {
+
+        if (length > 0){
             this->direction = direction / length;
         }
     }
@@ -21,9 +21,9 @@ namespace RayTracer
     Math::Color DirectionalLight::calculateLighting(const RayTracer::HitRecord &record,  UNUSED const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const
     {
         double dot = -direction.dot(record.normal);
+
         if (dot < 0)
             dot = 0;
-
         return record.material->getColor() * dot * intensity;
     }
 
