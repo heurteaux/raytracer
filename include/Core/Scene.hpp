@@ -48,6 +48,7 @@ namespace RayTracer {
             
             std::expected<void, Error> loadConfig(std::string configPath);
             int render(const std::string &filename) const;
+            void renderSection(int startRow, int endRow, std::vector<std::vector<Math::Color>> &pixelColors) const;
             void writeColor(std::ofstream &out, const Math::Color &color) const;
             void addLight(std::shared_ptr<ILight> light);
             

@@ -11,6 +11,7 @@
 #include "Lights/DirectionalLight.hpp"
 #include "Primitives/IPrimitiveFactory.hpp"
 #include <functional>
+#include <thread>
 #include <optional>
 
 namespace RayTracer
@@ -174,29 +175,55 @@ namespace RayTracer
         }
     }
 
-    int Scene::render(const std::string &filename) const
-    {
-        std::ofstream outFile;
-        outFile.open(filename);
-        if (!outFile.is_open())
-        {
+    void Scene::renderSection(int startRow, int endRow, std::vector<std::vector<Math::Color>> &pixelColors) const {
+        for (int j = startRow; j < endRow; j++) {
+            for (int i = 0; i < _width; i++) {
+                double u = double(i + 0.5) / double(_width);
+                double v = double(j + 0.5) / double(_height);
+                Ray ray = _camera->ray(u, v);
+                pixelColors[j][i] = traceRay(ray, 50);
+            }
+        }
+    }
+
+    int Scene::render(const std::string &filename) const {
+        std::ofstream outFile(filename);
+        if (!outFile.is_open()) {
             std::cerr << "Failed to open output file" << std::endl;
             return 84;
         }
-
+        
         outFile << "P3\n" << _width << " " << _height << "\n255\n";
+        
+        std::vector<std::vector<Math::Color>> pixelColors(_height, std::vector<Math::Color>(_width));
+        unsigned int threadCount = std::thread::hardware_concurrency();
+        std::vector<std::thread> threads;
+        
+        int rowsPerThread = _height / threadCount;
+        
+        for (unsigned int threadIndex = 0; threadIndex < threadCount; threadIndex++) {
+            int startRow = threadIndex * rowsPerThread;
+            int endRow = 0;
 
+            if (threadIndex == threadCount - 1) {
+                endRow = _height;
+            } else {
+                endRow = (threadIndex + 1) * rowsPerThread;
+            }
+            
+            threads.push_back(std::thread(&Scene::renderSection, this, startRow, endRow, std::ref(pixelColors)));
+        }
+        
+        for (auto& thread : threads) {
+            thread.join();
+        }
+        
         for (int j = _height - 1; j >= 0; j--) {
-            std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
             for (int i = 0; i < _width; i++) {
-                double u = double(i) / (_width - 1);
-                double v = double(j) / (_height - 1);
-
-                RayTracer::Ray ray = _camera->ray(u, v);
-                writeColor(outFile, traceRay(ray, 50));
+                writeColor(outFile, pixelColors[j][i]);
             }
         }
-        std::cerr << "\nDone.\n";
+        
         outFile.close();
         return 0;
     }
