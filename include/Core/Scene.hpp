@@ -12,7 +12,7 @@
 #include "Lights/ILight.hpp"
 #include "Core/RayTracer.hpp"
 #include "Core/PluginLoader.hpp"
-#include "Core/Camera.hpp"
+#include "Camera/Camera.hpp"
 #include <vector>
 #include <memory>
 #include <iostream>
