@@ -5,23 +5,29 @@
 ** Cone.cpp
 */
 
-#include "Cone.hpp"
+#include "Primitives/Shapes/Cone/Cone.hpp"
 
 namespace RayTracer {
     Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius)
-        : APrimitive("Cone"), _axis(axis), _radius(radius)
+        : APrimitive("Cone"), _axis(axis), _radius(radius), _height(-1), _base(center)
     {
         startCone(center);
     }
 
     Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const std::string &name)
-        : APrimitive(name), _axis(axis), _radius(radius)
+        : APrimitive(name), _axis(axis), _radius(radius), _height(-1), _base(center)
     {
         startCone(center);
     }
 
     Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name)
-        : APrimitive(name, color), _axis(axis), _radius(radius)
+        : APrimitive(name, color), _axis(axis), _radius(radius), _height(-1), _base(center)
+    {
+        startCone(center);
+    }
+
+    Cone::Cone(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name, double height)
+        : APrimitive(name, color), _axis(axis), _radius(radius), _height(height), _base(center)
     {
         startCone(center);
     }
@@ -64,8 +70,10 @@ namespace RayTracer {
         
         if (t1 >= tMin && t1 <= tMax) {
             Math::Point3d hitPoint = ray.origin + ray.direction * t1;
-            Math::Vector3d hitTocenter(hitPoint.x - _center.x, hitPoint.y - _center.y, hitPoint.z - _center.z);
-            if (hitTocenter.dot(v) > 0) {
+            Math::Vector3d hitToBase(hitPoint.x - _base.x, hitPoint.y - _base.y, hitPoint.z - _base.z);
+            double projection = hitToBase.dot(v);
+            
+            if (projection > 0 && (_height < 0 || projection <= _height)) {
                 t = t1;
                 hasValidT = true;
             }
@@ -73,8 +81,10 @@ namespace RayTracer {
         
         if (!hasValidT && t2 >= tMin && t2 <= tMax) {
             Math::Point3d hitPoint = ray.origin + ray.direction * t2;
-            Math::Vector3d hitTocenter(hitPoint.x - _center.x, hitPoint.y - _center.y, hitPoint.z - _center.z);
-            if (hitTocenter.dot(v) > 0) {
+            Math::Vector3d hitToBase(hitPoint.x - _base.x, hitPoint.y - _base.y, hitPoint.z - _base.z);
+            double projection = hitToBase.dot(v);
+            
+            if (projection > 0 && (_height < 0 || projection <= _height)) {
                 t = t2;
                 hasValidT = true;
             }
