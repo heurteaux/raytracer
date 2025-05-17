@@ -5,7 +5,7 @@
 ** Camera.cpp
 */
 
-#include "Core/Camera.hpp"
+#include "Camera/Camera.hpp"
 #include <iostream>
 
 namespace RayTracer {
