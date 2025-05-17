@@ -9,28 +9,34 @@
 
 namespace CylinderPlugin {
     Cylinder::Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius)
-        : APrimitive("cylinder"), axis(axis), _radius(radius)
+        : APrimitive("cylinder"), axis(axis), _radius(radius), height(-1), _base(center)
     {
         startCylinder(center);
     }
 
     Cylinder::Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const std::string &name)
-        : APrimitive(name), axis(axis), _radius(radius)
+        : APrimitive(name), axis(axis), _radius(radius), height(-1), _base(center)
     {
         startCylinder(center);
     }
 
     Cylinder::Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name)
-        : APrimitive(name, color), axis(axis), _radius(radius)
+        : APrimitive(name, color), axis(axis), _radius(radius), height(-1), _base(center)
     {
         startCylinder(center);
     }
 
-    void Cylinder::startCylinder(const Math::Point3d &center)
+    Cylinder::Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name, double height)
+        : APrimitive(name, color), axis(axis), _radius(radius), height(height), _base(center)
+    {
+        startCylinder(center);
+    }
+
+    void Cylinder::startCylinder(UNUSED const Math::Point3d &center)
     {
         double length = axis.length();
 
-        _center = center;
+        _center = _base;
         if (length > 0) {
             this->axis = axis / length;
         }
@@ -50,13 +56,36 @@ namespace CylinderPlugin {
             return false;
         
         double sqrt_d = std::sqrt(discriminant);
-        double t = (-b - sqrt_d) / (2.0 * a);
+        double t1 = (-b - sqrt_d) / (2.0 * a);
+        double t2 = (-b + sqrt_d) / (2.0 * a);
+        double t;
         
-        if (t < tMin || t > tMax) {
-            t = (-b + sqrt_d) / (2.0 * a);
-            if (t < tMin || t > tMax)
-                return false;
+        bool found = false;
+        
+        if (t1 >= tMin && t1 <= tMax) {
+            Math::Point3d hitPoint = ray.origin + ray.direction * t1;
+            Math::Vector3d hitToBase(hitPoint.x - _base.x, hitPoint.y - _base.y, hitPoint.z - _base.z);
+            double projection = hitToBase.dot(axis);
+            
+            if (height < 0 || (projection >= 0 && projection <= height)) {
+                t = t1;
+                found = true;
+            }
         }
+        
+        if (!found && t2 >= tMin && t2 <= tMax) {
+            Math::Point3d hitPoint = ray.origin + ray.direction * t2;
+            Math::Vector3d hitToBase(hitPoint.x - _base.x, hitPoint.y - _base.y, hitPoint.z - _base.z);
+            double projection = hitToBase.dot(axis);
+            
+            if (height < 0 || (projection >= 0 && projection <= height)) {
+                t = t2;
+                found = true;
+            }
+        }
+        
+        if (!found)
+            return false;
         
         record.t = t;
         record.point = ray.origin + ray.direction * t;

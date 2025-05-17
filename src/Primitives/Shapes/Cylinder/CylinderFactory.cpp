@@ -43,6 +43,11 @@ namespace CylinderPlugin {
                 radius = static_cast<double>(setting["radius"]);
             }
 
+            double height = -1.0;
+            if (setting.exists("height")) {
+                height = static_cast<double>(setting["height"]);
+            }
+
             Math::Color color(1.0, 1.0, 1.0);
             if (setting.exists("color")) {
                 const libconfig::Setting &col = setting["color"];
@@ -63,7 +68,9 @@ namespace CylinderPlugin {
             }
 
             std::unique_ptr<Cylinder> cylinder;
-            if (setting.exists("color")) {
+            if (setting.exists("height")) {
+                cylinder = std::make_unique<Cylinder>(base, axis, radius, color, name, height);
+            } else if (setting.exists("color")) {
                 cylinder = std::make_unique<Cylinder>(base, axis, radius, color, name);
             } else {
                 cylinder = std::make_unique<Cylinder>(base, axis, radius, name);
