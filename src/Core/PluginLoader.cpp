@@ -33,6 +33,7 @@ namespace RayTracer {
             return std::unexpected(Error::INVALID_PLUGINS_DIR);
         }
         _primitives.clear();
+        _materials.clear();
         _camera = nullptr;
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
@@ -86,6 +87,14 @@ namespace RayTracer {
                 _primitives.push_back(std::move(primitivePlugin));
                 break;
             }
+            case IPlugin::Type::Material: {
+                std::unique_ptr<IMaterialFactory> materialPlugin = 
+                    std::get<std::unique_ptr<IMaterialFactory>>(
+                        plugin->getPluginContainer()
+                    );
+                _materials.push_back(std::move(materialPlugin));
+                break;
+            }
             case IPlugin::Type::Camera: {
                 std::unique_ptr<ICameraFactory> cameraPlugin = 
                     std::get<std::unique_ptr<ICameraFactory>>(
@@ -113,6 +122,10 @@ namespace RayTracer {
     PluginLoader::ShapeHandlers &PluginLoader::getShapes() {
         return _primitives;
     }
+
+    PluginLoader::MaterialHandlers &PluginLoader::getMaterials() {
+        return _materials;
+    }
     
     PluginLoader::CameraHandler &PluginLoader::getCamera() {
         return _camera;
@@ -120,6 +133,7 @@ namespace RayTracer {
 
     PluginLoader::~PluginLoader() {
         _primitives.clear();
+        _materials.clear();
         _camera = nullptr;
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);

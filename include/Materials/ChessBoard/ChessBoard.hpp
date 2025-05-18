@@ -5,7 +5,7 @@
 ** ChessBoard.hpp
 */
 
-#include "Material.hpp"
+#include "Materials/Material.hpp"
 
 namespace RayTracer {
     class ChessBoard : public Material
@@ -13,19 +13,14 @@ namespace RayTracer {
         public:
             ChessBoard();
             ChessBoard(const Math::Color &color1, const Math::Color &color2);
-            ChessBoard(const Math::Color &color1, const Math::Color &color2, double scale);
+            ChessBoard(const Math::Color &color1, const Math::Color &color2, const double shininess, const double transparency, const double refraction, const double reflection);
             ~ChessBoard() = default;
 
-            void setScale(double scale) { _scale = scale; }
             void setColor2(const Math::Color &color) { _color2 = color; }
-
             const Math::Color &getColor2() const { return _color2; }
-            double getScale() const { return _scale; }
-
-            const Math::Color &getColorAt(const Math::Point3d &point) const override;
+            Math::Color getColorAt(const Math::Point3d &point) const override;
 
         private:
             Math::Color _color2;
-            double _scale;
     };
 }

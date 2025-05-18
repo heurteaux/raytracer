@@ -29,7 +29,7 @@ namespace RayTracer {
             virtual void setRefractiveIndex(double refractiveIndex) = 0;
             virtual void setShininessFactor(double specular) = 0;
 
-            virtual const Math::Color &getColorAt(const Math::Point3d &point) const = 0;
+            virtual Math::Color getColorAt(const Math::Point3d &point) const = 0;
     };
 }
 

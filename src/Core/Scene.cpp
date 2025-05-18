@@ -291,6 +291,10 @@ namespace RayTracer
         if (!primitivesResult.has_value()) {
             return primitivesResult;
         }
+        std::expected<void, RayTracer::Scene::Error> materialsResult = parseMaterials(root["materials"]);
+        if (!materialsResult.has_value()) {
+            return materialsResult;
+        }
         std::expected<void, RayTracer::Scene::Error> transformationResult = parseTransformation(root["transformations"]);
         if (!transformationResult.has_value()) {
             return transformationResult;
@@ -441,6 +445,46 @@ namespace RayTracer
         for (std::shared_ptr<RayTracer::IPrimitiveFactory> primitive: _pluginLoader->getShapes()) {
             if (primitive->getPrimitiveName() == primitiveType) {
                 return {primitive};
+            }
+        }
+        return std::nullopt;
+    }
+
+    std::expected<void, Scene::Error> Scene::parseMaterials(const libconfig::Setting &setting)
+    {
+        try {
+            for (int i = 0; i < setting.getLength(); i++) {
+                const libconfig::Setting &materialType = setting[setting[i].getName()];
+                for (int j = 0; j < materialType.getLength(); j++) {
+                    const libconfig::Setting &newMat = materialType[materialType[j].getName()];
+                    const std::optional<std::shared_ptr<IMaterialFactory>> factory = getMaterialFactory(materialType.getName());
+                    if (!factory.has_value()) {
+                        return std::unexpected(Error::UNKNOWN_MATERIAL);
+                    }
+                    std::expected<std::unique_ptr<RayTracer::IMaterial>, std::string>
+                        newMaterial = factory.value()->getFromParsing(newMat);
+                    if (newMaterial.has_value()) {
+                        for (std::shared_ptr<IPrimitive> &prim : _primitives) {
+                            if (prim->getName() == newMat.getName()) {
+                                prim->setMaterial(std::move(newMaterial.value()));
+                            }
+                        }
+                    } else {
+                        std::cout << "parsingError: " << newMaterial.error() << std::endl;
+                    }
+                }
+            }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::MATERIALS_SYNTAX_ERROR);
+        }
+        return {};
+    }
+
+    std::optional<std::shared_ptr<IMaterialFactory>> Scene::getMaterialFactory(std::string materialType)
+    {
+        for (std::shared_ptr<RayTracer::IMaterialFactory> material : _pluginLoader->getMaterials()) {
+            if (material->getMaterialName() == materialType) {
+                return {material};
             }
         }
         return std::nullopt;

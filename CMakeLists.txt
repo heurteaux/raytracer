@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 
 # /!\ TODO: REMOVE THIS, IT IS TEMPORARY /!\
-file(GLOB_RECURSE EXCLUDED_SOURCES ${CMAKE_SOURCE_DIR}/src/Primitives/*.cpp)
+file(GLOB_RECURSE EXCLUDED_SOURCES ${CMAKE_SOURCE_DIR}/src/Primitives/*.cpp ${CMAKE_SOURCE_DIR}/src/Materials/*.cpp)
 list(REMOVE_ITEM SOURCES ${EXCLUDED_SOURCES})
 list(REMOVE_ITEM SOURCES 
     ${CMAKE_SOURCE_DIR}/src/Lights/Ambient/AmbientLightPlugin.cpp
@@ -20,6 +20,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Subdirectories
 add_subdirectory(src/Primitives)
+add_subdirectory(src/Materials)
 add_subdirectory(src/Camera)
 
 # Exec

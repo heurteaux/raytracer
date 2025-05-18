@@ -30,6 +30,7 @@ namespace RayTracer {
             };
             typedef RayTracer::IPlugin *(*pluginExtractor)();
             typedef std::vector<std::shared_ptr<IPrimitiveFactory>> ShapeHandlers;
+            typedef std::vector<std::shared_ptr<IMaterialFactory>> MaterialHandlers;
             typedef std::shared_ptr<ICameraFactory> CameraHandler;
             typedef std::vector<std::shared_ptr<ILightFactory>> LightHandlers;
             
@@ -37,6 +38,7 @@ namespace RayTracer {
             ~PluginLoader();
             
             std::expected<void, Error> load();
+            MaterialHandlers &getMaterials();
             /* TODO: add remaining plugins types here */
             ShapeHandlers &getShapes();
             CameraHandler &getCamera();
@@ -48,6 +50,7 @@ namespace RayTracer {
             void _storePlugin(std::unique_ptr<IPlugin> plugin) override;
 
             ShapeHandlers _primitives;
+            MaterialHandlers _materials;
             CameraHandler _camera;
             LightHandlers _lights;
             /* TODO: add remaining plugins types here */
