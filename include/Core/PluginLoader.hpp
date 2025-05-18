@@ -39,15 +39,16 @@ namespace RayTracer {
             typedef RayTracer::IPlugin *(*pluginExtractor)();
             typedef std::vector<std::shared_ptr<IPrimitiveFactory>> ShapeHandlers;
             typedef std::shared_ptr<ICameraFactory> CameraHandler;
+            typedef std::vector<std::shared_ptr<ILightFactory>> LightHandlers;
             
             explicit PluginLoader(std::string pluginDirPath);
             ~PluginLoader();
-
             
             std::expected<void, Error> load();
             /* TODO: add remaining plugins types here */
             ShapeHandlers &getShapes();
             CameraHandler &getCamera();
+            ILightFactory &getLights();
 
             static std::string getErrorMsg(Error err);
 
@@ -56,6 +57,7 @@ namespace RayTracer {
 
             ShapeHandlers _primitives;
             CameraHandler _camera;
+            LightHandlers _lights;
             /* TODO: add remaining plugins types here */
 
             std::vector<void *> _dlopenHandles;

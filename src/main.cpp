@@ -23,8 +23,8 @@
 #include <string>
 #include <cmath>
 #include "Primitives/Shapes/Plane/Plane.hpp"
-#include "Lights/DirectionalLight.hpp"
-#include "Lights/AmbientLight.hpp"
+#include "Lights/DirectionalLight/DirectionalLight.hpp"
+#include "Lights/AmbientLight/AmbientLight.hpp"
 #include "Exception/Exception.hpp"
 #include "Primitives/IPrimitive.hpp"
 
