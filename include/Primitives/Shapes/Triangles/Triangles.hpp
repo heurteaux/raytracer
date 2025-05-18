@@ -25,6 +25,7 @@ namespace TrianglePlugin {
 
             bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const override;
             void rotate(const Math::Vector3d &angles) override;
+            void translate(const Math::Vector3d &translation) override;
 
         private:
             void startTriangle(const Math::Point3d &v1, const Math::Point3d &v2, const Math::Point3d &v3);

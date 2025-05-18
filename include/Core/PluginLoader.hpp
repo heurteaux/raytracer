@@ -11,22 +11,14 @@
 #include <string>
 #include <expected>
 #include <map>
+#include "Core/IPluginLoader.hpp"
 #include "IPlugin.hpp"
 
 #define PLUGIN_SYMBOL "extractPlugin"
 
 namespace RayTracer {
-    class PluginLoader {
+    class PluginLoader: public IPluginLoader {
         public:
-            enum class Error {
-                EMPTY_PATH,
-                WRONG_FILE_TYPE,
-                FILESYSTEM_ERROR,
-                INVALID_PLUGINS_DIR,
-                DLL_LOAD_ERROR,
-                SYMBOL_NOT_FOUND,
-                DUPLICATE_CAMERA_PLUGIN
-            };
             static inline std::map<Error, std::string> errorMsg = {    
                 {Error::EMPTY_PATH, "plugin directory path is empty"},
                 {Error::WRONG_FILE_TYPE, "invalid file type found in plugins directory"},
@@ -49,11 +41,11 @@ namespace RayTracer {
             ShapeHandlers &getShapes();
             CameraHandler &getCamera();
             ILightFactory &getLights();
-
+      
             static std::string getErrorMsg(Error err);
 
         private:
-            std::expected<void, Error> _storePlugin(std::unique_ptr<IPlugin> plugin);
+            void _storePlugin(std::unique_ptr<IPlugin> plugin) override;
 
             ShapeHandlers _primitives;
             CameraHandler _camera;
