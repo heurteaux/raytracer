@@ -85,6 +85,10 @@ namespace TrianglePlugin {
         record.t = t;
         record.point = ray.origin + ray.direction * t;
         record.normal = normal;
+        if (a < 0) {
+            record.normal = record.normal * -1.0;
+        }
+        
         record.material = _material;
         
         return true;
@@ -126,5 +130,25 @@ namespace TrianglePlugin {
         Math::Vector3d edge2(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z);
         normal = edge1.cross(edge2).normalized();
         _center = Math::Point3d((v1.x + v2.x + v3.x) / 3, (v1.y + v2.y + v3.y) / 3, (v1.z + v2.z + v3.z) / 3);
+    }
+
+    void Triangle::translate(const Math::Vector3d &translation)
+    {
+
+        v1.x += translation.x;
+        v1.y += translation.y;
+        v1.z += translation.z;
+        
+        v2.x += translation.x;
+        v2.y += translation.y;
+        v2.z += translation.z;
+        
+        v3.x += translation.x;
+        v3.y += translation.y;
+        v3.z += translation.z;
+        
+        _center.x += translation.x;
+        _center.y += translation.y;
+        _center.z += translation.z;
     }
 }
