@@ -18,7 +18,7 @@ namespace RayTracer {
 
             void setColor2(const Math::Color &color) { _color2 = color; }
             const Math::Color &getColor2() const { return _color2; }
-            const Math::Color &getColorAt(const Math::Point3d &point) const override;
+            Math::Color getColorAt(const Math::Point3d &point) const override;
 
         private:
             Math::Color _color2;

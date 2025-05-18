@@ -28,7 +28,7 @@ namespace RayTracer {
         setReflectivity(reflection);
     }
 
-    const Math::Color &ChessBoard::getColorAt(const Math::Point3d &point) const
+    Math::Color ChessBoard::getColorAt(const Math::Point3d &point) const
     {
         int x = static_cast<int>(std::floor(point.x / 0.3));
         int z = static_cast<int>(std::floor(point.z / 0.3));
