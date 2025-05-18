@@ -27,6 +27,7 @@
 #include "Lights/AmbientLight.hpp"
 #include "Exception/Exception.hpp"
 #include "Primitives/IPrimitive.hpp"
+#include "Core/ErrorHandler.hpp"
 
 #include <filesystem>
 #include <thread>
@@ -45,19 +46,16 @@ int main(const int argc, UNUSED const char *argv[])
     }
     std::unique_ptr<RayTracer::PluginLoader> pluginLoader = std::make_unique<RayTracer::PluginLoader>("./plugins/");
     std::expected<void, RayTracer::PluginLoader::Error> loadRes = pluginLoader->load();
-    if (!loadRes.has_value()) {
-        std::string msg = 
-            RayTracer::PluginLoader::getErrorMsg(loadRes.error());
-        std::cerr << "PluginError: " << msg << std::endl;
-        return 84;
+    int errorCode = RayTracer::handleError(loadRes, "PluginError", RayTracer::PluginLoader::getErrorMsg);
+    if (errorCode != 0) {
+        return errorCode;
     }
+    
     RayTracer::Scene scene(std::move(pluginLoader));
     std::expected<void, RayTracer::Scene::Error> sceneLoadRes = scene.loadConfig(argv[1]);
-    if (!sceneLoadRes.has_value()) {
-        std::string msg = 
-            RayTracer::Scene::getErrorMsg(sceneLoadRes.error());
-        std::cerr << "ConfigFileError: " << msg << std::endl;
-        return 84;
+    errorCode = RayTracer::handleError(sceneLoadRes, "ConfigFileError", RayTracer::Scene::getErrorMsg);
+    if (errorCode != 0) {
+        return errorCode;
     }
     int returnValue = scene.render(PPM_File);
     RayTracer::PPMLoader loader;
