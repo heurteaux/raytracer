@@ -215,6 +215,7 @@ namespace RayTracer
     }
 
     void Scene::renderSection(int startRow, int endRow, std::vector<std::vector<Math::Color>> &pixelColors) const {
+        _renderingSubject.notifyProgress(0, "Rendering section - " + std::to_string(startRow) + " to " + std::to_string(endRow));
         for (int j = startRow; j < endRow; j++) {
             for (int i = 0; i < _width; i++) {
                 double u = double(i + 0.5) / double(_width);
@@ -222,33 +223,39 @@ namespace RayTracer
                 Ray ray = _camera->ray(u, v);
                 pixelColors[j][i] = traceRay(ray, 50);
             }
+            _renderingSubject.notifyProgress((j - startRow) * 100 / (endRow - startRow), "Rendering section - " + std::to_string(startRow) + " to " + std::to_string(endRow));
         }
+        _renderingSubject.notifyProgress(100, "Rendering section - " + std::to_string(startRow) + " to " + std::to_string(endRow));
     }
 
     int Scene::render(const std::string &filename) const {
-        std::ofstream outFile(filename);
-        if (!outFile.is_open()) {
-            std::cerr << "Failed to open output file" << std::endl;
-            return 84;
+        if (_camera == nullptr || _width <= 0 || _height <= 0) {
+            return -1;
         }
         
-        outFile << "P3\n" << _width << " " << _height << "\n255\n";
+        std::ofstream outFile(filename);
+        if (!outFile.is_open()) {
+            return -1;
+        }
+
+        _renderingSubject.notify("Starting rendering...");
+        
+        outFile << "P3" << std::endl;
+        outFile << _width << " " << _height << std::endl;
+        outFile << "255" << std::endl;
         
         std::vector<std::vector<Math::Color>> pixelColors(_height, std::vector<Math::Color>(_width));
-        unsigned int threadCount = std::thread::hardware_concurrency();
+        
+        unsigned int numThreads = std::thread::hardware_concurrency();
+        
+        _renderingSubject.notify("Using " + std::to_string(numThreads) + " threads for rendering");
+        
         std::vector<std::thread> threads;
+        int rowsPerThread = _height / numThreads;
         
-        int rowsPerThread = _height / threadCount;
-        
-        for (unsigned int threadIndex = 0; threadIndex < threadCount; threadIndex++) {
+        for (unsigned int threadIndex = 0; threadIndex < numThreads; threadIndex++) {
             int startRow = threadIndex * rowsPerThread;
-            int endRow = 0;
-
-            if (threadIndex == threadCount - 1) {
-                endRow = _height;
-            } else {
-                endRow = (threadIndex + 1) * rowsPerThread;
-            }
+            int endRow = (threadIndex == numThreads - 1) ? _height : (threadIndex + 1) * rowsPerThread;
             
             threads.push_back(std::thread(&Scene::renderSection, this, startRow, endRow, std::ref(pixelColors)));
         }
@@ -257,12 +264,15 @@ namespace RayTracer
             thread.join();
         }
         
+        _renderingSubject.notifyProgress(90, "Writing image data to file");
+        
         for (int j = _height - 1; j >= 0; j--) {
             for (int i = 0; i < _width; i++) {
                 writeColor(outFile, pixelColors[j][i]);
             }
         }
         
+        _renderingSubject.notifyProgress(100, "Rendering complete");
         outFile.close();
         return 0;
     }
@@ -498,5 +508,13 @@ namespace RayTracer
             return errorMsg.at(err);
         }
         return std::string("unknown error");
+    }
+
+    void Scene::attachObserver(std::shared_ptr<IObserver> observer) {
+        _renderingSubject.attach(observer);
+    }
+
+    void Scene::detachObserver(std::shared_ptr<IObserver> observer) {
+        _renderingSubject.detach(observer);
     }
 }
