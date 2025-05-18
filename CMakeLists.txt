@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 file(GLOB_RECURSE SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 
 # /!\ TODO: REMOVE THIS, IT IS TEMPORARY /!\
-file(GLOB_RECURSE EXCLUDED_SOURCES ${CMAKE_SOURCE_DIR}/src/Primitives/*.cpp ${CMAKE_SOURCE_DIR}/src/Camera/*.cpp)
+file(GLOB_RECURSE EXCLUDED_SOURCES ${CMAKE_SOURCE_DIR}/src/Primitives/*.cpp)
 list(REMOVE_ITEM SOURCES ${EXCLUDED_SOURCES})
 # ---------------------------------------------
 
