@@ -337,8 +337,8 @@ namespace RayTracer
     }
 
     std::expected<void, Scene::Error> Scene::parseTransformation(const libconfig::Setting &setting) {
-        int position[3] = {0, 0, 0};
-        int rotation[3] = {0, 0, 0};
+        double position[3] = {0, 0, 0};
+        double rotation[3] = {0, 0, 0};
         double scaleFactor = 1.0;
         auto primitives = getPrimitives();
 
