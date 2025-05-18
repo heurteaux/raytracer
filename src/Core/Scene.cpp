@@ -336,20 +336,49 @@ namespace RayTracer
         return {};
     }
 
-    /* refactor: not cleaned */
     std::expected<void, Scene::Error> Scene::parseTransformation(const libconfig::Setting &setting) {
         int position[3] = {0, 0, 0};
+        int rotation[3] = {0, 0, 0};
+        double scaleFactor = 1.0;
         auto primitives = getPrimitives();
-        const libconfig::Setting &translations = setting["translation"];
 
         try {
-            for (int i = 0; i < translations.getLength(); i++) {
-                for (auto &prim : primitives) {
-                    if (prim->getName() == translations[i].getName()) {
-                        translations[i].lookupValue("x", position[0]);
-                        translations[i].lookupValue("y", position[1]);
-                        translations[i].lookupValue("z", position[2]);
-                        prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+            if (setting.exists("translation")) {
+                const libconfig::Setting &translations = setting["translation"];
+                for (int i = 0; i < translations.getLength(); i++) {
+                    for (auto &prim : primitives) {
+                        if (prim->getName() == translations[i].getName()) {
+                            translations[i].lookupValue("x", position[0]);
+                            translations[i].lookupValue("y", position[1]);
+                            translations[i].lookupValue("z", position[2]);
+                            prim->translate(Math::Vector3d(position[0], position[1], position[2]));
+                        }
+                    }
+                }
+            }
+
+            if (setting.exists("rotation")) {
+                const libconfig::Setting &rotations = setting["rotation"];
+                for (int i = 0; i < rotations.getLength(); i++) {
+                    for (auto &prim : primitives) {
+                        if (prim->getName() == rotations[i].getName()) {
+                            rotations[i].lookupValue("x", rotation[0]);
+                            rotations[i].lookupValue("y", rotation[1]);
+                            rotations[i].lookupValue("z", rotation[2]);
+                            prim->rotate(Math::Vector3d(rotation[0], rotation[1], rotation[2]));
+                        }
+                    }
+                }
+            }
+
+            if (setting.exists("scale")) {
+                const libconfig::Setting &scales = setting["scale"];
+                for (int i = 0; i < scales.getLength(); i++) {
+                    for (auto &prim : primitives) {
+                        if (prim->getName() == scales[i].getName()) {
+                            scales[i].lookupValue("factor", scaleFactor);
+                            prim->scale(scaleFactor);
+                        }
                     }
                 }
             }
