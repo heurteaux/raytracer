@@ -316,7 +316,7 @@ namespace RayTracer
                 pos.lookupValue("x", position[0]);
                 pos.lookupValue("y", position[1]);
                 pos.lookupValue("z", position[2]);
-                std::cout << "Camera position: " << position[0] << " " << position[1] << " " << position[2] << std::endl;
+                // std::cout << "Camera position: " << position[0] << " " << position[1] << " " << position[2] << std::endl;
             }
             if (setting.exists("resolution")) {
                 const libconfig::Setting &pos = setting["resolution"];
