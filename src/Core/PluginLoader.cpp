@@ -98,6 +98,14 @@ namespace RayTracer {
                 _camera = std::move(cameraPlugin);
                 break;
             }
+            case IPlugin::Type::Light : {
+                std::unique_ptr<ILightFactory> lightPlugin = 
+                    std::get<std::unique_ptr<ILightFactory>>(
+                        plugin->getPluginContainer()
+                    );
+                _lights.push_back(std::move(lightPlugin));
+                break;
+            }
             /* add more cases here for more plugins */
         }
     }

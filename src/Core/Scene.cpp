@@ -7,8 +7,8 @@
 
 #include "Core/Scene.hpp"
 #include "Core/PluginLoader.hpp"
-#include "Lights/AmbientLight.hpp"
-#include "Lights/DirectionalLight.hpp"
+#include "Lights/AmbientLight/AmbientLight.hpp"
+#include "Lights/DirectionalLight/DirectionalLight.hpp"
 #include "Primitives/IPrimitiveFactory.hpp"
 #include <functional>
 #include <thread>
@@ -104,7 +104,7 @@ namespace RayTracer
         Math::Color diffuse(0.0, 0.0, 0.0);
         Math::Color specular(0.0, 0.0, 0.0);
 
-        if (auto directionalLight = std::dynamic_pointer_cast<DirectionalLight>(light)) {
+        if (auto directionalLight = std::dynamic_pointer_cast<DirectionalLightPlugin::DirectionalLight>(light)) {
             Math::Vector3d lightDir = directionalLight->getDirection().normalized() * (-1);
             Math::Color lightColor = Math::Color(1.0, 1.0, 1.0) * directionalLight->getIntensity();
             // (loi de Lambert)
@@ -194,7 +194,7 @@ namespace RayTracer
             double ambient = 0.0;
 
             for (const auto &light : _lights) {
-                if (auto ambientLight = std::dynamic_pointer_cast<AmbientLight>(light)) {
+                if (auto ambientLight = std::dynamic_pointer_cast<AmbientLightPlugin::AmbientLight>(light)) {
                     ambient = ambientLight->getIntensity();
                     break;
                 }
@@ -396,7 +396,7 @@ namespace RayTracer
 
         try {
             setting.lookupValue("ambient", ambient);
-            addLight(std::make_shared<AmbientLight>(ambient));
+            addLight(std::make_shared<AmbientLightPlugin::AmbientLight>(ambient));
 
             setting.lookupValue("diffuse", diffuse);
             if (setting.exists("directional")) {
@@ -408,7 +408,7 @@ namespace RayTracer
         } catch (std::exception &e) {
             return std::unexpected(Error::LIGHTS_SYNTAX_ERROR);
         }
-        addLight(std::make_shared<DirectionalLight>(Math::Vector3d(direction[0], direction[1], direction[2]), diffuse));
+        addLight(std::make_shared<DirectionalLightPlugin::DirectionalLight>(Math::Vector3d(direction[0], direction[1], direction[2]), diffuse));
         return {};
     }
 
