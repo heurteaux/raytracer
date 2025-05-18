@@ -85,6 +85,10 @@ namespace TrianglePlugin {
         record.t = t;
         record.point = ray.origin + ray.direction * t;
         record.normal = normal;
+        if (a < 0) {
+            record.normal = record.normal * -1.0;
+        }
+        
         record.material = _material;
         
         return true;
@@ -130,6 +134,7 @@ namespace TrianglePlugin {
 
     void Triangle::translate(const Math::Vector3d &translation)
     {
+
         v1.x += translation.x;
         v1.y += translation.y;
         v1.z += translation.z;
