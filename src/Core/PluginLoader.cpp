@@ -22,7 +22,7 @@ static bool is_shared_library(const std::filesystem::path &path) {
 
 namespace RayTracer {
     PluginLoader::PluginLoader(std::string pluginDirPath)
-        : _pluginDirPath(pluginDirPath)
+        : _primitives(), _camera(nullptr), _dlopenHandles(), _pluginDirPath(pluginDirPath)
     {}
 
     std::expected<void, PluginLoader::Error> PluginLoader::load() {
@@ -34,9 +34,11 @@ namespace RayTracer {
         }
         _primitives.clear();
         _materials.clear();
+        _camera = nullptr;
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
         }
+        _dlopenHandles.clear();
 
         try {
             for (const std::filesystem::directory_entry &entry : 
@@ -62,7 +64,10 @@ namespace RayTracer {
                     }
                     pluginExtractor func =
                         reinterpret_cast<pluginExtractor>(funcAddr);
-                    _storePlugin(std::unique_ptr<IPlugin>(func()));
+                    std::unique_ptr<IPlugin> plugin(func());
+
+                    _storePlugin(std::move(plugin));
+
                     _dlopenHandles.push_back(handle);
                 }
             }
@@ -90,6 +95,26 @@ namespace RayTracer {
                 _materials.push_back(std::move(materialPlugin));
                 break;
             }
+            case IPlugin::Type::Camera: {
+                std::unique_ptr<ICameraFactory> cameraPlugin = 
+                    std::get<std::unique_ptr<ICameraFactory>>(
+                        plugin->getPluginContainer()
+                    );
+                if (_camera != nullptr) {
+                    std::cerr << "Warning: " << errorMsg.at(Error::DUPLICATE_CAMERA_PLUGIN) << std::endl;
+                    return;
+                }
+                _camera = std::move(cameraPlugin);
+                break;
+            }
+            case IPlugin::Type::Light : {
+                std::unique_ptr<ILightFactory> lightPlugin = 
+                    std::get<std::unique_ptr<ILightFactory>>(
+                        plugin->getPluginContainer()
+                    );
+                _lights.push_back(std::move(lightPlugin));
+                break;
+            }
             /* add more cases here for more plugins */
         }
     }
@@ -101,10 +126,15 @@ namespace RayTracer {
     PluginLoader::MaterialHandlers &PluginLoader::getMaterials() {
         return _materials;
     }
+    
+    PluginLoader::CameraHandler &PluginLoader::getCamera() {
+        return _camera;
+    }
 
     PluginLoader::~PluginLoader() {
         _primitives.clear();
         _materials.clear();
+        _camera = nullptr;
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
         }

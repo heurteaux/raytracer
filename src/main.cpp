@@ -25,8 +25,8 @@
 #include "Materials/IMaterial.hpp"
 
 #include "Lights/ILight.hpp"
-#include "Lights/DirectionalLight.hpp"
-#include "Lights/AmbientLight.hpp"
+#include "Lights/DirectionalLight/DirectionalLight.hpp"
+#include "Lights/AmbientLight/AmbientLight.hpp"
 
 #include "Exception/Exception.hpp"
 

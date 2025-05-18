@@ -12,7 +12,7 @@
 #include "Core/RayTracer.hpp"
 #include "Primitives/IPrimitive.hpp"
 
-namespace RayTracer
+namespace DirectionalLightPlugin
 {
     class DirectionalLight : public RayTracer::ILight
     {
@@ -36,4 +36,4 @@ namespace RayTracer
     };
 }
 
-#endif
+#endif /* !DIRECTIONALLIGHT_H */

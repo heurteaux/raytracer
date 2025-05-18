@@ -13,7 +13,6 @@
 #include "Lights/ILight.hpp"
 #include "Core/RayTracer.hpp"
 #include "Core/PluginLoader.hpp"
-#include "Camera/Camera.hpp"
 #include <vector>
 #include <memory>
 #include <iostream>
@@ -34,7 +33,8 @@ namespace RayTracer {
                 LIGHTS_SYNTAX_ERROR,
                 TRANSFORMATIONS_SYNTAX_ERROR,
                 UNKNOWN_PRIMITIVE,
-                UNKNOWN_MATERIAL
+                UNKNOWN_MATERIAL,
+                CAMERA_ALREADY_REGISTERED
             };
 
             static inline std::map<Error, std::string> errorMsg = {
@@ -46,7 +46,8 @@ namespace RayTracer {
                 {Error::LIGHTS_SYNTAX_ERROR, "error while parsing lights settings"},
                 {Error::TRANSFORMATIONS_SYNTAX_ERROR, "error while parsing transformations settings"},
                 {Error::UNKNOWN_PRIMITIVE, "error while parsing primitives, unknown given primitive"},
-                {Error::UNKNOWN_MATERIAL, "error while parsing material, unknown given material"}
+                {Error::UNKNOWN_MATERIAL, "error while parsing material, unknown given material"},
+                {Error::CAMERA_ALREADY_REGISTERED, "a camera is already registered in the scene"},
             };
 
             Scene(std::unique_ptr<PluginLoader> pluginLoader);
@@ -77,7 +78,7 @@ namespace RayTracer {
             /* setters */
             void setWidth(int width) { _width = width; }
             void setHeight(int height) { _height = height; }
-            void setCamera(const std::shared_ptr<Camera> &cam);
+            void setCamera(const std::shared_ptr<ICamera> &cam);
 
             static std::string getErrorMsg(Error err);
             
@@ -93,7 +94,7 @@ namespace RayTracer {
             std::unique_ptr<PluginLoader> _pluginLoader;
             std::vector<std::shared_ptr<IPrimitive>> _primitives;
             std::vector<std::shared_ptr<ILight>> _lights;
-            std::shared_ptr<Camera> _camera;
+            std::shared_ptr<ICamera> _camera;
             int _width;
             int _height;
     };

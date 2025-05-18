@@ -13,10 +13,10 @@
 #include "Math/Rectangle3D.hpp"
 #include "Core/RayTracer.hpp"
 #include "Core/HitRecord.hpp"
-#include "ICamera.hpp"
+#include "Camera/ICamera.hpp"
 
-namespace RayTracer {
-    class Camera : public ICamera
+namespace CameraPlugin {
+    class Camera : public RayTracer::ICamera
     {
         public:
             Camera() = default;
@@ -25,7 +25,7 @@ namespace RayTracer {
             Camera(const Math::Point3d &origin, const Math::Vector3d &rotation, const double fov);
             ~Camera() = default;
 
-            Ray ray(double u, double v) const override;
+            RayTracer::Ray ray(double u, double v) const override;
             void rotate(Math::Point3d &origin, const Math::Vector3d &angles);
             void updateScreen();
             
