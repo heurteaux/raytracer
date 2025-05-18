@@ -33,6 +33,7 @@ namespace RayTracer {
             return std::unexpected(Error::INVALID_PLUGINS_DIR);
         }
         _primitives.clear();
+        _materials.clear();
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
         }
@@ -81,6 +82,15 @@ namespace RayTracer {
                 _primitives.push_back(std::move(primitivePlugin));
                 break;
             }
+            case IPlugin::Type::Material: {
+                std::cout << "Material plugin found" << std::endl;
+                std::unique_ptr<IMaterialFactory> materialPlugin = 
+                    std::get<std::unique_ptr<IMaterialFactory>>(
+                        plugin->getPluginContainer()
+                    );
+                _materials.push_back(std::move(materialPlugin));
+                break;
+            }
             /* add more cases here for more plugins */
         }
     }
@@ -89,8 +99,13 @@ namespace RayTracer {
         return _primitives;
     }
 
+    PluginLoader::MaterialHandlers &PluginLoader::getMaterials() {
+        return _materials;
+    }
+
     PluginLoader::~PluginLoader() {
         _primitives.clear();
+        _materials.clear();
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
         }

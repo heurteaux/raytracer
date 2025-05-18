@@ -36,12 +36,14 @@ namespace RayTracer {
             };
             typedef RayTracer::IPlugin *(*pluginExtractor)();
             typedef std::vector<std::shared_ptr<IPrimitiveFactory>> ShapeHandlers;
+            typedef std::vector<std::shared_ptr<IMaterialFactory>> MaterialHandlers;
             
             explicit PluginLoader(std::string pluginDirPath);
             ~PluginLoader();
 
             std::expected<void, Error> load();
             ShapeHandlers &getShapes();
+            MaterialHandlers &getMaterials();
             /* TODO: add remaining plugins types here */
 
             static std::string getErrorMsg(Error err);
@@ -50,6 +52,7 @@ namespace RayTracer {
             void _storePlugin(std::unique_ptr<IPlugin> plugin);
 
             ShapeHandlers _primitives;
+            MaterialHandlers _materials;
             /* TODO: add remaining plugins types here */
             std::vector<void *> _dlopenHandles;
             std::string _pluginDirPath;

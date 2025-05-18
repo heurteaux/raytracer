@@ -17,6 +17,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Subdirectories
 add_subdirectory(src/Primitives)
+add_subdirectory(src/Materials)
 
 # Exec
 add_executable(raytracer ${SOURCES})
