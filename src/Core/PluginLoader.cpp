@@ -83,7 +83,6 @@ namespace RayTracer {
                 break;
             }
             case IPlugin::Type::Material: {
-                std::cout << "Material plugin found" << std::endl;
                 std::unique_ptr<IMaterialFactory> materialPlugin = 
                     std::get<std::unique_ptr<IMaterialFactory>>(
                         plugin->getPluginContainer()

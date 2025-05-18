@@ -320,7 +320,6 @@ namespace RayTracer
                 pos.lookupValue("x", position[0]);
                 pos.lookupValue("y", position[1]);
                 pos.lookupValue("z", position[2]);
-                // std::cout << "Camera position: " << position[0] << " " << position[1] << " " << position[2] << std::endl;
             }
             if (setting.exists("resolution")) {
                 const libconfig::Setting &pos = setting["resolution"];
@@ -434,8 +433,6 @@ namespace RayTracer
                 const libconfig::Setting &materialType = setting[setting[i].getName()];
                 for (int j = 0; j < materialType.getLength(); j++) {
                     const libconfig::Setting &newMat = materialType[materialType[j].getName()];
-                    std::cout << "Material name: " << newMat.getName() << std::endl;
-                    std::cout << "Material type: " << materialType.getName() << std::endl;
                     const std::optional<std::shared_ptr<IMaterialFactory>> factory = getMaterialFactory(materialType.getName());
                     if (!factory.has_value()) {
                         return std::unexpected(Error::UNKNOWN_MATERIAL);
@@ -444,10 +441,8 @@ namespace RayTracer
                         newMaterial = factory.value()->getFromParsing(newMat);
                     if (newMaterial.has_value()) {
                         for (std::shared_ptr<IPrimitive> &prim : _primitives) {
-                            std::cout << "Primitive name: " << prim->getName() << std::endl;
                             if (prim->getName() == newMat.getName()) {
                                 prim->setMaterial(std::move(newMaterial.value()));
-                                std::cout << "Material set to primitive: " << prim->getName() << std::endl;
 
                             }
                         }
