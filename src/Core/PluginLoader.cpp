@@ -65,11 +65,7 @@ namespace RayTracer {
                         reinterpret_cast<pluginExtractor>(funcAddr);
                     std::unique_ptr<IPlugin> plugin(func());
 
-                    std::expected<void, RayTracer::PluginLoader::Error> res = 
-                        _storePlugin(std::move(plugin));
-                    if (!res.has_value()) {
-                        return res;
-                    }
+                    _storePlugin(std::move(plugin));
 
                     _dlopenHandles.push_back(handle);
                 }
@@ -80,7 +76,7 @@ namespace RayTracer {
         return {};
     }
 
-    std::expected<void, PluginLoader::Error> PluginLoader::_storePlugin(std::unique_ptr<IPlugin> plugin) {
+    void PluginLoader::_storePlugin(std::unique_ptr<IPlugin> plugin) {
         switch (plugin->getPluginType()) {
             case IPlugin::Type::Shape: {
                 std::unique_ptr<IPrimitiveFactory> primitivePlugin = 
@@ -96,14 +92,14 @@ namespace RayTracer {
                         plugin->getPluginContainer()
                     );
                 if (_camera != nullptr) {
-                    return std::unexpected(Error::DUPLICATE_CAMERA_PLUGIN);
+                    std::cerr << "Warning: " << errorMsg.at(Error::DUPLICATE_CAMERA_PLUGIN) << std::endl;
+                    return;
                 }
                 _camera = std::move(cameraPlugin);
                 break;
             }
             /* add more cases here for more plugins */
         }
-        return {};
     }
 
     PluginLoader::ShapeHandlers &PluginLoader::getShapes() {
