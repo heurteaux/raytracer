@@ -5,10 +5,10 @@
 ** Camera.cpp
 */
 
-#include "Camera/Camera.hpp"
+#include "Camera/CameraPlugin/Camera.hpp"
 #include <iostream>
 
-namespace RayTracer {
+namespace CameraPlugin {
 
     Camera::Camera(const Math::Point3d &origin) : _origin(0, 0, 0), _fov(90)
     {
@@ -104,13 +104,13 @@ namespace RayTracer {
         );
     }
 
-    Ray Camera::ray(double u, double v) const
+    RayTracer::Ray Camera::ray(double u, double v) const
     {
         Math::Point3d target = _screen.pointAt(u, v);
         Math::Vector3d dir(target.x - _origin.x, target.y - _origin.y, target.z - _origin.z);
             double length = dir.length();
             if (length > 0)
                 dir = dir / length;
-        return Ray(_origin, dir);
+        return RayTracer::Ray(_origin, dir);
     }
 }

@@ -22,7 +22,7 @@ static bool is_shared_library(const std::filesystem::path &path) {
 
 namespace RayTracer {
     PluginLoader::PluginLoader(std::string pluginDirPath)
-        : _pluginDirPath(pluginDirPath)
+        : _primitives(), _camera(nullptr), _dlopenHandles(), _pluginDirPath(pluginDirPath)
     {}
 
     std::expected<void, PluginLoader::Error> PluginLoader::load() {
@@ -33,9 +33,11 @@ namespace RayTracer {
             return std::unexpected(Error::INVALID_PLUGINS_DIR);
         }
         _primitives.clear();
+        _camera = nullptr;
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
         }
+        _dlopenHandles.clear();
 
         try {
             for (const std::filesystem::directory_entry &entry : 
@@ -61,7 +63,14 @@ namespace RayTracer {
                     }
                     pluginExtractor func =
                         reinterpret_cast<pluginExtractor>(funcAddr);
-                    _storePlugin(std::unique_ptr<IPlugin>(func()));
+                    std::unique_ptr<IPlugin> plugin(func());
+
+                    std::expected<void, RayTracer::PluginLoader::Error> res = 
+                        _storePlugin(std::move(plugin));
+                    if (!res.has_value()) {
+                        return res;
+                    }
+
                     _dlopenHandles.push_back(handle);
                 }
             }
@@ -71,7 +80,7 @@ namespace RayTracer {
         return {};
     }
 
-    void PluginLoader::_storePlugin(std::unique_ptr<IPlugin> plugin) {
+    std::expected<void, PluginLoader::Error> PluginLoader::_storePlugin(std::unique_ptr<IPlugin> plugin) {
         switch (plugin->getPluginType()) {
             case IPlugin::Type::Shape: {
                 std::unique_ptr<IPrimitiveFactory> primitivePlugin = 
@@ -81,16 +90,33 @@ namespace RayTracer {
                 _primitives.push_back(std::move(primitivePlugin));
                 break;
             }
+            case IPlugin::Type::Camera: {
+                std::unique_ptr<ICameraFactory> cameraPlugin = 
+                    std::get<std::unique_ptr<ICameraFactory>>(
+                        plugin->getPluginContainer()
+                    );
+                if (_camera != nullptr) {
+                    return std::unexpected(Error::DUPLICATE_CAMERA_PLUGIN);
+                }
+                _camera = std::move(cameraPlugin);
+                break;
+            }
             /* add more cases here for more plugins */
         }
+        return {};
     }
 
     PluginLoader::ShapeHandlers &PluginLoader::getShapes() {
         return _primitives;
     }
+    
+    PluginLoader::CameraHandler &PluginLoader::getCamera() {
+        return _camera;
+    }
 
     PluginLoader::~PluginLoader() {
         _primitives.clear();
+        _camera = nullptr;
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
         }
