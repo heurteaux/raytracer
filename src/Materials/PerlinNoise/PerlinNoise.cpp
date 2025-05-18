@@ -9,6 +9,7 @@
 #include <cmath>
 #include <random>
 #include <algorithm>
+#include <iostream>
 
 namespace RayTracer {
     PerlinNoise::PerlinNoise() : 
@@ -125,14 +126,14 @@ namespace RayTracer {
             temp_z *= 2.0;
         }
         return result;
-    }
+    }    
 
     Math::Color PerlinNoise::getColorAt(const Math::Point3d& point) const
     {
         double x = point.x / _scale;
         double y = point.y / _scale;
         double z = point.z / _scale;
-        double noiseValue = 0.5 * (1.0 + sin(z + 10.0 * turbulence(Math::Point3d(x, y, z), static_cast<int>(_turbulence))));
+        double noiseValue = 0.5 * (1.0 + std::sin(z + 10.0 * turbulence(Math::Point3d(x, y, z), static_cast<int>(_turbulence))));
         Math::Color finalColor = Math::Color(
             lerp(noiseValue, _color.r, _color2.r),
             lerp(noiseValue, _color.g, _color2.g),

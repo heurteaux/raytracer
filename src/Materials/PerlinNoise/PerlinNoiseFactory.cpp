@@ -27,8 +27,8 @@ namespace PerlinNoisePlugin {
                 setting.lookupValue("frequency", frequency);
 
             double rgb[3] = {0.2, 0.3, 0.8};
-            if (setting.exists("color1")) {
-                const libconfig::Setting &col = setting["color1"];
+            if (setting.exists("color")) {
+                const libconfig::Setting &col = setting["color"];
                 if (col.exists("r"))
                     col.lookupValue("r", rgb[0]);
                 if (col.exists("g"))
@@ -48,16 +48,16 @@ namespace PerlinNoisePlugin {
                     col.lookupValue("b", rgb2[2]);
             }
 
-            double reflectivity = 0.2;
+            double reflectivity = 0.0;
             if (setting.exists("reflection"))
                 setting.lookupValue("reflection", reflectivity);
             double transparency = 0.0;
             if (setting.exists("transparency"))
                 setting.lookupValue("transparency", transparency);
-            double refractiveIndex = 1.5;
+            double refractiveIndex = 0.0;
             if (setting.exists("refraction"))
                 setting.lookupValue("refraction", refractiveIndex);
-            double shininess = 100.0;
+            double shininess = 1000.0;
             if (setting.exists("shininess"))
                 setting.lookupValue("shininess", shininess);
 

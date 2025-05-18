@@ -11,7 +11,7 @@
 #include "Materials/IMaterialFactory.hpp"
 #include <expected>
 
-#define MATERIAL_NAME "perlinnoise"
+#define MATERIAL_NAME "chessboard"
 
 namespace ChessBoardPlugin {
     class ChessBoardFactory : public RayTracer::IMaterialFactory

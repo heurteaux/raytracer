@@ -443,7 +443,6 @@ namespace RayTracer
                         for (std::shared_ptr<IPrimitive> &prim : _primitives) {
                             if (prim->getName() == newMat.getName()) {
                                 prim->setMaterial(std::move(newMaterial.value()));
-
                             }
                         }
                     } else {
