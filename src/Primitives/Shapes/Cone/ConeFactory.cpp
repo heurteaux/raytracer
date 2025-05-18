@@ -2,16 +2,16 @@
 ** EPITECH PROJECT, 2025
 ** raytracer
 ** File description:
-** CylinderFactory
+** ConeFactory.cpp
 */
 
-#include "Primitives/Shapes/Cylinder/CylinderFactory.hpp"
-#include "Primitives/Shapes/Cylinder/Cylinder.hpp"
+#include "Primitives/Shapes/Cone/ConeFactory.hpp"
+#include "Primitives/Shapes/Cone/Cone.hpp"
 #include <memory>
 #include <iostream>
 
-namespace CylinderPlugin {
-    std::expected<std::unique_ptr<RayTracer::IPrimitive>, std::string> CylinderFactory::getFromParsing(const libconfig::Setting &setting) const {
+namespace ConePlugin {
+    std::expected<std::unique_ptr<RayTracer::IPrimitive>, std::string> ConeFactory::getFromParsing(const libconfig::Setting &setting) const {
         try {
             Math::Point3d base(0.0, 0.0, 0.0);
             if (setting.exists("position")) {
@@ -24,7 +24,7 @@ namespace CylinderPlugin {
                 if (pos.exists("z"))
                     base.z = static_cast<double>(pos["z"]);
             } else {
-                return std::unexpected("Cylinder: Missing position parameter");
+                return std::unexpected("Cone: Missing position parameter");
             }
 
             Math::Vector3d axis(0.0, 1.0, 0.0);
@@ -60,39 +60,32 @@ namespace CylinderPlugin {
                     color.b = static_cast<double>(col["b"]);
             }
 
-            std::string name = "cylinder";
+            std::string name = "cone";
             if (setting.exists("name") && setting["name"].getType() == libconfig::Setting::TypeString) {
                 name = static_cast<const char*>(setting["name"]);
             } else if (setting.getName()) {
                 name = setting.getName();
             }
 
-            std::unique_ptr<Cylinder> cylinder;
+            std::unique_ptr<RayTracer::Cone> cone;
             if (setting.exists("height")) {
-                cylinder = std::make_unique<Cylinder>(base, axis, radius, color, name, height);
+                cone = std::make_unique<RayTracer::Cone>(base, axis, radius, color, name, height);
             } else if (setting.exists("color")) {
-                cylinder = std::make_unique<Cylinder>(base, axis, radius, color, name);
+                cone = std::make_unique<RayTracer::Cone>(base, axis, radius, color, name);
             } else {
-                cylinder = std::make_unique<Cylinder>(base, axis, radius, name);
+                cone = std::make_unique<RayTracer::Cone>(base, axis, radius, name);
             }
-
-            if (setting.exists("shininess")) {
-                double shininess = 1000.0;
-                setting.lookupValue("shininess", shininess);
-                cylinder->setMaterial(std::make_shared<RayTracer::Material>(color, shininess));
-            }
-
-            return cylinder;
+            return cone;
         } catch (const libconfig::SettingTypeException &e) {
-            return std::unexpected(std::string("Cylinder: Type error in configuration: ") + e.what());
+            return std::unexpected(std::string("Cone: Type error in configuration: ") + e.what());
         } catch (const libconfig::SettingNotFoundException &e) {
-            return std::unexpected(std::string("Cylinder: Required setting not found: ") + e.what());
+            return std::unexpected(std::string("Cone: Required setting not found: ") + e.what());
         } catch (const std::exception &e) {
-            return std::unexpected(std::string("Cylinder: Error parsing configuration: ") + e.what());
+            return std::unexpected(std::string("Cone: Error parsing configuration: ") + e.what());
         }
     }
 
-    std::string CylinderFactory::getPrimitiveName() const {
+    std::string ConeFactory::getPrimitiveName() const {
         return PRIMITIVE_NAME;
     }
 }
