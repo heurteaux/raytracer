@@ -305,22 +305,45 @@ namespace RayTracer
     /* refactor: not cleaned */
     std::expected<void, Scene::Error> Scene::parseCamera(const libconfig::Setting &setting) {
         int resolution[2] = {0, 0};
-        int position[3] = {0, 0, 0};
-        int fov = 90;
-        int rotation[3] = {0, 0, 0};
-        // need to add resolution & field of view
-
+        
         try {
+            if (setting.exists("resolution")) {
+                const libconfig::Setting &pos = setting["resolution"];
+                pos.lookupValue("width", resolution[0]);
+                pos.lookupValue("height", resolution[1]);
+            }
+            
+            setWidth(resolution[0]);
+            setHeight(resolution[1]);
+            
+            std::shared_ptr<ICameraFactory> cameraFactory = _pluginLoader->getCamera();
+            if (cameraFactory) {
+                std::expected<std::shared_ptr<ICamera>, std::string> cameraResult = 
+                    cameraFactory->getFromParsing(setting);
+                
+                if (cameraResult.has_value()) {
+                    _camera = std::dynamic_pointer_cast<Camera>(cameraResult.value());
+                    if (!_camera) {
+                        std::cerr << "Warning: Could not cast ICamera to Camera, using default camera instead" << std::endl;
+                    } else {
+                        return {};
+                    }
+                } else {
+                    std::cerr << "Warning: Failed to create camera using plugin: " 
+                              << cameraResult.error() << std::endl;
+                }
+            }
+            
+            int position[3] = {0, 0, 0};
+            int fov = 90;
+            int rotation[3] = {0, 0, 0};
+
             if (setting.exists("position")) {
                 const libconfig::Setting &pos = setting["position"];
                 pos.lookupValue("x", position[0]);
                 pos.lookupValue("y", position[1]);
                 pos.lookupValue("z", position[2]);
-            }
-            if (setting.exists("resolution")) {
-                const libconfig::Setting &pos = setting["resolution"];
-                pos.lookupValue("width", resolution[0]);
-                pos.lookupValue("height", resolution[1]);
+                std::cout << "Camera position: " << position[0] << " " << position[1] << " " << position[2] << std::endl;
             }
             if (setting.exists("fov")) {
                 setting.lookupValue("fov", fov);
@@ -331,13 +354,14 @@ namespace RayTracer
                 rot.lookupValue("y", rotation[1]);
                 rot.lookupValue("z", rotation[2]);
             }
+            
+            setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2]), 
+                                               Math::Vector3d(rotation[0], rotation[1], rotation[2]), 
+                                               fov));
         } catch (std::exception &e) {
             return std::unexpected(Error::CAMERA_SYNTAX_ERROR);
         }
         
-        setWidth(resolution[0]);
-        setHeight(resolution[1]);
-        setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2]), Math::Vector3d(rotation[0], rotation[1], rotation[2]), fov));
         return {};
     }
 

@@ -22,7 +22,7 @@ static bool is_shared_library(const std::filesystem::path &path) {
 
 namespace RayTracer {
     PluginLoader::PluginLoader(std::string pluginDirPath)
-        : _pluginDirPath(pluginDirPath)
+        : _primitives(), _camera(nullptr), _dlopenHandles(), _pluginDirPath(pluginDirPath)
     {}
 
     std::expected<void, PluginLoader::Error> PluginLoader::load() {
@@ -33,10 +33,11 @@ namespace RayTracer {
             return std::unexpected(Error::INVALID_PLUGINS_DIR);
         }
         _primitives.clear();
-        _cameras.clear();
+        _camera = nullptr;
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
         }
+        _dlopenHandles.clear();
 
         try {
             for (const std::filesystem::directory_entry &entry : 
@@ -62,7 +63,15 @@ namespace RayTracer {
                     }
                     pluginExtractor func =
                         reinterpret_cast<pluginExtractor>(funcAddr);
-                    _storePlugin(std::unique_ptr<IPlugin>(func()));
+                    
+                    // Extract plugin and check for errors
+                    std::unique_ptr<IPlugin> plugin(func());
+                    if (plugin->getPluginType() == IPlugin::Type::Camera && _camera != nullptr) {
+                        ::dlclose(handle);
+                        return std::unexpected(Error::DUPLICATE_CAMERA_PLUGIN);
+                    }
+                    
+                    _storePlugin(std::move(plugin));
                     _dlopenHandles.push_back(handle);
                 }
             }
@@ -87,7 +96,7 @@ namespace RayTracer {
                     std::get<std::unique_ptr<ICameraFactory>>(
                         plugin->getPluginContainer()
                     );
-                _cameras.push_back(std::move(cameraPlugin));
+                _camera = std::move(cameraPlugin);
                 break;
             }
             /* add more cases here for more plugins */
@@ -98,13 +107,13 @@ namespace RayTracer {
         return _primitives;
     }
     
-    PluginLoader::CameraHandlers &PluginLoader::getCameras() {
-        return _cameras;
+    std::shared_ptr<ICameraFactory> PluginLoader::getCamera() {
+        return _camera;
     }
 
     PluginLoader::~PluginLoader() {
         _primitives.clear();
-        _cameras.clear();
+        _camera = nullptr;
         for (void *handle: _dlopenHandles) {
             ::dlclose(handle);
         }

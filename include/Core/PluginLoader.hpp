@@ -24,7 +24,8 @@ namespace RayTracer {
                 FILESYSTEM_ERROR,
                 INVALID_PLUGINS_DIR,
                 DLL_LOAD_ERROR,
-                SYMBOL_NOT_FOUND
+                SYMBOL_NOT_FOUND,
+                DUPLICATE_CAMERA_PLUGIN
             };
             static inline std::map<Error, std::string> errorMsg = {    
                 {Error::EMPTY_PATH, "plugin directory path is empty"},
@@ -32,18 +33,18 @@ namespace RayTracer {
                 {Error::FILESYSTEM_ERROR, "filesystem error with entry in plugins directory"},
                 {Error::INVALID_PLUGINS_DIR, "invalid plugins directory"},
                 {Error::DLL_LOAD_ERROR, "failed to load plugin"},
-                {Error::SYMBOL_NOT_FOUND, "cannot find plugin extraction symbol in dynamic library"}
+                {Error::SYMBOL_NOT_FOUND, "cannot find plugin extraction symbol in dynamic library"},
+                {Error::DUPLICATE_CAMERA_PLUGIN, "multiple camera plugins detected, only one is allowed"}
             };
             typedef RayTracer::IPlugin *(*pluginExtractor)();
             typedef std::vector<std::shared_ptr<IPrimitiveFactory>> ShapeHandlers;
-            typedef std::vector<std::shared_ptr<ICameraFactory>> CameraHandlers;
             
             explicit PluginLoader(std::string pluginDirPath);
             ~PluginLoader();
 
             std::expected<void, Error> load();
             ShapeHandlers &getShapes();
-            CameraHandlers &getCameras();
+            std::shared_ptr<ICameraFactory> getCamera();
             /* TODO: add remaining plugins types here */
 
             static std::string getErrorMsg(Error err);
@@ -52,7 +53,7 @@ namespace RayTracer {
             void _storePlugin(std::unique_ptr<IPlugin> plugin);
 
             ShapeHandlers _primitives;
-            CameraHandlers _cameras;
+            std::shared_ptr<ICameraFactory> _camera;
             /* TODO: add remaining plugins types here */
             std::vector<void *> _dlopenHandles;
             std::string _pluginDirPath;
