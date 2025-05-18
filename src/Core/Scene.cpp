@@ -267,7 +267,8 @@ namespace RayTracer
     std::expected<void, Scene::Error> Scene::parseCamera(const libconfig::Setting &setting) {
         int resolution[2] = {0, 0};
         int position[3] = {0, 0, 0};
-
+        int fov = 90;
+        int rotation[3] = {0, 0, 0};
         // need to add resolution & field of view
 
         try {
@@ -276,11 +277,21 @@ namespace RayTracer
                 pos.lookupValue("x", position[0]);
                 pos.lookupValue("y", position[1]);
                 pos.lookupValue("z", position[2]);
+                std::cout << "Camera position: " << position[0] << " " << position[1] << " " << position[2] << std::endl;
             }
             if (setting.exists("resolution")) {
                 const libconfig::Setting &pos = setting["resolution"];
                 pos.lookupValue("width", resolution[0]);
                 pos.lookupValue("height", resolution[1]);
+            }
+            if (setting.exists("fov")) {
+                setting.lookupValue("fov", fov);
+            }
+            if (setting.exists("rotation")) {
+                const libconfig::Setting &rot = setting["rotation"];
+                rot.lookupValue("x", rotation[0]);
+                rot.lookupValue("y", rotation[1]);
+                rot.lookupValue("z", rotation[2]);
             }
         } catch (std::exception &e) {
             return std::unexpected(Error::CAMERA_SYNTAX_ERROR);
@@ -288,7 +299,7 @@ namespace RayTracer
         
         setWidth(resolution[0]);
         setHeight(resolution[1]);
-        setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2])));
+        setCamera(std::make_shared<Camera>(Math::Point3d(position[0], position[1], position[2]), Math::Vector3d(rotation[0], rotation[1], rotation[2]), fov));
         return {};
     }
 
