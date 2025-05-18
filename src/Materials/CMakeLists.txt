@@ -4,14 +4,11 @@ add_library(
     ../Math/Point3d.cpp
     ../Math/Vector3d.cpp
     ../Math/Color.cpp
-    Material.cpp
+    Materials.cpp
 )
 set_target_properties(common_material PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-add_library(chessboard SHARED
-    ChessBoardPlugin.cpp
-    ChessBoardFactory.cpp
-    ChessBoard.cpp)
+add_subdirectory(ChessBoard)
 
-target_include_directories(chessboard PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(chessboard PRIVATE common_material)
+target_include_directories(ChessBoard PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(ChessBoard PRIVATE common_material)

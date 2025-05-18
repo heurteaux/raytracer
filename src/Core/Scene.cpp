@@ -451,7 +451,6 @@ namespace RayTracer
 
                             }
                         }
-                        // _materials.push_back(std::move(newMaterial.value()));
                     } else {
                         std::cout << "parsingError: " << newMaterial.error() << std::endl;
                     }
