@@ -76,6 +76,7 @@ namespace PlanePlugin {
             double transparency = 0.0;
             double refraction = 0.0; 
             double reflection = 0.0;
+            double shininess = 1000.0;
 
             if (setting.exists("transparency"))
                 transparency = static_cast<double>(setting["transparency"]);
@@ -83,15 +84,13 @@ namespace PlanePlugin {
                 refraction = static_cast<double>(setting["refraction"]);
             if (setting.exists("reflection"))
                 reflection = static_cast<double>(setting["reflection"]);
+            if (setting.exists("shininess"))
+                shininess = static_cast<double>(setting["shininess"]);
 
             // Create plane with the specified color
             std::unique_ptr<Plane> plane = std::make_unique<Plane>(point, normal, color, name);
-
             // Create and set material with all properties
-            RayTracer::Material material(color);
-            material.setTransparency(transparency);
-            material.setRefractiveIndex(refraction);
-            material.setReflectivity(reflection);
+            std::shared_ptr<RayTracer::Material> material = std::make_shared<RayTracer::Material>(color, reflection, transparency, refraction, shininess);
             plane->setMaterial(material);
 
             return plane;

@@ -9,7 +9,8 @@
 #define COLOR_HPP_
 
 namespace Math {
-    class Color {
+    class Color
+    {
         public:
             /* Constructors */
             Color() = default;

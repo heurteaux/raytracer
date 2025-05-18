@@ -51,7 +51,12 @@ namespace SpherePlugin {
             std::string name = "sphere";
             if (setting.getName())
                 name = setting.getName();
-            return std::make_unique<Sphere>(center, radius, color, name);
+
+            double shininess = 1000.0;
+            if (setting.exists("shininess"))
+                setting.lookupValue("shininess", shininess);
+
+            return std::make_unique<Sphere>(center, radius, color, name, shininess);
         } catch (const libconfig::SettingException &e) {
             return std::unexpected("Error parsing sphere settings: " + std::string(e.what()));
         } catch (const std::exception &e) {

@@ -21,7 +21,8 @@
 #include <optional>
 
 namespace RayTracer {
-    class Scene {
+    class Scene
+    {
         public:
             enum class Error {
                 CANNOT_READ_CONFIG_FILE,
@@ -58,7 +59,10 @@ namespace RayTracer {
             */
             Math::Color traceRay(const Ray &ray, int depth) const;
             Math::Color lightEffects(Math::Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const;
-
+            Math::Color phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light, const double ambientFactor) const;
+            Math::Color calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Math::Color &lightColor, const double diffuseFactor) const;
+            double calculateSpecular(const Math::Vector3d &lightDir, const Math::Vector3d &normal, const Math::Vector3d &viewDir, double shininess) const;
+            
             /* getters */
             int getHeight() const { return _height; }
             int getWidth() const { return _width; }

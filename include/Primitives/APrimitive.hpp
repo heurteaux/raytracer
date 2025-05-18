@@ -23,6 +23,7 @@ namespace RayTracer {
             APrimitive(const APrimitive &other);
             APrimitive(const std::string &name);
             APrimitive(const std::string &name, const Math::Color &color);
+            APrimitive(const std::string &name, const Math::Color &color, const double shininess);
             ~APrimitive() = default;
 
             APrimitive &operator=(const APrimitive &other);
@@ -32,7 +33,7 @@ namespace RayTracer {
 
             /* Setters */
             void setName(const std::string &name) { _name = name; }
-            void setMaterial(const Material &material) { _material = material; }
+            void setMaterial(const std::shared_ptr<IMaterial> &material) { _material = material; }
 
             virtual void translate(const Math::Vector3d &offset);
             virtual void rotate(const Math::Vector3d &angles);
@@ -40,7 +41,7 @@ namespace RayTracer {
 
         protected:
             std::string _name;
-            Material _material;
+            std::shared_ptr<IMaterial> _material;
             Math::Point3d _center;
 
             void rotateVector(Math::Vector3d &vec, const Math::Vector3d &angles) const;

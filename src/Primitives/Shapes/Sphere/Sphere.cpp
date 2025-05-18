@@ -36,6 +36,12 @@ namespace SpherePlugin {
         _center = center;
         _radius = radius;
     }
+    Sphere::Sphere(const Math::Point3d &center, double radius, const Math::Color color, const std::string &name, const double shininess)
+    : APrimitive(name, color, shininess)
+    {
+        _center = center;
+        _radius = radius;
+    }
 
     void Sphere::scale(const double factors)
     {

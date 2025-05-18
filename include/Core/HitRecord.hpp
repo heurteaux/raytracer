@@ -10,7 +10,7 @@
 
 #include "Math/Point3d.hpp"
 #include "Math/Vector3d.hpp"
-#include "Materials/Material.hpp"
+#include "Materials/IMaterial.hpp"
 #include <memory>
 
 namespace RayTracer {
@@ -21,8 +21,8 @@ namespace RayTracer {
         double t;
         Math::Point3d point;
         Math::Vector3d normal;
-        Material material;
-        std::weak_ptr<IPrimitive> primitive;
+        std::shared_ptr<IMaterial> material;
+        std::shared_ptr<IPrimitive> primitive;
     };
 }
 

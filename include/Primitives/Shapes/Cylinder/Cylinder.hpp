@@ -15,12 +15,15 @@
 
 namespace CylinderPlugin
 {
-    class Cylinder : public RayTracer::APrimitive {
+    class Cylinder : public RayTracer::APrimitive
+    {
         public:
             Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius);
             Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const std::string &name);
             Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name);        
             Cylinder(const Math::Point3d &center, const Math::Vector3d &axis, double radius, const Math::Color color, const std::string &name, double height);
+            ~Cylinder() = default;
+
             bool hit(const RayTracer::Ray &ray, double tMin, double tMax, RayTracer::HitRecord &record) const override;
             void rotate(const Math::Vector3d &angles) override;
             void scale(const double factors) override;

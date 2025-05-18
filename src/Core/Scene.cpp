@@ -84,12 +84,43 @@ namespace RayTracer
         return (Rs * Rs + Rp * Rp) / 2.0;
     }
 
+    double Scene::calculateSpecular(const Math::Vector3d &lightDir, const Math::Vector3d &normal, const Math::Vector3d &viewDir, double shininess) const
+    {
+        Math::Vector3d reflectDir = reflection(Math::Vector3d(-lightDir.x, -lightDir.y, -lightDir.z), normal).normalized();
+
+        return std::pow(std::max(0.0, viewDir.dot(reflectDir)), shininess);
+    }
+    
+    Math::Color Scene::calculateDiffuse(Math::Vector3d lightDir, const HitRecord &hit, const Math::Color &lightColor, const double diffuseFactor) const
+    {
+        double diff = std::max(0.0, hit.normal.dot(lightDir));
+
+        return lightColor * hit.material->getColor() * diff * diffuseFactor;
+    }
+
+    Math::Color Scene::phongReflection(const HitRecord &hit, const Math::Vector3d &viewDir, const std::shared_ptr<ILight> &light, const double ambientFactor) const
+    {
+        Math::Color ambient = hit.material->getColorAt(hit.point) * ambientFactor;
+        Math::Color diffuse(0.0, 0.0, 0.0);
+        Math::Color specular(0.0, 0.0, 0.0);
+
+        if (auto directionalLight = std::dynamic_pointer_cast<DirectionalLight>(light)) {
+            Math::Vector3d lightDir = directionalLight->getDirection().normalized() * (-1);
+            Math::Color lightColor = Math::Color(1.0, 1.0, 1.0) * directionalLight->getIntensity();
+            // (loi de Lambert)
+            diffuse = diffuse + calculateDiffuse(lightDir, hit, lightColor, directionalLight->getIntensity());
+            // (Phong)
+            specular = specular + lightColor * calculateSpecular(lightDir, hit.normal, viewDir, hit.material->getShininessFactor());
+        }
+        return ambient + diffuse + specular;
+    }
+
     Math::Color Scene::lightEffects(Math::Color pixel, const HitRecord &closestHit, const Math::Vector3d &incident, int depth) const
     {
         Math::Color reflectedColor(0, 0, 0);
         Math::Color refractedColor(0, 0, 0);
-        double reflectivity = closestHit.material.getReflectivity();
-        double transparency = closestHit.material.getTransparency();
+        double reflectivity = closestHit.material->getReflectivity();
+        double transparency = closestHit.material->getTransparency();
         double sum = reflectivity + transparency;
 
         if (sum > 1.0) {
@@ -100,7 +131,7 @@ namespace RayTracer
         if (transparency > 0.0 || reflectivity > 0.0) {
             Math::Vector3d normal = closestHit.normal.normalized();
             double n1 = 1.0;
-            double n2 = closestHit.material.getRefractiveIndex();
+            double n2 = closestHit.material->getRefractiveIndex();
         
             if (incident.dot(normal) > 0.0) {
                 std::swap(n1, n2);
@@ -125,7 +156,7 @@ namespace RayTracer
             }
 
             if (transparency > 0.0) {
-                Math::Color objectColor = closestHit.material.getColor();
+                Math::Color objectColor = closestHit.material->getColor();
                 refractedColor = Math::Color(
                     refractedColor.r * (0.5 + 0.3 * objectColor.r),
                     refractedColor.g * (0.5 + 0.3 * objectColor.g),
@@ -149,7 +180,7 @@ namespace RayTracer
         double closestFar = std::numeric_limits<double>::infinity();
 
         for (const auto &primitive : _primitives) {
-            RayTracer::HitRecord tempRecord;
+            HitRecord tempRecord;
             if (primitive->hit(ray, 0.001, closestFar, tempRecord)) {
                 hitAnything = true;
                 closestFar = tempRecord.t;
@@ -160,18 +191,26 @@ namespace RayTracer
         if (hitAnything)
         {
             Math::Color pixel(0, 0, 0);
+            double ambient = 0.0;
+
+            for (const auto &light : _lights) {
+                if (auto ambientLight = std::dynamic_pointer_cast<AmbientLight>(light)) {
+                    ambient = ambientLight->getIntensity();
+                    break;
+                }
+            }
 
             for (const auto &light : _lights) {
                 if (!light->isShadowed(closestHit.point, _primitives)) {
                     pixel = pixel + light->calculateLighting(closestHit, _primitives);
+                    pixel = pixel + phongReflection(closestHit, ray.direction.normalized() * (-1), light, ambient);
                 }
             }
             return lightEffects(pixel, closestHit, ray.direction.normalized(), depth);
         } else {
             // back ground
             double t = 0.5 * (ray.direction.y + 1.0);
-            Math::Color pixel = Math::Color(1.0, 1.0, 1.0) * (1.0 - t) + Math::Color(0.5, 0.7, 1.0) * t;
-            return pixel;
+            return Math::Color(1.0, 1.0, 1.0) * (1.0 - t) + Math::Color(0.5, 0.7, 1.0) * t;
         }
     }
 
@@ -277,7 +316,7 @@ namespace RayTracer
                 pos.lookupValue("x", position[0]);
                 pos.lookupValue("y", position[1]);
                 pos.lookupValue("z", position[2]);
-                std::cout << "Camera position: " << position[0] << " " << position[1] << " " << position[2] << std::endl;
+                // std::cout << "Camera position: " << position[0] << " " << position[1] << " " << position[2] << std::endl;
             }
             if (setting.exists("resolution")) {
                 const libconfig::Setting &pos = setting["resolution"];
@@ -337,7 +376,6 @@ namespace RayTracer
             addLight(std::make_shared<AmbientLight>(ambient));
 
             setting.lookupValue("diffuse", diffuse);
-            // need to add Point
             if (setting.exists("directional")) {
                 const libconfig::Setting &dir = setting["directional"];
                 dir.lookupValue("x", direction[0]);

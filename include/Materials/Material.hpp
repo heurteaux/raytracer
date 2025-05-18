@@ -8,49 +8,43 @@
 #ifndef MATERIAL_HPP_
 #define MATERIAL_HPP_
 
+#include "IMaterial.hpp"
 #include "Math/Color.hpp"
+#include "../Math/Point3d.hpp"
 
 namespace RayTracer {
-    class Material
+    class Material : public IMaterial
     {
         public:
-            /* constructors */
             Material();
             Material(const Math::Color &color);
-            Material(const Math::Color &color, const double ambient, const double diffuse);
-            Material(const Math::Color &color, const double ambient, const double diffuse, 
-                    const double reflectivity, const double transparency, const double refractiveIndex);
-            Material(const Math::Color &color, const double reflectivity, const double transparency, 
-                    const double refractiveIndex);
-
-
-            /* Destructor */
+            Material(const Math::Color &color, const double shininess);
+            Material(const Math::Color &color, const double reflectivity, const double transparency, const double refractiveIndex);
+            Material(const Math::Color &color, const double reflectivity, const double transparency, const double refractiveIndex, const double specular);
             ~Material() = default;
 
-            /* Getters */
-            const Math::Color &getColor() const;
-            double getAmbientFactor() const;
-            double getDiffuseFactor() const;
-            double getReflectivity() const;
-            double getTransparency() const;
-            double getRefractiveIndex() const;
+            const Math::Color &getColor() const { return _color; }
+            double getReflectivity() const { return _reflectivity; }
+            double getTransparency() const { return _transparency; }
+            double getRefractiveIndex() const { return _refractiveIndex; }
+            double getShininessFactor() const { return _shininessFactor; }
 
-            /* Setters */
-            void setColor(const Math::Color &c);
-            void setAmbientFactor(double a);
-            void setDiffuseFactor(double d);
-            void setReflectivity(double r);
-            void setTransparency(double t);
-            void setRefractiveIndex(double ri);
+            void setColor(const Math::Color &c) { _color = c; }
+            void setReflectivity(double r) { _reflectivity = r; }
+            void setTransparency(double t) { _transparency = t; }
+            void setRefractiveIndex(double ri) { _refractiveIndex = ri; }
+            void setShininessFactor(double s) { _shininessFactor = s; }
 
-        private:
-            /* Private member variable*/
+            const Math::Color &getColorAt(const Math::Point3d &point) const { (void)point; return _color; }
+
+        protected:
             Math::Color _color;
-            double _ambientFactor;
-            double _diffuseFactor;
+
             double _reflectivity;
             double _transparency;
             double _refractiveIndex;
+
+            double _shininessFactor;
         };
 }
 
