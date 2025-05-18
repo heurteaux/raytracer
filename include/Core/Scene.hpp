@@ -9,6 +9,7 @@
 #define SCENE_HPP_
 
 #include "Primitives/IPrimitive.hpp"
+#include "Materials/IMaterial.hpp"
 #include "Lights/ILight.hpp"
 #include "Core/RayTracer.hpp"
 #include "Core/PluginLoader.hpp"
@@ -28,9 +29,11 @@ namespace RayTracer {
                 SYNTAX_ERROR,
                 CAMERA_SYNTAX_ERROR,
                 PRIMITIVES_SYNTAX_ERROR,
+                MATERIALS_SYNTAX_ERROR,
                 LIGHTS_SYNTAX_ERROR,
                 TRANSFORMATIONS_SYNTAX_ERROR,
                 UNKNOWN_PRIMITIVE,
+                UNKNOWN_MATERIAL,
                 CAMERA_ALREADY_REGISTERED
             };
 
@@ -39,9 +42,11 @@ namespace RayTracer {
                 {Error::SYNTAX_ERROR, "error in configuration file"},
                 {Error::CAMERA_SYNTAX_ERROR, "error while parsing camera settings"},
                 {Error::PRIMITIVES_SYNTAX_ERROR, "error while parsing primitives settings"},
+                {Error::MATERIALS_SYNTAX_ERROR, "error while parsing material settings"},
                 {Error::LIGHTS_SYNTAX_ERROR, "error while parsing lights settings"},
                 {Error::TRANSFORMATIONS_SYNTAX_ERROR, "error while parsing transformations settings"},
                 {Error::UNKNOWN_PRIMITIVE, "error while parsing primitives, unknown given primitive"},
+                {Error::UNKNOWN_MATERIAL, "error while parsing material, unknown given material"},
                 {Error::CAMERA_ALREADY_REGISTERED, "a camera is already registered in the scene"},
             };
 
@@ -79,8 +84,10 @@ namespace RayTracer {
             
         private:
             std::optional<std::shared_ptr<IPrimitiveFactory>> getPrimitiveFactory(std::string primitiveType);
+            std::optional<std::shared_ptr<IMaterialFactory>> getMaterialFactory(std::string materialType);
             std::expected<void, Error> parseCamera(const libconfig::Setting &setting);
             std::expected<void, Error> parsePrimitives(const libconfig::Setting &setting);
+            std::expected<void, Error> parseMaterials(const libconfig::Setting &setting);
             std::expected<void, Error> parseTransformation(const libconfig::Setting &setting);
             std::expected<void, Error> parseLights(const libconfig::Setting &setting); 
 

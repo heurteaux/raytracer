@@ -6,34 +6,33 @@
 */
 
 #include "Core/RayTracer.hpp"
-#include "Camera/CameraPlugin/Camera.hpp"
 #include "Core/Scene.hpp"
 #include "Core/HitRecord.hpp"
+#include "Core/Scene.hpp"
+#include "Core/PluginLoader.hpp"
+#include "Core/PPMLoader.hpp"
+#include "Camera/CameraPlugin/Camera.hpp"
 #include "Math/Point3d.hpp"
 #include "Math/Vector3d.hpp"
 #include "Primitives/Shapes/Sphere/Sphere.hpp"
 #include "Primitives/IPrimitive.hpp"
+#include "Primitives/Shapes/Plane/Plane.hpp"
+#include "Primitives/IPrimitive.hpp"
 #include "Materials/IMaterial.hpp"
 #include "Lights/ILight.hpp"
-#include <iostream>
-#include <memory>
-#include <optional>
-#include "Core/Scene.hpp"
-#include "Core/PluginLoader.hpp"
-#include <string>
-#include <cmath>
-#include "Primitives/Shapes/Plane/Plane.hpp"
-#include "Lights/DirectionalLight.hpp"
-#include "Lights/AmbientLight.hpp"
+#include "Lights/DirectionalLight/DirectionalLight.hpp"
+#include "Lights/AmbientLight/AmbientLight.hpp"
 #include "Exception/Exception.hpp"
 #include "Primitives/IPrimitive.hpp"
 #include "Core/ErrorHandler.hpp"
-
 #include <filesystem>
 #include <thread>
+#include <string>
+#include <cmath>
+#include <iostream>
+#include <memory>
+#include <optional>
 
-#include "Core/PPMLoader.hpp"
-#include "Materials/ChessBoard.hpp"
 
 #define PPM_File "output.ppm"
 

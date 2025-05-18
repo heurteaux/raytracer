@@ -35,7 +35,7 @@ namespace RayTracer {
             void setRefractiveIndex(double ri) { _refractiveIndex = ri; }
             void setShininessFactor(double s) { _shininessFactor = s; }
 
-            const Math::Color &getColorAt(const Math::Point3d &point) const { (void)point; return _color; }
+            Math::Color getColorAt(const Math::Point3d &point) const { (void)point; return _color; }
 
         protected:
             Math::Color _color;

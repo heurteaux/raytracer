@@ -12,14 +12,16 @@
 #include "Core/RayTracer.hpp"
 #include "Primitives/IPrimitive.hpp"
 
-namespace RayTracer
+namespace AmbientLightPlugin
 {
-    class AmbientLight : public ILight {
+    class AmbientLight : public RayTracer::ILight {
         public:
             AmbientLight(double intensity = 0.1) : intensity(intensity) {}
 
-            Math::Color calculateLighting(const HitRecord &record, const std::vector<std::shared_ptr<IPrimitive>> &primitives) const override;
-            bool isShadowed(const Math::Point3d &point, const std::vector<std::shared_ptr<IPrimitive>> &primitives) const override;
+            Math::Color calculateLighting(const RayTracer::HitRecord &record,
+                const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const override;
+            bool isShadowed(const Math::Point3d &point,
+                const std::vector<std::shared_ptr<RayTracer::IPrimitive>> &primitives) const override;
 
             void setIntensity(double intensity) { this->intensity = intensity; }
             double getIntensity() const { return intensity; }

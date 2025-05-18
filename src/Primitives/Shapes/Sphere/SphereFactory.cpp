@@ -8,6 +8,7 @@
 #include "Primitives/Shapes/Sphere/SphereFactory.hpp"
 #include "Primitives/Shapes/Sphere/Sphere.hpp"
 #include "Math/Color.hpp"
+
 #include <memory>
 #include <string>
 #include <expected>
@@ -55,6 +56,10 @@ namespace SpherePlugin {
             double shininess = 1000.0;
             if (setting.exists("shininess"))
                 setting.lookupValue("shininess", shininess);
+
+            std::string material = "default";
+            if (setting.exists("material"))
+                setting.lookupValue("material", material);
 
             return std::make_unique<Sphere>(center, radius, color, name, shininess);
         } catch (const libconfig::SettingException &e) {

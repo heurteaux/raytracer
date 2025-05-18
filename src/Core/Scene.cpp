@@ -7,8 +7,8 @@
 
 #include "Core/Scene.hpp"
 #include "Core/PluginLoader.hpp"
-#include "Lights/AmbientLight.hpp"
-#include "Lights/DirectionalLight.hpp"
+#include "Lights/AmbientLight/AmbientLight.hpp"
+#include "Lights/DirectionalLight/DirectionalLight.hpp"
 #include "Primitives/IPrimitiveFactory.hpp"
 #include <functional>
 #include <thread>
@@ -104,7 +104,7 @@ namespace RayTracer
         Math::Color diffuse(0.0, 0.0, 0.0);
         Math::Color specular(0.0, 0.0, 0.0);
 
-        if (auto directionalLight = std::dynamic_pointer_cast<DirectionalLight>(light)) {
+        if (auto directionalLight = std::dynamic_pointer_cast<DirectionalLightPlugin::DirectionalLight>(light)) {
             Math::Vector3d lightDir = directionalLight->getDirection().normalized() * (-1);
             Math::Color lightColor = Math::Color(1.0, 1.0, 1.0) * directionalLight->getIntensity();
             // (loi de Lambert)
@@ -194,7 +194,7 @@ namespace RayTracer
             double ambient = 0.0;
 
             for (const auto &light : _lights) {
-                if (auto ambientLight = std::dynamic_pointer_cast<AmbientLight>(light)) {
+                if (auto ambientLight = std::dynamic_pointer_cast<AmbientLightPlugin::AmbientLight>(light)) {
                     ambient = ambientLight->getIntensity();
                     break;
                 }
@@ -290,6 +290,10 @@ namespace RayTracer
         std::expected<void, RayTracer::Scene::Error> primitivesResult = parsePrimitives(root["primitives"]);
         if (!primitivesResult.has_value()) {
             return primitivesResult;
+        }
+        std::expected<void, RayTracer::Scene::Error> materialsResult = parseMaterials(root["materials"]);
+        if (!materialsResult.has_value()) {
+            return materialsResult;
         }
         std::expected<void, RayTracer::Scene::Error> transformationResult = parseTransformation(root["transformations"]);
         if (!transformationResult.has_value()) {
@@ -396,7 +400,7 @@ namespace RayTracer
 
         try {
             setting.lookupValue("ambient", ambient);
-            addLight(std::make_shared<AmbientLight>(ambient));
+            addLight(std::make_shared<AmbientLightPlugin::AmbientLight>(ambient));
 
             setting.lookupValue("diffuse", diffuse);
             if (setting.exists("directional")) {
@@ -408,7 +412,7 @@ namespace RayTracer
         } catch (std::exception &e) {
             return std::unexpected(Error::LIGHTS_SYNTAX_ERROR);
         }
-        addLight(std::make_shared<DirectionalLight>(Math::Vector3d(direction[0], direction[1], direction[2]), diffuse));
+        addLight(std::make_shared<DirectionalLightPlugin::DirectionalLight>(Math::Vector3d(direction[0], direction[1], direction[2]), diffuse));
         return {};
     }
 
@@ -441,6 +445,46 @@ namespace RayTracer
         for (std::shared_ptr<RayTracer::IPrimitiveFactory> primitive: _pluginLoader->getShapes()) {
             if (primitive->getPrimitiveName() == primitiveType) {
                 return {primitive};
+            }
+        }
+        return std::nullopt;
+    }
+
+    std::expected<void, Scene::Error> Scene::parseMaterials(const libconfig::Setting &setting)
+    {
+        try {
+            for (int i = 0; i < setting.getLength(); i++) {
+                const libconfig::Setting &materialType = setting[setting[i].getName()];
+                for (int j = 0; j < materialType.getLength(); j++) {
+                    const libconfig::Setting &newMat = materialType[materialType[j].getName()];
+                    const std::optional<std::shared_ptr<IMaterialFactory>> factory = getMaterialFactory(materialType.getName());
+                    if (!factory.has_value()) {
+                        return std::unexpected(Error::UNKNOWN_MATERIAL);
+                    }
+                    std::expected<std::unique_ptr<RayTracer::IMaterial>, std::string>
+                        newMaterial = factory.value()->getFromParsing(newMat);
+                    if (newMaterial.has_value()) {
+                        for (std::shared_ptr<IPrimitive> &prim : _primitives) {
+                            if (prim->getName() == newMat.getName()) {
+                                prim->setMaterial(std::move(newMaterial.value()));
+                            }
+                        }
+                    } else {
+                        std::cout << "parsingError: " << newMaterial.error() << std::endl;
+                    }
+                }
+            }
+        } catch (std::exception &e) {
+            return std::unexpected(Error::MATERIALS_SYNTAX_ERROR);
+        }
+        return {};
+    }
+
+    std::optional<std::shared_ptr<IMaterialFactory>> Scene::getMaterialFactory(std::string materialType)
+    {
+        for (std::shared_ptr<RayTracer::IMaterialFactory> material : _pluginLoader->getMaterials()) {
+            if (material->getMaterialName() == materialType) {
+                return {material};
             }
         }
         return std::nullopt;

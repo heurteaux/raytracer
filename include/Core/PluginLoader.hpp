@@ -29,21 +29,31 @@ namespace RayTracer {
                 {Error::DUPLICATE_CAMERA_PLUGIN, "found multiple camera plugins, only one is supported at the time being"}
             };
             typedef RayTracer::IPlugin *(*pluginExtractor)();
+            typedef std::vector<std::shared_ptr<IPrimitiveFactory>> ShapeHandlers;
+            typedef std::vector<std::shared_ptr<IMaterialFactory>> MaterialHandlers;
+            typedef std::shared_ptr<ICameraFactory> CameraHandler;
+            typedef std::vector<std::shared_ptr<ILightFactory>> LightHandlers;
             
             explicit PluginLoader(std::string pluginDirPath);
-            ~PluginLoader() override;
+            ~PluginLoader();
             
-            std::expected<void, Error> load() override;
-            ShapeHandlers &getShapes() override;
-            CameraHandler &getCamera() override;
-
+            std::expected<void, Error> load();
+            MaterialHandlers &getMaterials();
+            /* TODO: add remaining plugins types here */
+            ShapeHandlers &getShapes();
+            CameraHandler &getCamera();
+            ILightFactory &getLights();
+      
             static std::string getErrorMsg(Error err);
 
         private:
             void _storePlugin(std::unique_ptr<IPlugin> plugin) override;
 
             ShapeHandlers _primitives;
+            MaterialHandlers _materials;
             CameraHandler _camera;
+            LightHandlers _lights;
+            /* TODO: add remaining plugins types here */
 
             std::vector<void *> _dlopenHandles;
             std::string _pluginDirPath;
