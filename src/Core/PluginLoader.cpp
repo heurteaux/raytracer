@@ -63,15 +63,14 @@ namespace RayTracer {
                     }
                     pluginExtractor func =
                         reinterpret_cast<pluginExtractor>(funcAddr);
-                    
-                    // Extract plugin and check for errors
                     std::unique_ptr<IPlugin> plugin(func());
-                    if (plugin->getPluginType() == IPlugin::Type::Camera && _camera != nullptr) {
-                        ::dlclose(handle);
-                        return std::unexpected(Error::DUPLICATE_CAMERA_PLUGIN);
+
+                    std::expected<void, RayTracer::PluginLoader::Error> res = 
+                        _storePlugin(std::move(plugin));
+                    if (!res.has_value()) {
+                        return res;
                     }
-                    
-                    _storePlugin(std::move(plugin));
+
                     _dlopenHandles.push_back(handle);
                 }
             }
@@ -81,7 +80,7 @@ namespace RayTracer {
         return {};
     }
 
-    void PluginLoader::_storePlugin(std::unique_ptr<IPlugin> plugin) {
+    std::expected<void, PluginLoader::Error> PluginLoader::_storePlugin(std::unique_ptr<IPlugin> plugin) {
         switch (plugin->getPluginType()) {
             case IPlugin::Type::Shape: {
                 std::unique_ptr<IPrimitiveFactory> primitivePlugin = 
@@ -96,18 +95,22 @@ namespace RayTracer {
                     std::get<std::unique_ptr<ICameraFactory>>(
                         plugin->getPluginContainer()
                     );
+                if (_camera != nullptr) {
+                    return std::unexpected(Error::DUPLICATE_CAMERA_PLUGIN);
+                }
                 _camera = std::move(cameraPlugin);
                 break;
             }
             /* add more cases here for more plugins */
         }
+        return {};
     }
 
     PluginLoader::ShapeHandlers &PluginLoader::getShapes() {
         return _primitives;
     }
     
-    std::shared_ptr<ICameraFactory> PluginLoader::getCamera() {
+    PluginLoader::CameraHandler &PluginLoader::getCamera() {
         return _camera;
     }
 

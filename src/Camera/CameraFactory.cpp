@@ -5,8 +5,8 @@
 ** CameraFactory
 */
 
-#include "Camera/CameraFactory.hpp"
-#include "Camera/Camera.hpp"
+#include "Camera/CameraPlugin/CameraFactory.hpp"
+#include "Camera/CameraPlugin/Camera.hpp"
 #include <memory>
 #include <iostream>
 
@@ -41,7 +41,7 @@ namespace CameraPlugin {
                 fov = static_cast<double>(setting["fov"]);
             }
 
-            return std::make_shared<RayTracer::Camera>(position, rotation, fov);
+            return std::make_shared<Camera>(position, rotation, fov);
         } catch (const libconfig::SettingTypeException &e) {
             return std::unexpected(std::string("Camera: Type error in configuration: ") + e.what());
         } catch (const libconfig::SettingNotFoundException &e) {

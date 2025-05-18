@@ -34,27 +34,30 @@ namespace RayTracer {
                 {Error::INVALID_PLUGINS_DIR, "invalid plugins directory"},
                 {Error::DLL_LOAD_ERROR, "failed to load plugin"},
                 {Error::SYMBOL_NOT_FOUND, "cannot find plugin extraction symbol in dynamic library"},
-                {Error::DUPLICATE_CAMERA_PLUGIN, "multiple camera plugins detected, only one is allowed"}
+                {Error::DUPLICATE_CAMERA_PLUGIN, "found multiple camera plugins, only one is supported at the time being"}
             };
             typedef RayTracer::IPlugin *(*pluginExtractor)();
             typedef std::vector<std::shared_ptr<IPrimitiveFactory>> ShapeHandlers;
+            typedef std::shared_ptr<ICameraFactory> CameraHandler;
             
             explicit PluginLoader(std::string pluginDirPath);
             ~PluginLoader();
 
+            
             std::expected<void, Error> load();
-            ShapeHandlers &getShapes();
-            std::shared_ptr<ICameraFactory> getCamera();
             /* TODO: add remaining plugins types here */
+            ShapeHandlers &getShapes();
+            CameraHandler &getCamera();
 
             static std::string getErrorMsg(Error err);
 
         private:
-            void _storePlugin(std::unique_ptr<IPlugin> plugin);
+            std::expected<void, Error> _storePlugin(std::unique_ptr<IPlugin> plugin);
 
             ShapeHandlers _primitives;
-            std::shared_ptr<ICameraFactory> _camera;
+            CameraHandler _camera;
             /* TODO: add remaining plugins types here */
+
             std::vector<void *> _dlopenHandles;
             std::string _pluginDirPath;
     };

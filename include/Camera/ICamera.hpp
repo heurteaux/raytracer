@@ -19,7 +19,6 @@ namespace RayTracer {
             virtual ~ICamera() = default;
 
             virtual Ray ray(double u, double v) const = 0;
-            
     };
 }
 

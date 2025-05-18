@@ -5,8 +5,8 @@
 ** CameraPlugin
 */
 
-#include "Camera/CameraPlugin.hpp"
-#include "Camera/CameraFactory.hpp"
+#include "Camera/CameraPlugin/CameraPlugin.hpp"
+#include "Camera/CameraPlugin/CameraFactory.hpp"
 #include <memory>
 
 namespace CameraPlugin {
