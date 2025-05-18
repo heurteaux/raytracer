@@ -12,7 +12,7 @@
 #include "Core/PluginLoader.hpp"
 #include "Core/PPMLoader.hpp"
 
-#include "Camera/Camera.hpp"
+#include "Camera/CameraPlugin/Camera.hpp"
 
 #include "Math/Point3d.hpp"
 #include "Math/Vector3d.hpp"
