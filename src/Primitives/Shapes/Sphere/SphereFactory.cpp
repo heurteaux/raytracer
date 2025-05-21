@@ -61,7 +61,27 @@ namespace SpherePlugin {
             if (setting.exists("material"))
                 setting.lookupValue("material", material);
 
-            return std::make_unique<Sphere>(center, radius, color, name, shininess);
+
+            // Read material properties
+            double transparency = 0.0;
+            double refraction = 0.0; 
+            double reflection = 0.0;
+
+            if (setting.exists("transparency"))
+                transparency = static_cast<double>(setting["transparency"]);
+            if (setting.exists("refraction"))
+                refraction = static_cast<double>(setting["refraction"]);
+            if (setting.exists("reflection"))
+                reflection = static_cast<double>(setting["reflection"]);
+            if (setting.exists("shininess"))
+                shininess = static_cast<double>(setting["shininess"]);
+
+            std::unique_ptr<Sphere> sphere = std::make_unique<Sphere>(center, radius, color, name, shininess);
+
+            std::shared_ptr<RayTracer::Material> material2 = std::make_shared<RayTracer::Material>(color, reflection, transparency, refraction, shininess);
+            sphere->setMaterial(material2);
+
+            return sphere;
         } catch (const libconfig::SettingException &e) {
             return std::unexpected("Error parsing sphere settings: " + std::string(e.what()));
         } catch (const std::exception &e) {

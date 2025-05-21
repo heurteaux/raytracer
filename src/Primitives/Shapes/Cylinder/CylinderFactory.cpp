@@ -82,6 +82,24 @@ namespace CylinderPlugin {
                 cylinder->setMaterial(std::make_shared<RayTracer::Material>(color, shininess));
             }
 
+            // Read material properties
+            double transparency = 0.0;
+            double refraction = 0.0; 
+            double reflection = 0.0;
+            double shininess = 1000.0;
+
+            if (setting.exists("transparency"))
+                transparency = static_cast<double>(setting["transparency"]);
+            if (setting.exists("refraction"))
+                refraction = static_cast<double>(setting["refraction"]);
+            if (setting.exists("reflection"))
+                reflection = static_cast<double>(setting["reflection"]);
+            if (setting.exists("shininess"))
+                shininess = static_cast<double>(setting["shininess"]);
+
+            std::shared_ptr<RayTracer::Material> material = std::make_shared<RayTracer::Material>(color, reflection, transparency, refraction, shininess);
+            cylinder->setMaterial(material);
+
             return cylinder;
         } catch (const libconfig::SettingTypeException &e) {
             return std::unexpected(std::string("Cylinder: Type error in configuration: ") + e.what());

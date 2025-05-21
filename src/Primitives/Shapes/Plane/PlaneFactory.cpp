@@ -50,9 +50,6 @@ namespace PlanePlugin {
                 return std::unexpected("Plane: Missing normal parameter");
             }
 
-            // Ignoring axis and radius parameters as they're not used in Plane implementation
-            // but we'll read them to support the specified format
-
             Math::Color color(1.0, 1.0, 1.0);
             if (setting.exists("color")) {
                 const libconfig::Setting &col = setting["color"];
@@ -72,7 +69,6 @@ namespace PlanePlugin {
                 name = setting.getName();
             }
 
-            // Read material properties
             double transparency = 0.0;
             double refraction = 0.0; 
             double reflection = 0.0;
@@ -87,9 +83,7 @@ namespace PlanePlugin {
             if (setting.exists("shininess"))
                 shininess = static_cast<double>(setting["shininess"]);
 
-            // Create plane with the specified color
             std::unique_ptr<Plane> plane = std::make_unique<Plane>(point, normal, color, name);
-            // Create and set material with all properties
             std::shared_ptr<RayTracer::Material> material = std::make_shared<RayTracer::Material>(color, reflection, transparency, refraction, shininess);
             plane->setMaterial(material);
 
