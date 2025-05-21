@@ -33,6 +33,8 @@
 #include <memory>
 #include <optional>
 
+#include "Core/PPMLoader.hpp"
+#include <Core/Observer/ConsoleProgressObserver.hpp>
 
 #define PPM_File "output.ppm"
 
@@ -55,6 +57,14 @@ int main(const int argc, UNUSED const char *argv[])
     errorCode = RayTracer::handleError(sceneLoadRes, "ConfigFileError", RayTracer::Scene::getErrorMsg);
     if (errorCode != 0) {
         return errorCode;
+
+    auto progressObserver = std::make_shared<RayTracer::ConsoleProgressObserver>();
+    scene.attachObserver(progressObserver);
+    if (!sceneLoadRes.has_value()) {
+        std::string msg = 
+            RayTracer::Scene::getErrorMsg(sceneLoadRes.error());
+        std::cerr << "ConfigFileError: " << msg << std::endl;
+        return 84;
     }
     int returnValue = scene.render(PPM_File);
     RayTracer::PPMLoader loader;

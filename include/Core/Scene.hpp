@@ -13,6 +13,8 @@
 #include "Lights/ILight.hpp"
 #include "Core/RayTracer.hpp"
 #include "Core/PluginLoader.hpp"
+#include "Core/Observer/RenderingSubject.hpp"
+#include "Core/Observer/IObserver.hpp"
 #include <vector>
 #include <memory>
 #include <iostream>
@@ -80,6 +82,9 @@ namespace RayTracer {
             void setHeight(int height) { _height = height; }
             void setCamera(const std::shared_ptr<ICamera> &cam);
 
+            void attachObserver(std::shared_ptr<IObserver> observer);
+            void detachObserver(std::shared_ptr<IObserver> observer);
+
             static std::string getErrorMsg(Error err);
             
         private:
@@ -97,6 +102,8 @@ namespace RayTracer {
             std::shared_ptr<ICamera> _camera;
             int _width;
             int _height;
+            
+            mutable RenderingSubject _renderingSubject;
     };
 }
 
