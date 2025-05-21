@@ -57,6 +57,7 @@ int main(const int argc, UNUSED const char *argv[])
     errorCode = RayTracer::handleError(sceneLoadRes, "ConfigFileError", RayTracer::Scene::getErrorMsg);
     if (errorCode != 0) {
         return errorCode;
+    }
 
     auto progressObserver = std::make_shared<RayTracer::ConsoleProgressObserver>();
     scene.attachObserver(progressObserver);
